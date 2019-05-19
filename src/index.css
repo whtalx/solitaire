@@ -1,13 +1,30 @@
+@font-face {
+  font-family: fixedsys;
+  src:
+    url('./fonts/fixedsys.eot') format('embedded-opentype'),
+    url('./fonts/fixedsys.otf') format('opentype'),
+    url('./fonts/fixedsys.svg') format('svg'),
+    url('./fonts/fixedsys.ttf') format('truetype'),
+    url('./fonts/fixedsys.woff') format('woff'),
+    url('./fonts/fixedsys.woff2') format('woff2');
+ }
+
+@font-face {
+  font-family: tahoma;
+  src:
+    url('./fonts/tahoma.eot') format('embedded-opentype'),
+    url('./fonts/tahoma.otf') format('opentype'),
+    url('./fonts/tahoma.svg') format('svg'),
+    url('./fonts/tahoma.ttf') format('truetype'),
+    url('./fonts/tahoma.woff') format('woff'),
+    url('./fonts/tahoma.woff2') format('woff2');
+ }
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  user-select: none;
+  background: fixed url('./images/wallpaper.png') center no-repeat;
+  background-size: 100% 100%;
 }
