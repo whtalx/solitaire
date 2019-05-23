@@ -1,24 +1,22 @@
-$empty-card-pattern: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiIHNoYXBlLXJlbmRlcmluZz0ib3B0aW1pemVTcGVlZCI+PHJlY3Qgd2lkdGg9IjEiIGhlaWdodD0iMSIgeD0iMiIgeT0iMSIgLz48cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB4PSI2IiB5PSIxIiAvPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHg9IjQiIHk9IjMiIC8+PHJlY3Qgd2lkdGg9IjEiIGhlaWdodD0iMSIgeD0iMiIgeT0iNSIgLz48cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB4PSI2IiB5PSI1IiAvPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHg9IjAiIHk9IjciIC8+DQo8L3N2Zz4=');
-
 .window {
   position: relative;
   width: 585px;
   height: 404px;
-  margin: calc(50vh - 202px) auto 0;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
+  top: calc(50vh - 202px);
+  left: calc(50vw - 292.5px);
+  // margin: calc(50vh - 202px) auto 0;
   border: 3px solid #0041ce;
-  border-image: url('../images/window-border.png') 3 stretch stretch;
-  cursor: url('../images/default.png') 10 5, auto;
+  border-image: url('../images/windows/border.png') 3 stretch stretch;
+  cursor: url('../images/cursors/default.cur'), auto;
 }
 
 .window__header {
   position: absolute;
   left: 3px;
   top: -29px;
-  width: 579px;
+  width: calc(100% - 6px);
   height: 29px;
-  background-image: url('../images/window-header.png');
+  background-image: url('../images/windows/header.png');
 }
 
 .window__header:before {
@@ -27,16 +25,16 @@ $empty-card-pattern: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3
   left: -6px;
   width: 6px;
   height: 29px;
-  background-image: url('../images/window-header-left.png');
+  background-image: url('../images/windows/header-left.png');
 }
 
 .window__header:after {
   content: '';
   position: absolute;
-  left: 579px;
+  right: -6px;
   width: 6px;
   height: 29px;
-  background-image: url('../images/window-header-right.png');
+  background-image: url('../images/windows/header-right.png');
 }
 
 .window__icon {
@@ -45,7 +43,7 @@ $empty-card-pattern: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3
   left: 2px;
   width: 16px;
   height: 16px;
-  background: url('../images/icon.png');
+  background: url('../images/windows/icon.png');
   background-size: 100% 100%;
 }
 
@@ -71,22 +69,22 @@ $empty-card-pattern: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3
 
 .window__button_minimize {
   right: 49px;
-  background: url('../images/window-button-minimize.png');
+  background: url('../images/windows/button-minimize.png');
 }
 
 .window__button_maximize {
   right: 26px;
-  background: url('../images/window-button-maximize.png');
+  background: url('../images/windows/button-maximize.png');
 }
 
 .window__button_close {
   right: 3px;
-  background: url('../images/window-button-close.png');
+  background: url('../images/windows/button-close.png');
 }
 
 .window__button_help {
   right: 26px;
-  background: url('../images/window-button-help.png');
+  background: url('../images/windows/button-help.png');
 }
 
 .window__button_minimize:hover,
@@ -105,7 +103,7 @@ $empty-card-pattern: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3
 
 .menu {
   position: relative;
-  width: 585px;
+  width: 100%;
   height: 19px;
   background-color: #ece9d8;
   border-bottom: 1px solid #fff;
@@ -127,17 +125,26 @@ $empty-card-pattern: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3
 }
 
 .table {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  overflow: hidden;
   position: relative;
-  width: 585px;
-  height: 367px;
-  box-sizing: border-box;
-  padding: 5px 11px;
+  width: 100%;
+  height: calc(100% - 38px);
+  min-width: 585px;
+  min-height: 366px;
   background-color: #008200;
+  box-sizing: border-box;
+  padding-right: 11px;
+  display: grid;
+  grid-template: repeat(2, 101px) / repeat(7, 82px);
+  justify-content: space-evenly;
+  align-content: start;
 }
 
 .status-bar {
   position: relative;
-  width: 585px;
+  width: 100%;
   height: 16px;
   background-color: #fff;
   border-top: 1px solid #000;
@@ -148,44 +155,154 @@ $empty-card-pattern: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3
   text-align: right;
 }
 
+.deck,
+.waste,
+.foundation,
+.tableau {
+  margin: 6px 0 0 11px;
+}
+
+.foundation-A {
+  grid-column: 4 / 5;
+}
+
 .card {
   position: absolute;
-  width: 69px;
-  height: 94px;
-  border: 1px solid #000;
-  border-radius: 2px;
-  background: $empty-card-pattern;
+  width: 71px;
+  height: 96px;
 }
 
-.waste,
-.tableau-2nd {
-  left: 93px;
+.empty {
+  background: url('../images/cards/empty.png');
 }
 
-.tableau {
-  top: 107px;
+.ok {
+  background: url('../images/cards/ok.png');
 }
 
-.tableau-3rd {
-  left: 175px;
+.notok {
+  background: url('../images/cards/notok.png');
 }
 
-.tableau-4th,
-.foundation-1st {
-  left: 257px;
+.closed {
+  margin: 0;
+  background: url('../images/cards/back.png');
+
+  .opened,
+  .closed {
+    margin-top: 3px;
+  }
 }
 
-.tableau-5th,
-.foundation-2nd {
-  left: 339px;
+.opened {
+  margin: 0;
+  background: url('../images/cards/deck.png');
+
+  .opened {
+    margin-top: 15px;
+  }
 }
 
-.tableau-6th,
-.foundation-3rd {
-  left: 421px;
+.back-sky,
+.hearts {
+  background-position-x: 0;
 }
 
-.tableau-7th,
-.foundation-4th {
-  left: 503px;
+.back-blue,
+.clubs {
+  background-position-x: -71px;
+}
+
+.back-squares,
+.diamonds {
+  background-position-x: -71px * 2;
+}
+
+.back-purple,
+.spades {
+  background-position-x: -71px * 3;
+}
+
+.back-red {
+  background-position-x: -71px * 4;
+}
+
+.back-island {
+  background-position-x: -71px * 5;
+}
+
+.back-fish {
+  background-position-x: -71px * 6;
+}
+
+.back-frog {
+  background-position-x: -71px * 7;
+}
+
+.back-desert {
+  background-position-x: -71px * 8;
+}
+
+.back-astronaut {
+  background-position-x: -71px * 9;
+}
+
+.back-orange {
+  background-position-x: -71px * 10;
+}
+
+.back-cars {
+  background-position-x: -71px * 11;
+}
+
+[class*="ace"] {
+  background-position-y: 0;
+}
+
+[class*="2"] {
+  background-position-y: -96px;
+}
+
+[class*="3"] {
+  background-position-y: -96px * 2;
+}
+
+[class*="4"] {
+  background-position-y: -96px * 3;
+}
+
+[class*="5"] {
+  background-position-y: -96px * 4;
+}
+
+[class*="6"] {
+  background-position-y: -96px * 5;
+}
+
+[class*="7"] {
+  background-position-y: -96px * 6;
+}
+
+[class*="8"] {
+  background-position-y: -96px * 7;
+}
+
+[class*="9"] {
+  background-position-y: -96px * 8;
+}
+
+[class*="10"] {
+  background-position-y: -96px * 9;
+}
+
+.jack {
+  background-position-y: -96px * 10;
+}
+
+.queen {
+  background-position-y: -96px * 11;
+}
+
+.king {
+  background-position-y: -96px * 12;
 }
