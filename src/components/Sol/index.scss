@@ -6,8 +6,8 @@
   left: calc(50vw - 292.5px);
   // margin: calc(50vh - 202px) auto 0;
   border: 3px solid #0041ce;
-  border-image: url('../images/windows/border.png') 3 stretch stretch;
-  cursor: url('../images/cursors/default.cur'), auto;
+  border-image: url('../../images/windows/border.png') 3 stretch stretch;
+  cursor: url('../../images/cursors/default.cur'), auto;
 }
 
 .window__header {
@@ -16,7 +16,7 @@
   top: -29px;
   width: calc(100% - 6px);
   height: 29px;
-  background-image: url('../images/windows/header.png');
+  background-image: url('../../images/windows/header.png');
 }
 
 .window__header:before {
@@ -25,7 +25,7 @@
   left: -6px;
   width: 6px;
   height: 29px;
-  background-image: url('../images/windows/header-left.png');
+  background-image: url('../../images/windows/header-left.png');
 }
 
 .window__header:after {
@@ -34,7 +34,7 @@
   right: -6px;
   width: 6px;
   height: 29px;
-  background-image: url('../images/windows/header-right.png');
+  background-image: url('../../images/windows/header-right.png');
 }
 
 .window__icon {
@@ -43,7 +43,7 @@
   left: 2px;
   width: 16px;
   height: 16px;
-  background: url('../images/windows/icon.png');
+  background: url('../../images/windows/icon.png');
   background-size: 100% 100%;
 }
 
@@ -69,22 +69,22 @@
 
 .window__button_minimize {
   right: 49px;
-  background: url('../images/windows/button-minimize.png');
+  background: url('../../images/windows/button-minimize.png');
 }
 
 .window__button_maximize {
   right: 26px;
-  background: url('../images/windows/button-maximize.png');
+  background: url('../../images/windows/button-maximize.png');
 }
 
 .window__button_close {
   right: 3px;
-  background: url('../images/windows/button-close.png');
+  background: url('../../images/windows/button-close.png');
 }
 
 .window__button_help {
   right: 26px;
-  background: url('../images/windows/button-help.png');
+  background: url('../../images/windows/button-help.png');
 }
 
 .window__button_minimize:hover,
@@ -162,7 +162,7 @@
   margin: 6px 0 0 11px;
 }
 
-.foundation-A {
+.foundation-0 {
   grid-column: 4 / 5;
 }
 
@@ -173,20 +173,20 @@
 }
 
 .empty {
-  background: url('../images/cards/empty.png');
+  background: url('../../images/cards/empty.png');
 }
 
 .ok {
-  background: url('../images/cards/ok.png');
+  background: url('../../images/cards/ok.png');
 }
 
 .notok {
-  background: url('../images/cards/notok.png');
+  background: url('../../images/cards/notok.png');
 }
 
 .closed {
   margin: 0;
-  background: url('../images/cards/back.png');
+  background: url('../../images/cards/back.png');
 
   .opened,
   .closed {
@@ -196,7 +196,7 @@
 
 .opened {
   margin: 0;
-  background: url('../images/cards/deck.png');
+  background: url('../../images/cards/deck.png');
 
   .opened {
     margin-top: 15px;
@@ -255,7 +255,7 @@
   background-position-x: -71px * 11;
 }
 
-[class*="ace"] {
+.ace {
   background-position-y: 0;
 }
 

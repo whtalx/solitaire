@@ -1,6 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import Sol from './components/Sol';
 import './index.css';
-import Sol from './Sol';
 
-ReactDOM.render(<Sol />, document.getElementById('root'));
+ReactDOM.render(
+  <Provider store={store}><Sol /></Provider>,
+  document.getElementById('root')
+);
