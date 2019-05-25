@@ -1,0 +1,28 @@
+.table {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: calc(100% - 38px);
+  min-width: 585px;
+  min-height: 366px;
+  background-color: #008200;
+  box-sizing: border-box;
+  padding-right: 11px;
+  display: grid;
+  grid-template: repeat(2, 101px) / repeat(7, 82px);
+  justify-content: space-evenly;
+  align-content: start;
+}
+
+.deck,
+.waste,
+.foundation,
+.tableau {
+  margin: 6px 0 0 11px;
+}
+
+.foundation-0 {
+  grid-column: 4 / 5;
+}

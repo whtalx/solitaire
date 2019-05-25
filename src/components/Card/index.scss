@@ -1,0 +1,165 @@
+.card {
+  position: absolute;
+  width: 71px;
+  height: 96px;
+}
+
+.size-m,
+.size-l {
+  .card:before {
+    content: '';
+    top: 1px;
+    left: 2px;
+    width: inherit;
+    height: inherit;
+    position: inherit;
+    background: inherit;
+  }
+}
+
+.size-l {
+  .card:after {
+    content: '';
+    top: 2px;
+    left: 4px;
+    width: inherit;
+    height: inherit;
+    position: inherit;
+    background: inherit;
+  }
+}
+
+.empty {
+  background: url('../../images/cards/empty.png');
+}
+
+.ok {
+  background: url('../../images/cards/ok.png');
+}
+
+.notok {
+  background: url('../../images/cards/notok.png');
+}
+
+.closed {
+  margin: 0;
+  background: url('../../images/cards/back.png');
+
+  .opened,
+  .closed {
+    margin-top: 3px;
+  }
+}
+
+.opened {
+  margin: 0;
+  background: url('../../images/cards/deck.png');
+
+  .opened {
+    margin-top: 15px;
+  }
+}
+
+.back-0,
+.hearts {
+  background-position-x: 0;
+}
+
+.back-1,
+.clubs {
+  background-position-x: -71px;
+}
+
+.back-2,
+.diamonds {
+  background-position-x: -71px * 2;
+}
+
+.back-3,
+.spades {
+  background-position-x: -71px * 3;
+}
+
+.back-4 {
+  background-position-x: -71px * 4;
+}
+
+.back-5 {
+  background-position-x: -71px * 5;
+}
+
+.back-6 {
+  background-position-x: -71px * 6;
+}
+
+.back-7 {
+  background-position-x: -71px * 7;
+}
+
+.back-8 {
+  background-position-x: -71px * 8;
+}
+
+.back-9 {
+  background-position-x: -71px * 9;
+}
+
+.back-10 {
+  background-position-x: -71px * 10;
+}
+
+.back-11 {
+  background-position-x: -71px * 11;
+}
+
+.ace {
+  background-position-y: 0;
+}
+
+[class*="2"] {
+  background-position-y: -96px;
+}
+
+[class*="3"] {
+  background-position-y: -96px * 2;
+}
+
+[class*="4"] {
+  background-position-y: -96px * 3;
+}
+
+[class*="5"] {
+  background-position-y: -96px * 4;
+}
+
+[class*="6"] {
+  background-position-y: -96px * 5;
+}
+
+[class*="7"] {
+  background-position-y: -96px * 6;
+}
+
+[class*="8"] {
+  background-position-y: -96px * 7;
+}
+
+[class*="9"] {
+  background-position-y: -96px * 8;
+}
+
+[class*="10"] {
+  background-position-y: -96px * 9;
+}
+
+.jack {
+  background-position-y: -96px * 10;
+}
+
+.queen {
+  background-position-y: -96px * 11;
+}
+
+.king {
+  background-position-y: -96px * 12;
+}

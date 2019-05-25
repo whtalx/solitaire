@@ -1,11 +1,12 @@
 import React from 'react';
+import './index.scss';
 
 export default function Card(props) {
   const status =  {
     ok: 'ok',
     notok: 'notok',
     empty: 'empty',
-    downturned: `closed ${props.back ? props.back : 'back-island'}`,
+    downturned: `closed back-${props.back}`,
     upturned: `opened ${props.value} ${props.suit}`
   };
   return (
