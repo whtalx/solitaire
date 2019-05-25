@@ -2,7 +2,7 @@ import deckJSON from '../data/deck.json';
 
 export default function cards(state = {}, action) {
   if (action.type === '@@INIT') {
-    const newState = {
+    const initialState = {
       deck: [],
       waste: [],
       foundation: [
@@ -24,7 +24,7 @@ export default function cards(state = {}, action) {
     };
 
     deckJSON.cards.forEach((item) => {
-      newState.deck.push({
+      initialState.deck.push({
         code: item.code,
         value: item.value.toLowerCase(),
         suit: item.suit.toLowerCase(),
@@ -33,10 +33,19 @@ export default function cards(state = {}, action) {
 
     for (let i = 1; i <= 7; i++) {
       for (let j = 1; j <= i; j++) {
-        newState.tableau[i - 1].push(newState.deck.pop());
+        initialState.tableau[i - 1].push(initialState.deck.pop());
       }
     }
 
+    return initialState;
+  } else if (action.type === 'DECK_TO_WASTE') {
+    const newState = { ...state };
+    if (state.deck.length > 0) {
+      newState.waste.push(newState.deck.pop());
+    } else {
+      newState.deck = [...newState.waste];
+      newState.waste = []
+    }
     return newState;
   }
 

@@ -26,3 +26,21 @@
 .foundation-0 {
   grid-column: 4 / 5;
 }
+
+.deck {
+  *:nth-child(n+11) {
+    margin: 1px 0 0 2px;
+  }
+  *:nth-child(n+21) {
+    margin: 2px 0 0 4px;
+  }
+}
+
+.waste {
+  *:nth-child(n+12) {
+    margin: 1px 0 0 2px;
+  }
+  *:nth-child(n+22) {
+    margin: 2px 0 0 4px;
+  }
+}

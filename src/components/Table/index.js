@@ -46,54 +46,73 @@ class Table extends Component {
       return 's';
     }
 
-    this.deck = (
-      <div key="deck" className={`deck size-${this.deckSize(this.props.cards.deck.length)}`}>
+    this.deckToWaste = (event) => {
+      if (event.target.parentElement.classList.contains('deck')) {
+        this.props.deckToWaste.bind(this)();
+      }
+    }
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', this.deckToWaste);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.deckToWaste);
+  }
+
+  render() {
+    const deck = (
+      <div key="deck" className="deck">
         {
-          this.props.cards.deck.length > 0 &&
-          this.makeCard({...this.props.cards.deck[0], status: "downturned"})
+          this.props.cards.deck.length > 0 ?
+            this.props.cards.deck.map((item) => {
+              return this.makeCard({...item, status: "downturned"})
+            })
+          :
+            this.makeCard({status: 'ok'})
         }
       </div>
     );
 
-    this.waste = (
-      <div key="waste" className={`waste size-${this.wasteSize(this.props.cards.waste.length)}`}>
+    const waste = (
+      <div key="waste" className="waste">
       {
-        this.props.cards.waste.length > 0 &&
-        this.makeCard({...this.props.cards.waste[0], status: "upturned"})
+        this.props.cards.waste.map((item) => {
+          return this.makeCard({...item, status: "upturned"})
+        })
       }
       </div>
     );
 
-    this.foundation = this.props.cards.foundation.map((item, index) => {
+    const foundation = this.props.cards.foundation.map((item, index) => {
       return (
         <div key={`foundation-${index}`} className={`foundation foundation-${index}`}>
           {
             item.length > 0 ?
-              this.makeCard({...item[item.length - 1], status: "upturned"})              
-              :
+              this.makeCard({...item[item.length - 1], status: "upturned"})
+            :
               <Card key={`f${index}`} status="empty" />
           }
         </div>
       );
     });
 
-    this.tableau = this.props.cards.tableau.map((item, index) => {
+    const tableau = this.props.cards.tableau.map((item, index) => {
       return (
         <div key={`tableau-${index}`} className={`tableau tableau-${index}`}>
           {this.layTableau(item)}
         </div>
       );
     });
-  }
 
-  render() {
     return (
       <div className="table">
         {[
-          this.deck,
-          this.waste,
-          this.foundation,
-          this.tableau,
+          deck,
+          waste,
+          foundation,
+          tableau,
         ]}
       </div>
     );
@@ -106,4 +125,12 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default connect(mapStateToProps)(Table);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deckToWaste: () => {
+      dispatch({ type: 'DECK_TO_WASTE' });
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table);
