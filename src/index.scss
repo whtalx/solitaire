@@ -25,6 +25,37 @@ body {
   -webkit-font-smoothing: none;
   font-smooth: never;
   user-select: none;
+}
+
+.root {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
   background: fixed url('./images/wallpaper.png') center no-repeat;
   background-size: 100% 100%;
+  cursor: url('./images/cursors/default.cur'), default;
+}
+
+.root.ew-resize {
+  cursor: url('./images/cursors/ew-resize.cur'), ew-resize;
+}
+
+.root.nesw-resize {
+  cursor: url('./images/cursors/nesw-resize.cur'), nesw-resize;
+}
+
+.root.ns-resize {
+  cursor: url('./images/cursors/ns-resize.cur'), ns-resize;
+}
+
+.root.nwse-resize {
+  cursor: url('./images/cursors/nwse-resize.cur'), nwse-resize;
+}
+
+.root.pointer {
+  cursor: url('./images/cursors/pointer.cur'), pointer;
+}
+
+.root.wait {
+  cursor: url('./images/cursors/wait.cur'), wait;
 }
