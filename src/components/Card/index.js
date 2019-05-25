@@ -10,7 +10,7 @@ export default function Card(props) {
     upturned: `opened ${props.value} ${props.suit}`
   };
   return (
-    <div className={`card ${status[props.status]}`}>
+    <div data-parent={props.parent} data-index={props.index} className={`card ${status[props.status]}`}>
       {props.children}
     </div>
   );

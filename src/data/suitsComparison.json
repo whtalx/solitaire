@@ -1,0 +1,6 @@
+{
+  "hearts": "diamonds",
+  "diamonds": "hearts",
+  "spades": "clubs",
+  "clubs": "spades"
+}

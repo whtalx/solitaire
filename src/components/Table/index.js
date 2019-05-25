@@ -6,7 +6,7 @@ import './index.scss';
 class Table extends Component {
   constructor(props) {
     super(props);
-    
+
     this.makeCard = (cardObject) => {
       return (
         <Card
@@ -16,15 +16,21 @@ class Table extends Component {
           status={cardObject.status}
           back={this.props.cards.back}
           children={cardObject.children}
+          parent={cardObject.parent}
+          index={cardObject.index}
         />
       );
     }
 
-    this.layTableau = (array) => {
+    this.layTableau = (array, tableau, index = 0) => {
       return this.makeCard({
         ...array[0],
         status: array.length > 1 ? 'downturned' : 'upturned',
-        children: array.length > 1 && this.layTableau(array.slice(1, array.length))
+        parent: `tableau-${tableau}`,
+        index: index,
+        children:
+          array.length > 1
+          && this.layTableau(array.slice(1, array.length), tableau, ++index),
       });
     }
 
@@ -46,28 +52,62 @@ class Table extends Component {
       return 's';
     }
 
-    this.deckToWaste = (event) => {
-      if (event.target.parentElement.classList.contains('deck')) {
+    this.handleMouseDown = (event) => {
+      if (
+        !event.target.classList
+        || !event.target.classList.contains('card')
+      ) {
+        return;
+      }
+
+      if (event.target.classList.contains('opened')) {
+        this.props.drag.bind(this)(
+          event.target.attributes.getNamedItem('data-parent').value,
+          parseInt(event.target.attributes.getNamedItem('data-index').value)
+        );
+      } else if (event.target.parentElement.classList.contains('deck')) {
         this.props.deckToWaste.bind(this)();
+      }
+    }
+
+    this.handleMouseUp = (event) => {
+      if (
+        !event.target.classList
+        || !event.target.classList.contains('card')
+      ) {
+        return;
+      }
+      if (event.target.classList.contains('opened')) {
+        this.props.drop.bind(this)(
+          event.target.attributes.getNamedItem('data-parent').value,
+          parseInt(event.target.attributes.getNamedItem('data-index').value)
+        );
       }
     }
   }
 
   componentDidMount() {
-    document.addEventListener('click', this.deckToWaste);
+    document.addEventListener('mousedown', this.handleMouseDown);
+    document.addEventListener('mouseup', this.handleMouseUp);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.deckToWaste);
+    document.removeEventListener('mousedown', this.handleMouseDown);
+    document.removeEventListener('mouseup', this.handleMouseUp);
   }
 
   render() {
     const deck = (
-      <div key="deck" className="deck">
+      <div key="d" className="deck">
         {
           this.props.cards.deck.length > 0 ?
-            this.props.cards.deck.map((item) => {
-              return this.makeCard({...item, status: "downturned"})
+            this.props.cards.deck.map((item, index) => {
+              return this.makeCard({
+                ...item,
+                status: 'downturned',
+                parent: 'deck',
+                index: index,
+              });
             })
           :
             this.makeCard({status: 'ok'})
@@ -76,10 +116,15 @@ class Table extends Component {
     );
 
     const waste = (
-      <div key="waste" className="waste">
+      <div key="w" className="waste">
       {
-        this.props.cards.waste.map((item) => {
-          return this.makeCard({...item, status: "upturned"})
+        this.props.cards.waste.map((item, index) => {
+          return this.makeCard({
+            ...item,
+            status: 'upturned',
+            parent: 'waste',
+            index: index,
+          });
         })
       }
       </div>
@@ -87,10 +132,15 @@ class Table extends Component {
 
     const foundation = this.props.cards.foundation.map((item, index) => {
       return (
-        <div key={`foundation-${index}`} className={`foundation foundation-${index}`}>
+        <div key={`f-${index}`} className={`foundation foundation-${index}`}>
           {
             item.length > 0 ?
-              this.makeCard({...item[item.length - 1], status: "upturned"})
+              this.makeCard({
+                ...item[item.length - 1],
+                status: 'upturned',
+                parent: 'foundation',
+                index: index,
+              })
             :
               <Card key={`f${index}`} status="empty" />
           }
@@ -100,8 +150,8 @@ class Table extends Component {
 
     const tableau = this.props.cards.tableau.map((item, index) => {
       return (
-        <div key={`tableau-${index}`} className={`tableau tableau-${index}`}>
-          {this.layTableau(item)}
+        <div key={`t-${index}`} className={`tableau tableau-${index}`}>
+          {this.layTableau(item, index)}
         </div>
       );
     });
@@ -129,7 +179,15 @@ const mapDispatchToProps = (dispatch) => {
   return {
     deckToWaste: () => {
       dispatch({ type: 'DECK_TO_WASTE' });
-    }
+    },
+
+    drag: (parent, index) => {
+      dispatch({ type: 'DRAG', payload: { parent, index } });
+    },
+
+    drop: (parent, index) => {
+      dispatch({ type: 'DROP', payload: { parent, index } });
+    },
   }
 }
 
