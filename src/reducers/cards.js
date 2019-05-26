@@ -45,38 +45,63 @@ export default function cards(state = {}, action) {
     }
 
     case 'DECK_TO_WASTE': {
-      const newState = { ...state };
-      if (newState.deck.length > 0) {
-        newState.waste.push(newState.deck.pop());
-      } else {
-        newState.deck = [...newState.waste];
-        newState.waste = []
+      if (state.deck.length > 0) {
+        const waste = [...state.waste];
+        waste.push(state.deck[state.deck.length - 1]);
+        const deck = state.deck.slice(0, state.deck.length - 1);
+        return { ...state, deck, waste };
       }
-      return newState;
+      const deck = [...state.waste];
+      return { ...state, deck, waste: [] };
     }
 
     case 'DRAG': {
-      const newState = { ...state };
-      action.payload.parent.match(/tableau/) ?
-        newState.dragged = newState.tableau[parseInt(action.payload.parent.match(/\d/))][action.payload.index]
-      :
-        newState.dragged = newState[action.payload.parent][action.payload.index];
-      return newState;
+      if (action.payload.parent.match(/tableau/)) {
+        const dragged = state.tableau[parseInt(action.payload.parent.match(/\d/))][action.payload.index];
+        return { ...state, dragged };
+      } else if (action.payload.parent.match(/foundation/) && action.payload.index !== '') {
+        const dragged = state.foundation[parseInt(action.payload.parent.match(/\d/))][action.payload.index];
+        return { ...state, dragged };
+      } else if (action.payload.parent === 'waste') {
+        const dragged = state.waste[action.payload.index];
+        return { ...state, dragged };
+      }
+      return state;
     }
 
     case 'DROP': {
-      const newState = { ...state };
-      let dropped = null;
-      action.payload.parent.match(/tableau/) ?
-        dropped = newState.tableau[parseInt(action.payload.parent.match(/\d/))][action.payload.index]
-      :
-        dropped = newState[action.payload.parent][action.payload.index];
-        console.log(
-          valuesComparison[dropped.value] === valuesComparison[newState.dragged.value] + 1
-          && dropped.suit !== newState.dragged.suit
-          && suitsComparison[dropped.suit] !== newState.dragged.suit
-        );
-      return newState;
+      if (!state.dragged) { return state; }
+
+      if (action.payload.parent.match(/tableau/)) {
+        const dropped = state.tableau[parseInt(action.payload.parent.match(/\d/))][action.payload.index];
+        if (
+          valuesComparison[dropped.value] === valuesComparison[state.dragged.value] + 1
+          && dropped.suit !== state.dragged.suit
+          && suitsComparison[dropped.suit] !== state.dragged.suit
+        ) {
+          console.log('можна')
+        } else {
+          console.log('низзя');
+        }
+      } else if (action.payload.parent.match(/foundation/)) {
+        const dropped = state.foundation[parseInt(action.payload.parent.match(/\d/))][action.payload.index];
+        if (!dropped) {
+          if (state.dragged.value === 'ace') {
+            console.log('можна');
+          } else {
+            console.log('низзя');
+          }
+        } else if (
+          valuesComparison[dropped.value] + 1 === valuesComparison[state.dragged.value]
+          && dropped.suit === state.dragged.suit
+        ) {
+          console.log('можна');
+        } else {
+          console.log('низзя');
+        }
+      }
+
+      return { ...state, dragged: null };
     }
   
     default:
