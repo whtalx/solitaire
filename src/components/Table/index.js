@@ -14,9 +14,10 @@ class Table extends Component {
   constructor(props) {
     super(props);
 
+    this.deck = this.props.deck.bind(this);
     this.drag = this.props.drag.bind(this);
     this.drop = this.props.drop.bind(this);
-    this.deckToWaste = this.props.deckToWaste.bind(this);
+    this.turn = this.props.turn.bind(this);
     this.makeCard = makeCard.bind(this);
     this.layTableau = layTableau.bind(this);
     this.handleMouseDown = handleMouseDown.bind(this);
@@ -53,8 +54,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deckToWaste: () => {
-      dispatch({ type: 'DECK_TO_WASTE' });
+    deck: () => {
+      dispatch({ type: 'DECK' });
     },
 
     drag: (parent, index) => {
@@ -63,6 +64,10 @@ const mapDispatchToProps = (dispatch) => {
 
     drop: (parent, index) => {
       dispatch({ type: 'DROP', payload: { parent, index } });
+    },
+
+    turn: (parent, index) => {
+      dispatch({ type: 'TURN', payload: { parent, index } });
     },
   }
 }

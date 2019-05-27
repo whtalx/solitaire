@@ -12,6 +12,11 @@ export default function handleMouseDown(event) {
       parseInt(event.target.attributes.getNamedItem('data-index').value)
     );
   } else if (event.target.parentElement.classList.contains('deck')) {
-    this.deckToWaste();
+    this.deck();
+  } else if (event.target.classList.contains('closed')) {
+    this.turn(
+      event.target.attributes.getNamedItem('data-parent').value,
+      parseInt(event.target.attributes.getNamedItem('data-index').value)
+    );
   }
 }

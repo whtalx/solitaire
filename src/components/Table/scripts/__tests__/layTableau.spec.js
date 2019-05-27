@@ -9,11 +9,13 @@ const testArray = [
     code: 'a',
     value: 'b',
     suit: 'c',
+    status: 'd',
   },
   {
-    code: 'x',
-    value: 'y',
-    suit: 'z',
+    code: 'w',
+    value: 'z',
+    suit: 'y',
+    status: 'z',
   },
 ];
 
@@ -21,13 +23,11 @@ const expectedObj =
   {
     ...testArray[0],
     back: testBack,
-    status: 'downturned',
     parent: `tableau-${testTableau}`,
     index: 0,
     children: {
       ...testArray[1],
       back: testBack,
-      status: 'upturned',
       parent: `tableau-${testTableau}`,
       index: 1,
       children: false,

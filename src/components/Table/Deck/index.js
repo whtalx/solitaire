@@ -9,7 +9,6 @@ export default function Deck(props) {
           props.deck.map((item, index) => {
             return makeCard({
               ...item,
-              status: 'downturned',
               parent: 'deck',
               index: index,
               back: props.back,

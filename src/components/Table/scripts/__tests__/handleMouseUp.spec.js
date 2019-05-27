@@ -32,5 +32,5 @@ testObj.target.attributes.getNamedItem = jest.fn(() => { return { value: '0555' 
 handleMouseUp.bind({ drop })(testObj);
 
 test('drop called on foundation', () => {
-  expect(drop.mock.calls[1]).toMatchObject(['0555', 555]);
+  expect(drop.mock.calls[1]).toMatchObject(['0555']);
 });

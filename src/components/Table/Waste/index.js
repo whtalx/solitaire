@@ -8,7 +8,6 @@ export default function Waste(props) {
       props.waste.map((item, index) => {
         return makeCard({
           ...item,
-          status: 'upturned',
           parent: 'waste',
           index: index,
         });
