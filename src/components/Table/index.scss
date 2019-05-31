@@ -20,7 +20,14 @@
 .waste,
 .foundation,
 .tableau {
+  position: relative;
   margin: 6px 0 0 11px;
+}
+
+.foundation {
+  width: 71px;
+  height: 96px;
+  background: url('../../images/cards/empty.png');
 }
 
 .foundation-0 {

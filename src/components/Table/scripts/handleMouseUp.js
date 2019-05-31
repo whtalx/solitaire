@@ -1,5 +1,5 @@
 export default function handleMouseUp(event) {
-  if (!event.target.classList) { return; }
+  if (!event.target.classList || !event.target.parentElement) { return; }
 
   if (event.target.classList.contains('card')) {
     if (

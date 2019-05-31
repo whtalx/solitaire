@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import makeCard from './scripts/makeCard';
-import layTableau from './scripts/layTableau';
-import handleMouseDown from './scripts/handleMouseDown';
-import handleMouseUp from './scripts/handleMouseUp';
+import './index.scss';
 import Deck from './Deck';
 import Waste from './Waste';
-import Foundation from './Foundation'
 import Tableau from './Tableau';
-import './index.scss';
+import Foundation from './Foundation';
+import makeCard from './scripts/makeCard';
+import layTableau from './scripts/layTableau';
+import handleMouseUp from './scripts/handleMouseUp';
+import handleMouseDown from './scripts/handleMouseDown';
 
 class Table extends Component {
   constructor(props) {
@@ -20,8 +20,8 @@ class Table extends Component {
     this.turn = this.props.turn.bind(this);
     this.makeCard = makeCard.bind(this);
     this.layTableau = layTableau.bind(this);
-    this.handleMouseDown = handleMouseDown.bind(this);
     this.handleMouseUp = handleMouseUp.bind(this);
+    this.handleMouseDown = handleMouseDown.bind(this);
   }
 
   componentDidMount() {

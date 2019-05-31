@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from '../../Card';
 
-export default function makeCard({ code, back, value, suit, status, children, parent, index }) {
+export default function makeCard({ code, back, value, suit, status, children, parent, index, left, top }) {
   return (
     <Card
       key={code}
@@ -12,6 +12,8 @@ export default function makeCard({ code, back, value, suit, status, children, pa
       children={children}
       parent={parent}
       index={index}
+      left={left}
+      top={top}
     />
   );
 }

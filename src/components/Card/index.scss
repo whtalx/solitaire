@@ -3,11 +3,6 @@
   width: 71px;
   height: 96px;
 
-
-  &.empty {
-    background: url('../../images/cards/empty.png');
-  }
-
   &.ok {
     background: url('../../images/cards/ok.png');
   }
@@ -17,7 +12,6 @@
   }
 
   &.closed {
-    margin: 0;
     background: url('../../images/cards/back.png');
 
     .opened,
@@ -27,7 +21,6 @@
   }
 
   &.opened {
-    margin: 0;
     background: url('../../images/cards/deck.png');
 
     .opened {
