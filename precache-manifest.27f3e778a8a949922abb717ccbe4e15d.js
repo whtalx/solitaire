@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "220be1954ce2fc200c23f5038a164f50",
+    "revision": "87264351ec0522cc9579da0c03dc5b9f",
     "url": "/solitaire/index.html"
   },
   {
-    "revision": "fe0e8101dddecbfecff1",
-    "url": "/solitaire/static/css/main.5471fdde.chunk.css"
+    "revision": "5d99336b15ec6725cd64",
+    "url": "/solitaire/static/css/main.09139195.chunk.css"
   },
   {
-    "revision": "57a45fa45df654017353",
-    "url": "/solitaire/static/js/2.1be2f286.chunk.js"
+    "revision": "ab57c74f74d2bcaa3f24",
+    "url": "/solitaire/static/js/2.801f8b1b.chunk.js"
   },
   {
-    "revision": "fe0e8101dddecbfecff1",
-    "url": "/solitaire/static/js/main.820f8871.chunk.js"
+    "revision": "5d99336b15ec6725cd64",
+    "url": "/solitaire/static/js/main.79d9a1bc.chunk.js"
   },
   {
     "revision": "3d4cc52b58bd19065a8a",
@@ -30,6 +30,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "6fb198cb2c42a57eebbd3f983bf60667",
     "url": "/solitaire/static/media/default.6fb198cb.cur"
+  },
+  {
+    "revision": "e9690fa9c43722b61644befbda857075",
+    "url": "/solitaire/static/media/ew-resize.e9690fa9.cur"
   },
   {
     "revision": "1b683111cb3b0b8e497307c2c723c0d5",
@@ -56,6 +60,22 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/solitaire/static/media/fixedsys.febd345c.svg"
   },
   {
+    "revision": "793c0cc65e70bdb67b6022c9a1ef4cda",
+    "url": "/solitaire/static/media/nesw-resize.793c0cc6.cur"
+  },
+  {
+    "revision": "a66a2cffc9ffcd179edbb6b9241dc884",
+    "url": "/solitaire/static/media/ns-resize.a66a2cff.cur"
+  },
+  {
+    "revision": "279a0633c2b9d5086f9efe9ce438aa76",
+    "url": "/solitaire/static/media/nwse-resize.279a0633.cur"
+  },
+  {
+    "revision": "e890c899063b64720d02e245525dd224",
+    "url": "/solitaire/static/media/pointer.e890c899.cur"
+  },
+  {
     "revision": "22d0534253eb7e27aba31c5715986c36",
     "url": "/solitaire/static/media/tahoma.22d05342.woff"
   },
@@ -78,6 +98,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "dc2364073b49981ed6acacb3ee47702b",
     "url": "/solitaire/static/media/tahoma.dc236407.woff2"
+  },
+  {
+    "revision": "24dedf0e0ab7beaa590ca8fc567d8f02",
+    "url": "/solitaire/static/media/wait.24dedf0e.cur"
   },
   {
     "revision": "7eaefa385ddcba4574ea603e204f051b",
