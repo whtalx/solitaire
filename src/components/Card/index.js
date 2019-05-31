@@ -9,7 +9,7 @@ const cardMouseDown = (event) => {
   const shiftY = event.pageY;
 
   card.style.zIndex = 69;
-  card.addEventListener('mouseup', drop, { once: true });
+  document.addEventListener('mouseup', drop, { once: true });
   document.addEventListener('mousemove', drag);
 
   function drag(event) {
@@ -22,8 +22,10 @@ const cardMouseDown = (event) => {
     card.style.top = '';
     card.style.zIndex = '';
     document.removeEventListener('mousemove', drag);
-    const mouseUp = new window.Event('mouseup', { bubbles: true });
-    document.elementFromPoint(event.clientX, event.clientY).dispatchEvent(mouseUp);
+    if (document.elementFromPoint(event.clientX, event.clientY)) {
+      const mouseUp = new window.Event('mouseup', { bubbles: true });
+      document.elementFromPoint(event.clientX, event.clientY).dispatchEvent(mouseUp);
+    }
   }
 }
 

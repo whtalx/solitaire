@@ -1,6 +1,16 @@
 export default function handleMouseUp(event) {
-  if (!event.target.classList || !event.target.parentElement) { return; }
-
+  if (
+    !event.target.classList
+    || !event.target.parentElement
+    || !this.props.cards.dragged
+    || (
+      event.target.classList.contains(this.props.cards.dragged[0].suit)
+      && event.target.classList.contains(this.props.cards.dragged[0].value)
+    )
+  ) {
+    return;
+  }
+  
   if (event.target.classList.contains('card')) {
     if (
       event.target.classList.contains('opened')
