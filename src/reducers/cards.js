@@ -1,51 +1,47 @@
 import deckJSON from '../data/deck.json';
-import suitsComparison from '../data/suitsComparison.json'
-import valuesComparison from '../data/valuesComparison.json'
+import suitsComparison from '../data/suitsComparison.json';
+import valuesComparison from '../data/valuesComparison.json';
 
-export default function cards(state = {}, action) {
+const initialState = {
+  deck: [],
+  waste: [],
+  foundation: [
+    [],
+    [],
+    [],
+    [],
+  ],
+  tableau: [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+  ],
+  back: Math.round(Math.random() * 11),
+  dragged: null,
+};
+
+deckJSON.cards.forEach((item) => {
+  initialState.deck.push({
+    code: item.code,
+    value: item.value.toLowerCase(),
+    suit: item.suit.toLowerCase(),
+    status: 'downturned',
+  });
+});
+
+for (let i = 1; i <= 7; i++) {
+  for (let j = 1; j <= i; j++) {
+    const status = j === i ? 'upturned' : 'downturned';
+    initialState.tableau[i - 1].push({ ...initialState.deck.pop(), status: status });
+  }
+}
+
+export default function cards(state = initialState, action) {
   switch (action.type) {
-    case '@@INIT': {
-      const initialState = {
-        deck: [],
-        waste: [],
-        foundation: [
-          [],
-          [],
-          [],
-          [],
-        ],
-        tableau: [
-          [],
-          [],
-          [],
-          [],
-          [],
-          [],
-          [],
-        ],
-        back: Math.round(Math.random() * 11),
-        dragged: null,
-      };
-
-      deckJSON.cards.forEach((item) => {
-        initialState.deck.push({
-          code: item.code,
-          value: item.value.toLowerCase(),
-          suit: item.suit.toLowerCase(),
-          status: 'downturned',
-        });
-      });
-
-      for (let i = 1; i <= 7; i++) {
-        for (let j = 1; j <= i; j++) {
-          const status = j === i ? 'upturned' : 'downturned';
-          initialState.tableau[i - 1].push({ ...initialState.deck.pop(), status: status });
-        }
-      }
-
-      return initialState;
-    }
-
     case 'DECK': {
       const newState = { ...state };
       if (state.deck.length > 0) {
