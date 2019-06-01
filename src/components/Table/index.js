@@ -5,33 +5,24 @@ import Deck from './Deck';
 import Waste from './Waste';
 import Tableau from './Tableau';
 import Foundation from './Foundation';
-import makeCard from './scripts/makeCard';
-import layTableau from './scripts/layTableau';
-import handleMouseUp from './scripts/handleMouseUp';
-import handleMouseDown from './scripts/handleMouseDown';
+import handleMouseEvents from './scripts/handleMouseEvents';
 
 class Table extends Component {
   constructor(props) {
     super(props);
-
     this.deck = this.props.deck.bind(this);
     this.drag = this.props.drag.bind(this);
     this.drop = this.props.drop.bind(this);
     this.turn = this.props.turn.bind(this);
-    this.makeCard = makeCard.bind(this);
-    this.layTableau = layTableau.bind(this);
-    this.handleMouseUp = handleMouseUp.bind(this);
-    this.handleMouseDown = handleMouseDown.bind(this);
+    this.handleMouseEvents = handleMouseEvents.bind(this);
   }
 
   componentDidMount() {
-    document.addEventListener('mousedown', this.handleMouseDown);
-    document.addEventListener('mouseup', this.handleMouseUp);
+    document.addEventListener('mousedown', this.handleMouseEvents);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleMouseDown);
-    document.removeEventListener('mouseup', this.handleMouseUp);
+    document.removeEventListener('mousedown', this.handleMouseEvents);
   }
 
   render() {
