@@ -14,11 +14,7 @@ export default function Foundation(props) {
               index: enclosedIndex,
             }))
           :
-            makeCard({
-              key: `e-${index}`,
-              status: 'empty',
-              parent: `foundation-${index}`,
-            })
+            ''
         }
       </div>
     );

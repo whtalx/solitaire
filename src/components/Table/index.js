@@ -11,7 +11,6 @@ class Table extends Component {
   constructor(props) {
     super(props);
     this.deck = this.props.deck.bind(this);
-    this.drag = this.props.drag.bind(this);
     this.drop = this.props.drop.bind(this);
     this.turn = this.props.turn.bind(this);
     this.handleMouseEvents = handleMouseEvents.bind(this);
@@ -49,16 +48,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: 'DECK' });
     },
 
-    drag: (parent, index) => {
-      dispatch({ type: 'DRAG', payload: { parent, index } });
+    drop: (payload) => {
+      dispatch({ type: 'DROP', payload });
     },
 
-    drop: (parent, index) => {
-      dispatch({ type: 'DROP', payload: { parent, index } });
-    },
-
-    turn: (parent, index) => {
-      dispatch({ type: 'TURN', payload: { parent, index } });
+    turn: (payload) => {
+      dispatch({ type: 'TURN', payload});
     },
   }
 }
