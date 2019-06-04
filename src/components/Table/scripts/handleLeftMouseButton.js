@@ -1,9 +1,10 @@
 import compareCards from './compareCards';
 
-export default function handleMouseEvents(event) {
+export default function handleLeftMouseButton(event) {
   if (
     !event.target.classList
     || !event.target.classList.contains('card')
+    || event.buttons !== 1
   ) {
     return;
   }

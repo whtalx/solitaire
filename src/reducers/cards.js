@@ -1,4 +1,5 @@
 import deckJSON from '../data/deck.json';
+import valuesComparison from '../data/valuesComparison.json'
 
 const initialState = {
   deck: [],
@@ -83,8 +84,55 @@ export default function cards(state = initialState, action) {
 
       return newState;
     }
+
+    case 'FUND': {
+      const newState = { ...state };
+
+      whileLoop:
+      while (true) {
+        if (newState.waste.length > 0) {
+          const isWasteOK = canFundIt(newState.waste[newState.waste.length - 1], newState.foundation);
+          if (Number.isFinite(isWasteOK)) {
+            newState.foundation[isWasteOK].push(newState.waste.pop());
+            continue;
+          }
+        }
+
+        for (let i = 0; i < newState.tableau.length; i++) {
+          if (newState.tableau[i].length > 0) {
+            const isTableauOK = canFundIt(newState.tableau[i][newState.tableau[i].length - 1], newState.foundation);
+            if (Number.isFinite(isTableauOK)) {
+              newState.foundation[isTableauOK].push(newState.tableau[i].pop());
+              continue whileLoop;
+            }
+          }
+        }
+
+        break;
+      }
+
+      return newState;
+    }
   
     default:
       return state;
   }
+}
+
+function canFundIt(card, array) {
+  for (let i = 0; i < array.length; i++) {
+    if (
+      array[i].length === 0
+      && card.value === 'ace'
+    ) {
+      return i;
+    } else if (
+      array[i].length > 0
+      && card.suit === array[i][array[i].length - 1].suit
+      && valuesComparison[card.value] === valuesComparison[array[i][array[i].length - 1].value] + 1
+    ) {
+      return i;
+    }
+  }
+  return false;
 }

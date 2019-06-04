@@ -5,7 +5,8 @@ import Deck from './Deck';
 import Waste from './Waste';
 import Tableau from './Tableau';
 import Foundation from './Foundation';
-import handleMouseEvents from './scripts/handleMouseEvents';
+import handleLeftMouseButton from './scripts/handleLeftMouseButton';
+import handleRightMouseButton from './scripts/handleRightMouseButton';
 
 class Table extends Component {
   constructor(props) {
@@ -13,15 +14,19 @@ class Table extends Component {
     this.deck = this.props.deck.bind(this);
     this.drop = this.props.drop.bind(this);
     this.turn = this.props.turn.bind(this);
-    this.handleMouseEvents = handleMouseEvents.bind(this);
+    this.fund = this.props.fund.bind(this);
+    this.handleLeftMouseButton = handleLeftMouseButton.bind(this);
+    this.handleRightMouseButton = handleRightMouseButton.bind(this);
   }
 
   componentDidMount() {
-    document.addEventListener('mousedown', this.handleMouseEvents);
+    document.addEventListener('mousedown', this.handleLeftMouseButton);
+    document.addEventListener('contextmenu', this.handleRightMouseButton);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleMouseEvents);
+    document.removeEventListener('mousedown', this.handleLeftMouseButton);
+    document.removeEventListener('contextmenu', this.handleRightMouseButton);
   }
 
   render() {
@@ -54,6 +59,10 @@ const mapDispatchToProps = (dispatch) => {
 
     turn: (payload) => {
       dispatch({ type: 'TURN', payload});
+    },
+
+    fund: () => {
+      dispatch({ type: 'FUND'});
     },
   }
 }
