@@ -1,10 +1,5 @@
 .window {
   position: relative;
-  width: 585px;
-  height: 404px;
-  top: calc(50vh - 202px);
-  left: calc(50vw - 292.5px);
-  // margin: calc(50vh - 202px) auto 0;
   border: 3px solid #0041ce;
   border-image: url('../../images/windows/border.png') 3 stretch stretch;
 }

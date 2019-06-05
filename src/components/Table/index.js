@@ -58,13 +58,13 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     turn: (payload) => {
-      dispatch({ type: 'TURN', payload});
+      dispatch({ type: 'TURN', payload });
     },
 
     fund: () => {
-      dispatch({ type: 'FUND'});
+      dispatch({ type: 'FUND' });
     },
-  }
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);
