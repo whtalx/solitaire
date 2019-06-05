@@ -2,6 +2,8 @@
   position: relative;
   border: 3px solid #0041ce;
   border-image: url('../../images/windows/border.png') 3 stretch stretch;
+  min-width: 145px;
+  min-height: 37px;
 }
 
 .window__header {

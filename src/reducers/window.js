@@ -13,8 +13,8 @@ const initialState = {
       top: null,
     },
     lastStyle: null,
-    minimized: false,
-    maximized: false,
+    isMinimized: false,
+    isMaximized: false,
   },
 
   back: {
@@ -55,20 +55,30 @@ export default function window(state = initialState, action) {
     case 'MAXIMIZE': {
       const window = action.payload;
       const newState = { ...state };
-      if (newState[window].maximized) {
-        newState[window].style = newState[window].lastStyle;
+      if (newState[window].isMaximized) {
+        newState[window].style = { ...newState[window].lastStyle };
         newState[window].lastStyle = null;
-        newState[window].maximized = false;
+        newState[window].isMaximized = false;
         return newState;
       }
-      newState[window].lastStyle = newState[window].style;
+      newState[window].lastStyle = { ...newState[window].style };
       newState[window].style = {
         width: 'calc(100vw - 6px)',
         height: 'calc(100vh - 32px)',
         left: 0,
         top: 26,
       };
-      newState[window].maximized = true;
+      newState[window].isMaximized = true;
+      return newState;
+    }
+
+    case 'RESIZE': {
+      const newState = { ...state };
+      const { top, left, width, height } = action.payload;
+      Number.isFinite(width) && (newState.solitaire.style.width = width);
+      Number.isFinite(height) && (newState.solitaire.style.height = height);
+      Number.isFinite(left) && (newState.solitaire.style.left = left);
+      Number.isFinite(top) && (newState.solitaire.style.top = top);
       return newState;
     }
 

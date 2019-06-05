@@ -31,11 +31,13 @@ class Table extends Component {
 
   render() {
     return (
-      <div className="table">
-        <Deck deck={this.props.cards.deck} back={this.props.cards.back} />
-        <Waste waste={this.props.cards.waste} />
-        <Foundation foundation={this.props.cards.foundation} />
-        <Tableau tableau={this.props.cards.tableau} back={this.props.cards.back} />
+      <div className="table-wrapper">
+        <div className="table">
+          <Deck deck={this.props.cards.deck} back={this.props.cards.back} />
+          <Waste waste={this.props.cards.waste} />
+          <Foundation foundation={this.props.cards.foundation} />
+          <Tableau tableau={this.props.cards.tableau} back={this.props.cards.back} />
+        </div>
       </div>
     );
   }

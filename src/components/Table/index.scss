@@ -1,10 +1,15 @@
+.table-wrapper {
+  width: 100%;
+  height: calc(100% - 38px);
+  overflow: hidden;
+}
+
 .table {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  overflow: hidden;
   position: relative;
   width: 100%;
-  height: calc(100% - 38px);
+  height: 100%;
   min-width: 585px;
   min-height: 366px;
   background-color: #008200;
