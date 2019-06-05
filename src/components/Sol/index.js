@@ -8,12 +8,7 @@ import { connect } from 'react-redux';
 function Sol(props) {
   return (
     <Window
-      caption={props.window.solitaire.caption}
-      buttons={props.window.solitaire.buttons}
-      width={props.window.solitaire.style.width + 'px'}
-      height={props.window.solitaire.style.height + 'px'}
-      left={props.window.solitaire.style.left ? `${props.window.solitaire.style.left}px` : `calc(50vw - ${props.window.solitaire.style.width / 2}px)`}
-      top={props.window.solitaire.style.top ? `${props.window.solitaire.style.top}px` : `calc(50vh - ${props.window.solitaire.style.height / 2}px)`}
+      name="solitaire"
       children={[
         <Menu key="menu" />,
         <Table key="table" />,
@@ -44,7 +39,7 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     help: () => {
-      dispatch({ type: 'HELP'});
+      dispatch({ type: 'HELP' });
     },
   };
 }

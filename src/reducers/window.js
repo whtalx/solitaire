@@ -12,6 +12,9 @@ const initialState = {
       left: null,
       top: null,
     },
+    lastStyle: null,
+    minimized: false,
+    maximized: false,
   },
 
   back: {
@@ -46,6 +49,26 @@ export default function window(state = initialState, action) {
         newState[window].style.left = left;
         newState[window].style.top = top;
       }
+      return newState;
+    }
+
+    case 'MAXIMIZE': {
+      const window = action.payload;
+      const newState = { ...state };
+      if (newState[window].maximized) {
+        newState[window].style = newState[window].lastStyle;
+        newState[window].lastStyle = null;
+        newState[window].maximized = false;
+        return newState;
+      }
+      newState[window].lastStyle = newState[window].style;
+      newState[window].style = {
+        width: 'calc(100vw - 6px)',
+        height: 'calc(100vh - 32px)',
+        left: 0,
+        top: 26,
+      };
+      newState[window].maximized = true;
       return newState;
     }
 

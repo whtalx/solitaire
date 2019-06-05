@@ -9,12 +9,11 @@ export default function moveWindow(event) {
   }
   const handleMouseUp = () => {
     document.removeEventListener('mousemove', handleMouseMove);
-    const caption = this.props.caption.toLowerCase().split(' ');
     const coordinates = currentWindow.style.transform.split(' ').map((item) => {
       return parseInt(item.match(/\d|-/g).join(''));
     });
     this.props.move({
-      window: caption[caption.length - 1],
+      window: this.props.name,
       left: currentWindow.offsetLeft + coordinates[0],
       top: currentWindow.offsetTop + coordinates[1],
     });

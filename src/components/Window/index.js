@@ -5,11 +5,13 @@ import { connect } from 'react-redux';
 
 class Window extends Component {
   render() {
-    const buttons = this.props.buttons.map((item) => {
+    const window = this.props.window[this.props.name];
+    const buttons = window.buttons.map((item) => {
       return (
         <div
           key={item}
           className={`window__button window__button_${item}`}
+          onMouseDown={() => this.props[item].bind(this)(this.props.name)}
         />
       );
     });
@@ -18,10 +20,10 @@ class Window extends Component {
       <div
         className="window"
         style={{
-          width: this.props.width,
-          height: this.props.height,
-          left: this.props.left,
-          top: this.props.top,
+          width: Number.isFinite(window.style.width) ? window.style.width + 'px' : window.style.width,
+          height: Number.isFinite(window.style.height) ? window.style.height + 'px' : window.style.height,
+          left: Number.isFinite(window.style.left) ? `${window.style.left}px` : `calc(50vw - ${window.style.width / 2}px)`,
+          top: Number.isFinite(window.style.top) ? `${window.style.top}px` : `calc(50vh - ${window.style.height / 2}px)`,
         }}
       >
         <div
@@ -36,7 +38,7 @@ class Window extends Component {
           className="window__caption"
           onMouseDown={moveWindow.bind(this)}
         >
-          {this.props.caption}
+          {window.caption}
         </div>
         {buttons}
         {this.props.children}
@@ -45,28 +47,34 @@ class Window extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    window: state.window,
+  };
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     move: (payload) => {
       dispatch({ type: 'MOVE', payload });
     },
 
-    minimize: () => {
-      dispatch({ type: 'MINIMIZE'});
+    minimize: (payload) => {
+      dispatch({ type: 'MINIMIZE', payload });
     },
 
-    maximize: () => {
-      dispatch({ type: 'MAXIMIZE'});
+    maximize: (payload) => {
+      dispatch({ type: 'MAXIMIZE', payload });
     },
 
-    help: () => {
-      dispatch({ type: 'HELP'});
+    help: (payload) => {
+      dispatch({ type: 'HELP', payload });
     },
 
-    close: () => {
-      dispatch({ type: 'CLOSE'});
+    close: (payload) => {
+      dispatch({ type: 'CLOSE', payload });
     },
   };
 }
 
-export default connect(null, mapDispatchToProps)(Window);
+export default connect(mapStateToProps, mapDispatchToProps)(Window);
