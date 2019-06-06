@@ -4,7 +4,7 @@ const initialState = {
     buttons: ['minimize', 'maximize', 'close'],
     menu: {
       showing: false,
-      active: null,
+      hovered: null,
     },
     style: {
       width: 585,
@@ -79,6 +79,18 @@ export default function window(state = initialState, action) {
       Number.isFinite(height) && (newState.solitaire.style.height = height);
       Number.isFinite(left) && (newState.solitaire.style.left = left);
       Number.isFinite(top) && (newState.solitaire.style.top = top);
+      return newState;
+    }
+
+    case 'SHOW_MENU': {
+      const newState = { ...state };
+      newState.solitaire.menu.showing = action.payload;
+      return newState;
+    }
+
+    case 'HOVER_MENU': {
+      const newState = { ...state };
+      newState.solitaire.menu.hovered = action.payload;
       return newState;
     }
 

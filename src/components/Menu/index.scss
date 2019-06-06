@@ -16,7 +16,8 @@
   line-height: 19px;
 }
 
-.menu-category.active,
+.menu-category:hover,
+.menu-category.showing,
 .menu-item:hover {
   background-color: #326ac3;
   color: #fff;
