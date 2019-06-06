@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.css": "/solitaire/static/css/main.39f6359c.chunk.css",
-    "main.js": "/solitaire/static/js/main.efb9f9f1.chunk.js",
+    "main.css": "/solitaire/static/css/main.e359e4c5.chunk.css",
+    "main.js": "/solitaire/static/js/main.4c6f5bb8.chunk.js",
     "runtime~main.js": "/solitaire/static/js/runtime~main.1eee08ec.js",
-    "static/js/2.56eb8102.chunk.js": "/solitaire/static/js/2.56eb8102.chunk.js",
+    "static/js/2.4f15b83a.chunk.js": "/solitaire/static/js/2.4f15b83a.chunk.js",
     "index.html": "/solitaire/index.html",
-    "precache-manifest.158f46ca25227fcb583c1a1d54a60d14.js": "/solitaire/precache-manifest.158f46ca25227fcb583c1a1d54a60d14.js",
+    "precache-manifest.075588e560203010ad0596629d2a2076.js": "/solitaire/precache-manifest.075588e560203010ad0596629d2a2076.js",
     "service-worker.js": "/solitaire/service-worker.js",
     "static/media/index.scss": "/solitaire/static/media/wallpaper.7eaefa38.png"
   }

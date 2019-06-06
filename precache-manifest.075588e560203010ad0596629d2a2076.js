@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "382d46f1e919d7d62923af91304561c5",
+    "revision": "b3776d89a1f7923be9b99be42352b9d3",
     "url": "/solitaire/index.html"
   },
   {
-    "revision": "e0ceeb61de484a938a20",
-    "url": "/solitaire/static/css/main.39f6359c.chunk.css"
+    "revision": "d105435560bc01a0992c",
+    "url": "/solitaire/static/css/main.e359e4c5.chunk.css"
   },
   {
-    "revision": "f3784eee1bfc5df897c8",
-    "url": "/solitaire/static/js/2.56eb8102.chunk.js"
+    "revision": "312c00f631dc0226c3ca",
+    "url": "/solitaire/static/js/2.4f15b83a.chunk.js"
   },
   {
-    "revision": "e0ceeb61de484a938a20",
-    "url": "/solitaire/static/js/main.efb9f9f1.chunk.js"
+    "revision": "d105435560bc01a0992c",
+    "url": "/solitaire/static/js/main.4c6f5bb8.chunk.js"
   },
   {
     "revision": "3d4cc52b58bd19065a8a",
@@ -22,6 +22,30 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "cc1c55848bf8f648871dbe5cb2a894ca",
     "url": "/solitaire/static/media/back.cc1c5584.png"
+  },
+  {
+    "revision": "08a3210abb0a0414402cf5d85210b1a2",
+    "url": "/solitaire/static/media/console.08a3210a.woff2"
+  },
+  {
+    "revision": "319fb6bb677132520b0485894f1c799d",
+    "url": "/solitaire/static/media/console.319fb6bb.eot"
+  },
+  {
+    "revision": "97a55c954a18d2daae22c5f9114794d5",
+    "url": "/solitaire/static/media/console.97a55c95.ttf"
+  },
+  {
+    "revision": "b1184cd627b9cca92022d991aad89544",
+    "url": "/solitaire/static/media/console.b1184cd6.svg"
+  },
+  {
+    "revision": "d60b0f9fe3ed32aa6b668aa2e53a5f85",
+    "url": "/solitaire/static/media/console.d60b0f9f.otf"
+  },
+  {
+    "revision": "f5f515983ed1c41f21cd5e8530a4456a",
+    "url": "/solitaire/static/media/console.f5f51598.woff"
   },
   {
     "revision": "34fec13963fba6a82323618de9cbf1d7",
