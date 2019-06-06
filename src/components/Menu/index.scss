@@ -6,6 +6,12 @@
   border-bottom: 1px solid #fff;
 }
 
+.window.inactive {
+  .menu-bar {
+    color: #a9a699;
+  }
+}
+
 .menu-category {
   position: relative;
   display: inline-block;
@@ -54,4 +60,8 @@
   height: 17px;
   padding: 0 17px;
   margin: 0;
+}
+
+.menu-item.inactive {
+  color: #a9a699;
 }

@@ -42,7 +42,7 @@ class Window extends Component {
 
     return (
       <div
-        className={`window ${this.props.name}`}
+        className={`window ${this.props.name} ${this.props.window.active === this.props.name ? 'active' : 'inactive'}`}
         onMouseDown={moveAndResize.bind(this)}
         style={{
           width:
@@ -114,6 +114,10 @@ const mapDispatchToProps = (dispatch) => {
 
     close: (payload) => {
       dispatch({ type: 'CLOSE', payload });
+    },
+
+    activate: (payload) => {
+      dispatch({ type: 'ACTIVATE', payload });
     },
   };
 }

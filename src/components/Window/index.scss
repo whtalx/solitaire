@@ -1,7 +1,6 @@
 .window {
   position: relative;
   border: 3px solid #0041ce;
-  border-image: url('../../images/windows/border.png') 3 stretch stretch;
   min-width: 145px;
   min-height: 37px;
 }
@@ -12,7 +11,6 @@
   top: -29px;
   width: calc(100% - 6px);
   height: 29px;
-  background-image: url('../../images/windows/header.png');
 }
 
 .window__header:before {
@@ -21,7 +19,6 @@
   left: -6px;
   width: 6px;
   height: 29px;
-  background-image: url('../../images/windows/header-left.png');
 }
 
 .window__header:after {
@@ -30,7 +27,6 @@
   right: -6px;
   width: 6px;
   height: 29px;
-  background-image: url('../../images/windows/header-right.png');
 }
 
 .window__icon {
@@ -46,10 +42,8 @@
 .window__caption {
   position: absolute;
   top: -22px;
-  left: 19px;
-  color: #fff;
+  left: 19px;  
   font: bold 13px tahoma;
-  text-shadow: 1px 1px #000;
   letter-spacing: .4px;
 }
 
@@ -83,16 +77,77 @@
   background: url('../../images/windows/button-help.png');
 }
 
-.window__button_minimize:hover,
-.window__button_maximize:hover,
-.window__button_close:hover,
-.window__button_help:hover {
-  background-position: -19px 0;
+.window.active {
+  border-image: url('../../images/windows/border-active.png') 3 stretch stretch;
+  z-index: 1;
+
+  .window__header {
+    background-image: url('../../images/windows/header-active.png');
+  }
+
+  .window__header:before {
+    background-image: url('../../images/windows/header-left-active.png');
+  }
+
+  .window__header:after {
+    background-image: url('../../images/windows/header-right-active.png');
+  }
+
+  .window__caption {
+    color: #fff;
+    text-shadow: 1px 1px #0a1883;
+  }
+
+  .window__button_minimize,
+  .window__button_maximize,
+  .window__button_close,
+  .window__button_help {
+    background-position: 0 0;
+  }
 }
 
-.window__button_minimize:active,
-.window__button_maximize:active,
-.window__button_close:active,
-.window__button_help:active {
-  background-position: -38px 0;
+.window.inactive {
+  border-image: url('../../images/windows/border-inactive.png') 3 stretch stretch;
+  z-index: 0;
+
+  .window__header {
+    background-image: url('../../images/windows/header-inactive.png');
+  }
+
+  .window__header:before {
+    background-image: url('../../images/windows/header-left-inactive.png');
+  }
+
+  .window__header:after {
+    background-image: url('../../images/windows/header-right-inactive.png');
+  }
+
+  .window__caption {
+    color: #d8e4f8;
+    text-shadow: none;
+  }
+
+  .window__button_minimize,
+  .window__button_maximize,
+  .window__button_close,
+  .window__button_help {
+    background-position: -57px 0;
+  }
+}
+
+.window.active,
+.window.inactive {
+  .window__button_minimize:hover,
+  .window__button_maximize:hover,
+  .window__button_close:hover,
+  .window__button_help:hover {
+    background-position: -19px 0;
+  }
+
+  .window__button_minimize:active,
+  .window__button_maximize:active,
+  .window__button_close:active,
+  .window__button_help:active {
+    background-position: -38px 0;
+  }
 }

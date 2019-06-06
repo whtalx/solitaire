@@ -1,4 +1,5 @@
 export default function moveAndResize(event) {
+  this.props.window.active !== this.props.name && this.props.activate(this.props.name);
   let currentWindow;
   if (!event.target.classList) {
     return;

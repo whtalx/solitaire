@@ -3,10 +3,8 @@ import './index.scss';
 import { connect } from 'react-redux';
 
 function showMenu(event) {
-  event.stopPropagation();
   this.props.showMenu(!this.props.window.solitaire.menu.showing);
   document.addEventListener('mousedown', (event) => {
-    event.stopPropagation();
     if (
       !event.target.classList.contains('menu-category')
       && this.props.window.solitaire.menu.showing

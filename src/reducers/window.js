@@ -1,5 +1,6 @@
 const initialState = {
   solitaire: {
+    showing: true,
     caption: 'Solitaire',
     buttons: ['minimize', 'maximize', 'close'],
     menu: {
@@ -18,6 +19,7 @@ const initialState = {
   },
 
   back: {
+    showing: false,
     caption: 'Select Card Back',
     buttons: ['help', 'close'],
     style: {
@@ -29,6 +31,7 @@ const initialState = {
   },
 
   options: {
+    showing: false,
     caption: 'Options',
     buttons: ['help', 'close'],
     style: {
@@ -38,6 +41,7 @@ const initialState = {
       top: null,
     },
   },
+  active: null,
 };
 
 export default function window(state = initialState, action) {
@@ -92,6 +96,10 @@ export default function window(state = initialState, action) {
       const newState = { ...state };
       newState.solitaire.menu.hovered = action.payload;
       return newState;
+    }
+
+    case 'ACTIVATE': {
+      return { ...state, active: action.payload };
     }
 
     default:
