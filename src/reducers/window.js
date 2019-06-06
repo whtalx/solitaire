@@ -1,10 +1,10 @@
 const initialState = {
   solitaire: {
-    showing: true,
+    isShowing: true,
     caption: 'Solitaire',
     buttons: ['minimize', 'maximize', 'close'],
     menu: {
-      showing: false,
+      isShowing: false,
       hovered: null,
     },
     style: {
@@ -19,7 +19,7 @@ const initialState = {
   },
 
   back: {
-    showing: false,
+    isShowing: false,
     caption: 'Select Card Back',
     buttons: ['help', 'close'],
     style: {
@@ -31,7 +31,7 @@ const initialState = {
   },
 
   options: {
-    showing: false,
+    isShowing: false,
     caption: 'Options',
     buttons: ['help', 'close'],
     style: {
@@ -41,7 +41,20 @@ const initialState = {
       top: null,
     },
   },
-  active: null,
+
+  help: {
+    isShowing: false,
+    caption: 'Solitaire',
+    buttons: ['close'],
+    style: {
+      width: 296,
+      height: 112,
+      left: null,
+      top: null,
+    },
+  },
+
+  activity: ['solitaire'],
 };
 
 export default function window(state = initialState, action) {
@@ -88,7 +101,7 @@ export default function window(state = initialState, action) {
 
     case 'SHOW_MENU': {
       const newState = { ...state };
-      newState.solitaire.menu.showing = action.payload;
+      newState.solitaire.menu.isShowing = action.payload;
       return newState;
     }
 
@@ -99,7 +112,29 @@ export default function window(state = initialState, action) {
     }
 
     case 'ACTIVATE': {
-      return { ...state, active: action.payload };
+      const newState = { ...state };
+      newState.activity.splice(newState.activity.indexOf(action.payload), 1);
+      newState.activity.push(action.payload);
+      return newState;
+    }
+
+    case 'CLOSE': {
+      const newState = { ...state };
+      newState[action.payload].isShowing = false;
+      newState.activity.splice(newState.activity.indexOf(action.payload), 1);
+      return newState;
+    }
+
+    case 'SHOW_WINDOW': {
+      const newState = { ...state };
+      if(newState[action.payload]) {
+        newState[action.payload].isShowing = true;
+        if (newState.activity.includes(action.payload)) {
+          newState.activity.splice(newState.activity.indexOf(action.payload), 1);
+        }
+        newState.activity.push(action.payload);
+      }
+      return newState;
     }
 
     default:

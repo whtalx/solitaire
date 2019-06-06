@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
-import Menu from '../Menu';
-import Table from '../Table';
-import Window from '../Window';
-import StatusBar from '../StatusBar';
+import './index.scss';
+import Menu from './Menu';
+import Table from './Table';
+import Window from './Window';
+import StatusBar from './StatusBar';
+import Back from './Back';
+import Options from './Options';
+import Help from './Help';
+import Bsod from './Bsod';
 import { connect } from 'react-redux';
 
-class Sol extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       key: null,
+      bsod: false,
     };
   }
 
@@ -44,15 +50,27 @@ class Sol extends Component {
   }
 
   render() {
+    if (!this.props.window.solitaire.isShowing) {
+      setTimeout(() => { this.setState({ bsod: true })}, 2000);
+    }
+    if (this.state.bsod) {
+      return <Bsod />
+    }
     return (
-      <Window
-        name="solitaire"
-        children={[
-          <Menu key="menu" />,
-          <Table key="table" />,
-          <StatusBar key="statusBar" />,
-        ]}
-      />
+      <div className="root">
+        {this.props.window.solitaire.isShowing &&
+        <Window
+          name="solitaire"
+          children={[
+            <Menu key="menu" />,
+            <Table key="table" />,
+            <StatusBar key="statusBar" />,
+          ]}
+        />}
+        {this.props.window.back.isShowing && <Window name="back" children={<Back />} />}
+        {this.props.window.options.isShowing && <Window name="options" children={<Options />} />}
+        {this.props.window.help.isShowing && <Window name="help" children={<Help />} />}
+      </div>
     );
   }
 }
@@ -70,9 +88,9 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     help: () => {
-      dispatch({ type: 'SHOW_HELP' });
+      dispatch({ type: 'SHOW_WINDOW', payload: 'help' });
     },
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sol);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

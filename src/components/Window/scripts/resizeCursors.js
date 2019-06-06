@@ -3,12 +3,13 @@ import cursors from '../../../images/cursors';
 export default function resizeCursors(event) {
   if (
     !document.elementFromPoint(event.pageX, event.pageY)
+    || !document.getElementsByClassName('solitaire')
     || this.props.window.solitaire.isMaximized
     || this.props.window.solitaire.isMinimized
   ) {
     return;
   }
-  const root = document.getElementById('root');
+  const root = document.getElementsByClassName('root')[0];
   const currentWindow = document.getElementsByClassName('solitaire')[0];
 
   if (

@@ -1,9 +1,23 @@
 export default function moveAndResize(event) {
-  this.props.window.active !== this.props.name && this.props.activate(this.props.name);
-  let currentWindow;
   if (!event.target.classList) {
     return;
-  } else if (event.target.classList.contains('window')) {
+  }
+
+  if (
+    (
+      !event.target.classList.contains('window__button_close')
+    &&
+      !event.target.classList.contains('window__button_help')
+    )
+  &&
+    this.props.window.activity[this.props.window.activity.length - 1] !== this.props.name
+  ) {
+    this.props.activate(this.props.name);
+  }
+
+  let currentWindow;
+
+  if (event.target.classList.contains('window')) {
     currentWindow = event.target;
   } else if (
     event.target.classList.contains('window__header')
@@ -46,7 +60,7 @@ export default function moveAndResize(event) {
     });
   }
 
-  if (this.state.resize && this.props.name === 'solitaire') {
+  if (this.state && this.state.resize && this.props.name === 'solitaire') {
     const shiftHeight = currentWindow.clientHeight;
     const shiftWidth = currentWindow.clientWidth;
     const centrer = {
@@ -199,7 +213,11 @@ export default function moveAndResize(event) {
       default:
         break;
     }
-  } else {
+  } else if (
+    event.target.classList.contains('window__header')
+    || event.target.classList.contains('window__icon')
+    || event.target.classList.contains('window__caption')
+  ) {
     document.addEventListener('mousemove', move);
     document.addEventListener('mouseup', drop, { once: true });
   }

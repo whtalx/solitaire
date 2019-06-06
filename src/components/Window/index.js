@@ -7,23 +7,20 @@ import { connect } from 'react-redux';
 class Window extends Component {
   constructor(props) {
     super(props);
-    this.props.name === 'solitaire' && (
+    if (this.props.name === 'solitaire') {
       this.state = {
         resize: null,
-      }
-    );
+      };
+      this.resizeCursors = resizeCursors.bind(this);
+    }
   }
 
   componentDidMount() {
-    this.props.name === 'solitaire' && (
-      document.addEventListener('mousemove', resizeCursors.bind(this))
-    );
+    this.resizeCursors && document.addEventListener('mousemove', this.resizeCursors);
   }
 
   componentWillUnmount() {
-    this.props.name === 'solitaire' && (
-      document.removeEventListener('mousemove', resizeCursors.bind(this))
-    );
+    this.resizeCursors && document.removeEventListener('mousemove', this.resizeCursors);
   }
 
   render() {
@@ -42,7 +39,7 @@ class Window extends Component {
 
     return (
       <div
-        className={`window ${this.props.name} ${this.props.window.active === this.props.name ? 'active' : 'inactive'}`}
+        className={`window ${this.props.name} ${(this.props.window.activity.indexOf(this.props.name) === this.props.window.activity.length - 1) ? 'active' : 'inactive'}`}
         onMouseDown={moveAndResize.bind(this)}
         style={{
           width:
@@ -65,6 +62,7 @@ class Window extends Component {
               `${window.style.top}px`
             :
               `calc(50vh - ${window.style.height / 2}px)`,
+          zIndex: this.props.window.activity.indexOf(this.props.name),
         }}
       >
         <div
@@ -108,8 +106,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: 'MAXIMIZE', payload });
     },
 
-    help: (payload) => {
-      dispatch({ type: 'HELP', payload });
+    help: () => {
+      dispatch({ type: 'SHOW_WINDOW', payload: 'help' });
     },
 
     close: (payload) => {

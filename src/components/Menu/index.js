@@ -1,22 +1,8 @@
 import React, { Component } from 'react';
 import './index.scss';
 import { connect } from 'react-redux';
-
-function showMenu(event) {
-  this.props.showMenu(!this.props.window.solitaire.menu.showing);
-  document.addEventListener('mousedown', (event) => {
-    if (
-      !event.target.classList.contains('menu-category')
-      && this.props.window.solitaire.menu.showing
-    ) {
-      this.props.showMenu(false);
-    }
-  }, { once: true });
-}
-
-function hoverMenu(event) {
-  event.target.classList.contains('menu-category') && this.props.hoverMenu(event.target.firstChild.textContent.toLowerCase());
-}
+import showMenu from './scripts/showMenu';
+import hoverMenu from './scripts/hoverMenu';
 
 class Menu extends Component {
   render() {
@@ -25,31 +11,31 @@ class Menu extends Component {
         <div
           onMouseDown={showMenu.bind(this)}
           onMouseEnter={hoverMenu.bind(this)}
-          className={`menu-category${(this.props.window.solitaire.menu.showing && this.props.window.solitaire.menu.hovered === 'game') ? ' showing' : ''}`}
+          className={`menu-category${(this.props.window.solitaire.menu.isShowing && this.props.window.solitaire.menu.hovered === 'game') ? ' showing' : ''}`}
         >
           Game
           <div className="drop-down-menu">
-            <div onMouseDown={this.props.deal} className="menu-item">Deal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;F2</div>
+            <div data-func="deal" className="menu-item">Deal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;F2</div>
             <hr />
-            <div onMouseDown={this.props.undo} className="menu-item">Undo</div>
-            <div onMouseDown={this.props.deck} className="menu-item">Deck...</div>
-            <div onMouseDown={this.props.options} className="menu-item">Options...</div>
+            <div data-func="undo" className="menu-item">Undo</div>
+            <div data-func="back" className="menu-item">Deck...</div>
+            <div data-func="options" className="menu-item">Options...</div>
             <hr />
-            <div onMouseDown={this.props.exit} className="menu-item">Exit</div>
+            <div data-func="exit" className="menu-item">Exit</div>
           </div>
         </div>
         <div
           onMouseDown={showMenu.bind(this)}
           onMouseEnter={hoverMenu.bind(this)}
-          className={`menu-category${(this.props.window.solitaire.menu.showing && this.props.window.solitaire.menu.hovered === 'help') ? ' showing' : ''}`}
+          className={`menu-category${(this.props.window.solitaire.menu.isShowing && this.props.window.solitaire.menu.hovered === 'help') ? ' showing' : ''}`}
         >
           Help
           <div className="drop-down-menu">
-            <div onMouseDown={this.props.help} className="menu-item">Contents&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;F1</div>
-            <div onMouseDown={this.props.help} className="menu-item">Search for Help on...</div>
-            <div onMouseDown={this.props.help} className="menu-item">How to Use Help</div>
+            <div data-func="help" className="menu-item">Contents&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;F1</div>
+            <div data-func="help" className="menu-item">Search for Help on...</div>
+            <div data-func="help" className="menu-item">How to Use Help</div>
             <hr />
-            <div onMouseDown={this.props.about} className="menu-item">About Solitaire</div>
+            <div data-func="about" className="menu-item">About Solitaire</div>
           </div>
         </div>
       </div>
@@ -81,12 +67,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: 'UNDO' });
     },
 
-    deck: () => {
-      dispatch({ type: 'SHOW_DECK' });
+    back: () => {
+      dispatch({ type: 'SHOW_WINDOW', payload: 'back' });
     },
 
     options: () => {
-      dispatch({ type: 'SHOW_OPTIONS' });
+      dispatch({ type: 'SHOW_WINDOW', payload: 'options' });
     },
 
     exit: () => {
@@ -94,11 +80,11 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     help: () => {
-      dispatch({ type: 'SHOW_HELP' });
+      dispatch({ type: 'SHOW_WINDOW', payload: 'help' });
     },
 
     about: () => {
-      dispatch({ type: 'SHOW_ABOUT' });
+      dispatch({ type: 'SHOW_WINDOW', payload: 'about' });
     },
   };
 }
