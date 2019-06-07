@@ -31,7 +31,7 @@ const initialState = {
   },
 
   options: {
-    isShowing: false,
+    isShowing: true,
     caption: 'Options',
     buttons: ['help', 'close'],
     style: {
@@ -66,7 +66,7 @@ const initialState = {
     },
   },
 
-  activity: ['solitaire'],
+  activity: ['solitaire', 'options'],
 };
 
 export default function window(state = initialState, action) {
