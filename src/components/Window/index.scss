@@ -43,9 +43,13 @@
 .window__caption {
   position: absolute;
   top: -22px;
-  left: 19px;  
+  left: 3px;
   font: bold 13px tahoma;
   letter-spacing: .4px;
+}
+
+.window__icon + .window__caption {
+  left: 19px;
 }
 
 .window__button {

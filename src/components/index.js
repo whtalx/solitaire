@@ -7,6 +7,7 @@ import StatusBar from './StatusBar';
 import Back from './Back';
 import Options from './Options';
 import Help from './Help';
+import About from './About';
 import Bsod from './Bsod';
 import { connect } from 'react-redux';
 
@@ -70,6 +71,7 @@ class App extends Component {
         {this.props.window.back.isShowing && <Window name="back" children={<Back />} />}
         {this.props.window.options.isShowing && <Window name="options" children={<Options />} />}
         {this.props.window.help.isShowing && <Window name="help" children={<Help />} />}
+        {this.props.window.about.isShowing && <Window name="about" children={<About />} />}
       </div>
     );
   }

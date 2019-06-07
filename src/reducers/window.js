@@ -24,7 +24,7 @@ const initialState = {
     buttons: ['help', 'close'],
     style: {
       width: 267,
-      height: 182,
+      height: 190,
       left: null,
       top: null,
     },
@@ -49,6 +49,18 @@ const initialState = {
     style: {
       width: 296,
       height: 112,
+      left: null,
+      top: null,
+    },
+  },
+
+  about: {
+    isShowing: false,
+    caption: 'About Solitaire',
+    buttons: ['close'],
+    style: {
+      width: 413,
+      height: 322,
       left: null,
       top: null,
     },

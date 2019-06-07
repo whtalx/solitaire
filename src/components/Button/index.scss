@@ -1,0 +1,52 @@
+.button {
+  position: absolute;
+  width: 73px;
+  height: 21px;
+  box-sizing: border-box;
+  font: 11px tahoma;
+  border: 1px solid #003c73;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #fff 0%, #d6d3c6 100%);
+  box-shadow:
+    -1px -1px 0 0 #d6d3bd,
+    1px 1px 0 0 #fff;
+}
+
+.button:active,
+.button_selected:active,
+.button_selected:active:hover {
+  background: linear-gradient(to bottom, #d6cfc6 0%, #f7f3ef 100%);
+}
+
+.button:after {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  text-align: center;
+}
+
+.button_ok:after {
+  content: 'OK';
+}
+
+.button_cancel:after {
+  content: 'Cancel';
+}
+
+.button_selected {
+  background: linear-gradient(to bottom, #cee7ff 0%, #6b82ef 100%);
+}
+
+.button_selected:after {
+  background: linear-gradient(to bottom, #fff 0%, #efebe7 100%);
+}
+
+.button_selected:hover {
+  background: linear-gradient(to bottom, #fff3ce 0%, #e79600 100%);
+}
+
+.button_selected:active:after {
+  background: none;
+}

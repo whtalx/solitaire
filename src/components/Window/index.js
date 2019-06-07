@@ -73,7 +73,13 @@ class Window extends Component {
             (() => this.props.maximize.bind(this)(this.props.name))
           }
         />
-        <div className="window__icon" />
+        {
+          this.props.name === 'solitaire' ?
+            <div className="window__icon" />
+          :
+            ''
+        }
+        
         <div className="window__caption">{window.caption}</div>
         {buttons}
         {this.props.children}

@@ -2,11 +2,10 @@ import React from 'react';
 import './index.scss';
 import Button from '../Button';
 
-export default function Options() {
+export default function About() {
   return (
-    <div className="options-contents">
+    <div className="about-contents">
       <Button type="ok" selected />
-      <Button type="cancel" />
     </div>
   );
 }
