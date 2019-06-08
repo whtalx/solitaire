@@ -3,8 +3,18 @@ import compareCards from './compareCards';
 export default function handleLeftMouseButton(event) {
   if (
     !event.target.classList
-    || !event.target.classList.contains('card')
-    || event.button !== 0
+  ||
+    !event.target.classList.contains('card')
+  ||
+    event.button !== 0
+  ||
+    (
+      event.target.attributes.getNamedItem('data-parent')
+    &&
+      event.target.attributes.getNamedItem('data-parent').value === 'waste'
+    &&
+      this.props.cards.waste.length !== parseInt(event.target.attributes.getNamedItem('data-index').value) + 1
+    )
   ) {
     return;
   }
@@ -37,9 +47,12 @@ export default function handleLeftMouseButton(event) {
         const target = targets[key];
         if (
           !target
-          || !target.classList
-          || !target.parentElement
-          || target === card
+        ||
+          !target.classList
+        ||
+          !target.parentElement
+        ||
+          target === card
         ) {
           continue;
         }
@@ -56,14 +69,13 @@ export default function handleLeftMouseButton(event) {
             continue;
           }
         } else if (
-          target.classList.contains('tableau')
-          && compareCards(card, target)
-        ) {
-          this.drop(compareCards(card, target));
-          break;
-        } else if (
-          target.classList.contains('foundation')
-          && compareCards(card, target)
+          (
+            target.classList.contains('tableau')
+          ||
+            target.classList.contains('foundation')
+          )
+        &&
+          compareCards(card, target)
         ) {
           this.drop(compareCards(card, target));
           break;
@@ -75,7 +87,7 @@ export default function handleLeftMouseButton(event) {
     document.addEventListener('mouseup', handleMouseUp, { once: true });
     document.addEventListener('mousemove', handleMouseMove);
   } else if (card.parentElement.classList.contains('deck')) {
-    this.deck();
+    this.deck(this.props.options.draw);
   } else if (card.classList.contains('closed')) {
     this.turn({
       parent: card.attributes.getNamedItem('data-parent').value.match(/\w/g).join('').match(/\D/g).join(''),

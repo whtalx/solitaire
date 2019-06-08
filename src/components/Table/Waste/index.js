@@ -3,7 +3,7 @@ import makeCard from '../scripts/makeCard';
 
 export default function Waste(props) {
   return(
-    <div className="waste">
+    <div className={`waste by-${props.quantity}`}>
     {
       props.waste.map((item, index) => {
         return makeCard({

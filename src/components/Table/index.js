@@ -8,6 +8,7 @@ import Foundation from './Foundation';
 import handleLeftMouseButton from './scripts/handleLeftMouseButton';
 import handleRightMouseButton from './scripts/handleRightMouseButton';
 
+/** TODO: doubleclick fundOne() */
 class Table extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +33,7 @@ class Table extends Component {
       <div className="table-wrapper">
         <div className="table" onContextMenu={this.handleRightMouseButton}>
           <Deck deck={this.props.cards.deck} back={this.props.options.back} />
-          <Waste waste={this.props.cards.waste} />
+          <Waste waste={this.props.cards.waste} quantity={this.props.options.draw} />
           <Foundation foundation={this.props.cards.foundation} />
           <Tableau tableau={this.props.cards.tableau} back={this.props.options.back} />
         </div>
@@ -50,8 +51,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deck: () => {
-      dispatch({ type: 'DECK' });
+    deck: (quantity) => {
+      if (quantity === 'one') {
+        dispatch({ type: 'DRAW_ONE' });
+      } else if (quantity === 'three') {
+        dispatch({ type: 'DRAW_THREE' });
+      }
     },
 
     drop: (payload) => {

@@ -1,48 +1,74 @@
 import deckJSON from '../data/deck.json';
 import valuesComparison from '../data/valuesComparison.json'
 
-const initialState = {
-  deck: [],
-  waste: [],
-  foundation: [
-    [],
-    [],
-    [],
-    [],
-  ],
-  tableau: [
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-  ],
-};
+const initialize = () =>{
+  const initialState = {
+    deck: [],
+    waste: [],
+    foundation: [
+      [],
+      [],
+      [],
+      [],
+    ],
+    tableau: [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+    ],
+  };
 
-deckJSON.cards.forEach((item) => {
-  initialState.deck.push({
-    code: item.code,
-    value: item.value.toLowerCase(),
-    suit: item.suit.toLowerCase(),
-    status: 'downturned',
+  deckJSON.cards.forEach((item) => {
+    initialState.deck.push({
+      code: item.code,
+      value: item.value.toLowerCase(),
+      suit: item.suit.toLowerCase(),
+      status: 'downturned',
+    });
   });
-});
-
-for (let i = 1; i <= 7; i++) {
-  for (let j = 1; j <= i; j++) {
-    const status = j === i ? 'upturned' : 'downturned';
-    initialState.tableau[i - 1].push({ ...initialState.deck.pop(), status: status });
+  
+  for (let i = 1; i <= 7; i++) {
+    for (let j = 1; j <= i; j++) {
+      const status = j === i ? 'upturned' : 'downturned';
+      initialState.tableau[i - 1].push({ ...initialState.deck.pop(), status: status });
+    }
   }
+
+  return initialState;
 }
 
-export default function cards(state = initialState, action) {
+export default function cards(state = initialize(), action) {
   switch (action.type) {
-    case 'DECK': {
+    case 'DEAL': {
+      return initialize();
+    }
+
+    case 'DRAW_ONE': {
       const newState = { ...state };
       if (state.deck.length > 0) {
         newState.waste.push({ ...newState.deck.shift(), status: 'upturned' });
+        return newState;
+      }
+      newState.deck = newState.waste.map((item) => {
+        return { ...item, status: 'downturned' }
+      });
+      newState.waste = [];
+      return newState;
+    }
+
+    case 'DRAW_THREE': {
+      const newState = { ...state };
+      if (state.deck.length > 0) {
+        newState.waste = newState.waste.map((item) => {
+          return { ...item, draw: null }
+        });
+        newState.waste.push(...newState.deck.splice(0, 3).map((item, index) => {
+          return { ...item, draw: index + 1, status: 'upturned' }
+        }));
         return newState;
       }
       newState.deck = newState.waste.map((item) => {

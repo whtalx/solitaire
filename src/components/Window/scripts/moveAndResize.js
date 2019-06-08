@@ -1,3 +1,5 @@
+
+/** TODO: prevent restore if maximized */
 export default function moveAndResize(event) {
   if (!event.target.classList) {
     return;

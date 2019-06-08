@@ -85,6 +85,12 @@ class Options extends Component {
             type="ok"
             selected 
             click={() => {
+              if (
+                this.props.scoring !== this.state.scoring
+                || this.props.draw !== this.state.draw
+              ) {
+                this.props.deal();
+              }
               this.props.set(this.state);
               this.props.close();
             }}
@@ -106,6 +112,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     set: (payload) => {
       dispatch({ type: 'SET_OPTIONS', payload });
+    },
+
+    deal: () => {
+      dispatch({ type: 'DEAL' });
     },
 
     close: () => {

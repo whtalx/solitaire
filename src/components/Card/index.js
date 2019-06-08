@@ -2,12 +2,16 @@ import React from 'react';
 import './index.scss';
 
 export default function Card(props) {
+  const draw = {
+    2: 'second',
+    3: 'third'
+  }
   const status =  {
     ok: 'ok',
     notok: 'notok',
     empty: 'empty',
     downturned: `closed back-${props.back}`,
-    upturned: `opened ${props.value} ${props.suit}`
+    upturned: `opened ${props.value} ${props.suit}${draw[props.draw] ? ` draw-${draw[props.draw]}` : '' }`
   };
   return (
     <div
