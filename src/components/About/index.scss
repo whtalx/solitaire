@@ -2,6 +2,22 @@
   position: relative;
   width: 100%;
   height: 100%;
+
+  .logo {
+    position: absolute;
+    width: 100%;
+    height: 77px;
+    background: radial-gradient(circle at 65% 50%,#a5c3f7, #6382e7);
+  }
+
+  .logo:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    bottom: 0;
+    background: linear-gradient(to right, transparent, #f79631, transparent);
+  }
   
   .button_ok {
     left: 331px;

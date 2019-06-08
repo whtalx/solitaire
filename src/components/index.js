@@ -58,6 +58,9 @@ class App extends Component {
 
   render() {
     if (!this.props.window.solitaire.isShowing) {
+      if (window.history.length > 1) {
+        window.history.back();
+      }
       setTimeout(() => { this.setState({ bsod: true })}, 2000);
     }
     if (this.state.bsod) {

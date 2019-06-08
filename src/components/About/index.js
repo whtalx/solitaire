@@ -1,11 +1,23 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import './index.scss';
 import Button from '../Button';
 
-export default function About() {
+function About(props) {
   return (
     <div className="about-contents">
-      <Button type="ok" selected />
+      <div className="logo" />
+      <Button type="ok" selected click={() => {props.close()}} />
     </div>
   );
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    close: () => {
+      dispatch({ type: 'CLOSE', payload: 'about' });
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(About);

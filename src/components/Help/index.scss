@@ -3,8 +3,27 @@
   width: 100%;
   height: 100%;
 
-  .button_ok {
+  .error-icon {
+    display: inline-block;
     position: relative;
-    margin: 80px auto 0;
+    left: 13px;
+    top: 13px;
+    width: 32px;
+    height: 32px;
+    background: url('../../images/windows/error.png')
+  }
+
+  .error-message {
+    display: inline-block;
+    position: relative;
+    left: 24px;
+    top: 4px;
+    font: 12px tahoma;
+    line-height: 32px;
+  }
+
+  .button_ok {
+    top: 65px;
+    left: 103.5px;
   }
 }

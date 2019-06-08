@@ -43,8 +43,8 @@ const initialState = {
     caption: 'Solitaire',
     buttons: ['close'],
     style: {
-      width: 296,
-      height: 112,
+      width: 280,
+      height: 100,
       left: null,
       top: null,
     },
@@ -116,7 +116,18 @@ export default function window(state = initialState, action) {
 
     case 'CLOSE': {
       const newState = { ...state };
+      if (action.payload === 'solitaire') {
+        for (let key in newState) {
+          if (newState[key] instanceof Array) { continue; }
+          if (newState[key].isShowing) {
+            newState[key].isShowing = false;
+          }
+        }
+        return newState;
+      }
       newState[action.payload].isShowing = false;
+      newState[action.payload].style.left = null;
+      newState[action.payload].style.top = null;
       newState.activity.splice(newState.activity.indexOf(action.payload), 1);
       return newState;
     }
