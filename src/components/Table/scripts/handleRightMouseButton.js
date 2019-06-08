@@ -1,5 +1,4 @@
 export default function handleRightMouseButton(event) {
-  event.preventDefault();
   const rect = document.getElementsByClassName('table')[0].getBoundingClientRect();
   if (
     event.pageX > rect.left

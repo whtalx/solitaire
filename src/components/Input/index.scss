@@ -36,6 +36,11 @@
   background: linear-gradient(to bottom right, #e7e3de 0%, #fff 100%);
 }
 
+.input-container:active > .input-radio,
+.input-container:active > .input-checkbox {
+  background: linear-gradient(to bottom, #d6cfc6 0%, #f7f3ef 100%);
+}
+
 .input-radio.checked:after {
   content: '';
   position: absolute;
@@ -51,7 +56,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background: url('../../images/windows/check.png');
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMyAxMyI+PHBhdGggZmlsbD0iIzIxYTIyMSIgZD0iTTMsNWwyLjUsMmw0LjUsLTR2M2wtNC41LDRsLTIuNSwtMnYtM1oiLz48L3N2Zz4K");
 }
 
 .input-label {
@@ -67,15 +72,25 @@
 
 .disabled.input-checkbox,
 .disabled.input-radio,
+.input-container:active > .disabled.input-checkbox,
+.input-container:active > .disabled.input-radio,
 .input-container:hover > .disabled.input-checkbox,
 .input-container:hover > .disabled.input-radio {
   border-color: #cecbbd;
   background: #fff;
 }
 
+
+.disabled.input-radio.checked:after {
+  background: #cecbbd;
+}
+.disabled.input-checkbox.checked:after {
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMyAxMyI+PHBhdGggZmlsbD0iI2NlY2JiZCIgZD0iTTMsNWwyLjUsMmw0LjUsLTR2M2wtNC41LDRsLTIuNSwtMnYtM1oiLz48L3N2Zz4K");
+}
+
 .disabled.input-radio:before,
 .disabled.input-checkbox:before,
-.disabled.input-radio:after,
-.disabled.input-checkbox:after {
+.input-container:active > .input-radio:before,
+.input-container:active > .input-checkbox:before {
   display: none;
 }

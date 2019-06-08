@@ -21,22 +21,20 @@ class Table extends Component {
 
   componentDidMount() {
     document.addEventListener('mousedown', this.handleLeftMouseButton);
-    document.addEventListener('contextmenu', this.handleRightMouseButton);
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleLeftMouseButton);
-    document.removeEventListener('contextmenu', this.handleRightMouseButton);
   }
 
   render() {
     return (
       <div className="table-wrapper">
-        <div className="table">
-          <Deck deck={this.props.cards.deck} back={this.props.cards.back} />
+        <div className="table" onContextMenu={this.handleRightMouseButton}>
+          <Deck deck={this.props.cards.deck} back={this.props.options.back} />
           <Waste waste={this.props.cards.waste} />
           <Foundation foundation={this.props.cards.foundation} />
-          <Tableau tableau={this.props.cards.tableau} back={this.props.cards.back} />
+          <Tableau tableau={this.props.cards.tableau} back={this.props.options.back} />
         </div>
       </div>
     );
@@ -46,6 +44,7 @@ class Table extends Component {
 const mapStateToProps = (state) => {
   return {
     cards: state.cards,
+    options: state.options,
   };
 }
 

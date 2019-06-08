@@ -4,7 +4,7 @@ export default function handleLeftMouseButton(event) {
   if (
     !event.target.classList
     || !event.target.classList.contains('card')
-    || event.buttons !== 1
+    || event.button !== 0
   ) {
     return;
   }

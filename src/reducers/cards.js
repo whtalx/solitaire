@@ -19,7 +19,6 @@ const initialState = {
     [],
     [],
   ],
-  back: Math.round(Math.random() * 11),
 };
 
 deckJSON.cards.forEach((item) => {

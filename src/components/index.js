@@ -40,14 +40,20 @@ class App extends Component {
     event.which === this.state.key && this.setState({ key: null });
   }
 
+  handleRightMouseButton(event) {
+    event.preventDefault();
+  }
+
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown.bind(this));
     document.addEventListener('keyup', this.handleKeyUp.bind(this));
+    document.addEventListener('contextmenu', this.handleRightMouseButton);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown.bind(this));
     document.removeEventListener('keyup', this.handleKeyUp.bind(this));
+    document.removeEventListener('contextmenu', this.handleRightMouseButton);
   }
 
   render() {
