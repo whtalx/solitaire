@@ -48,7 +48,7 @@ export default function options(state = initialState, action) {
     
     case 'SET_BACK': {
       const newState = { ...state };
-      const { back } = action.payload;
+      const back = action.payload;
       if (back !== undefined) {
         newState.back = back;
         localStorage.setItem('cards_back', back);

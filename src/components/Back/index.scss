@@ -3,6 +3,76 @@
   width: 100%;
   height: 100%;
 
+  .back-grid {
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    width: 243px;
+    height: 133px;
+    display: grid;
+    grid-gap: 9px;
+    grid-template: repeat(2, 62px) / repeat(6, 33px);
+
+    .grid-item {
+      background: url('../../images/cards/back.png');
+      background-size: 1200% 100%;
+    }
+
+    .grid-item.selected {
+      box-shadow:
+       0 0 0 1px #efebde,
+       0 0 0 3px #316ac5;
+    }
+
+    .back-0 {
+      background-position-x: 0;
+    }
+
+    .back-1 {
+      background-position-x: -33px;
+    }
+
+    .back-2 {
+      background-position-x: -33px * 2;
+    }
+
+    .back-3 {
+      background-position-x: -33px * 3;
+    }
+
+    .back-4 {
+      background-position-x: -33px * 4;
+    }
+
+    .back-5 {
+      background-position-x: -33px * 5;
+    }
+
+    .back-6 {
+      background-position-x: -33px * 6;
+    }
+
+    .back-7 {
+      background-position-x: -33px * 7;
+    }
+
+    .back-8 {
+      background-position-x: -33px * 8;
+    }
+
+    .back-9 {
+      background-position-x: -33px * 9;
+    }
+
+    .back-10 {
+      background-position-x: -33px * 10;
+    }
+
+    .back-11 {
+      background-position-x: -33px * 11;
+    }
+  }
+
   .button {
     width: 81px;
   }
@@ -13,7 +83,7 @@
   }
 
   .button_cancel {
-    left: 147px;
+    left: 133px;
     top: 157px;
   }
 }

@@ -31,7 +31,7 @@ class Window extends Component {
           key={item}
           className={`window__button window__button_${item}`}
           onMouseDown={
-            () => {this.props[item].bind(this)(this.props.name)}
+            (event) => {event.button === 0 && this.props[item].bind(this)(this.props.name)}
           }
         />
       );
