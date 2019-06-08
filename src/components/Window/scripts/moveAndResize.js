@@ -1,5 +1,5 @@
 export default function moveAndResize(event) {
-  if (!event.target.classList) {
+  if (!event.target.classList || event.button !== 0) {
     return;
   }
 

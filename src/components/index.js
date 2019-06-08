@@ -71,7 +71,7 @@ class App extends Component {
           children={[
             <Menu key="menu" />,
             <Table key="table" />,
-            <StatusBar key="statusBar" />,
+            this.props.options.status ? <StatusBar key="statusBar" /> : '',
           ]}
         />}
         {this.props.window.back.isShowing && <Window name="back" children={<Back />} />}
@@ -85,6 +85,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    options: state.options,
     window: state.window,
   };
 }

@@ -4,6 +4,10 @@
   overflow: hidden;
 }
 
+.table-wrapper:last-child {
+  height: calc(100% - 20px);
+}
+
 .table {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
