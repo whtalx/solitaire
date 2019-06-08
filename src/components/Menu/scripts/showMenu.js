@@ -1,15 +1,23 @@
-export default function showMenu() {
-  this.props.showMenu(!this.props.window.solitaire.menu.isShowing);
+export default function showMenu(event) {
+  if (event.button !== 0) {
+    return;
+  }
+  this.setState({ isShowing: !this.state.isShowing });
   document.addEventListener('mousedown', (event) => {
+    if (event.button !== 0) {
+      return;
+    }
+
     if (
       !event.target.classList.contains('menu-category')
-      && this.props.window.solitaire.menu.isShowing
+      && this.state.isShowing
     ) {
-      this.props.showMenu(false);
+      this.setState({ isShowing: false });
     }
 
     if (event.target.classList.contains('menu-item')) {
       this.props[event.target.dataset.func]();
+      this.setState({ hovered: null });
     }
   }, { once: true });
 }

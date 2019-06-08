@@ -3,10 +3,6 @@ const initialState = {
     isShowing: true,
     caption: 'Solitaire',
     buttons: ['minimize', 'maximize', 'close'],
-    menu: {
-      isShowing: false,
-      hovered: null,
-    },
     style: {
       width: 585,
       height: 404,
@@ -108,18 +104,6 @@ export default function window(state = initialState, action) {
       Number.isFinite(height) && (newState.solitaire.style.height = height);
       Number.isFinite(left) && (newState.solitaire.style.left = left);
       Number.isFinite(top) && (newState.solitaire.style.top = top);
-      return newState;
-    }
-
-    case 'SHOW_MENU': {
-      const newState = { ...state };
-      newState.solitaire.menu.isShowing = action.payload;
-      return newState;
-    }
-
-    case 'HOVER_MENU': {
-      const newState = { ...state };
-      newState.solitaire.menu.hovered = action.payload;
       return newState;
     }
 

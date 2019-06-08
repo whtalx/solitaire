@@ -5,17 +5,26 @@ import showMenu from './scripts/showMenu';
 import hoverMenu from './scripts/hoverMenu';
 
 class Menu extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hovered: null,
+      isShowing: false,
+    };
+  }
+
   render() {
     return (
       <div className="menu-bar">
         <div
           onMouseDown={showMenu.bind(this)}
           onMouseEnter={hoverMenu.bind(this)}
-          className={`menu-category${(this.props.window.solitaire.menu.isShowing && this.props.window.solitaire.menu.hovered === 'game') ? ' showing' : ''}`}
+          onMouseLeave={hoverMenu.bind(this)}
+          className={`menu-category${this.state.hovered === 'game' ? ' hovered' : ''}${(this.state.isShowing && this.state.hovered === 'game') ? ' showing' : ''}`}
         >
           Game
           <div className="drop-down-menu">
-            <div data-func="deal" className="menu-item">Deal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;F2</div>
+            <div data-func="deal" className="menu-item">Deal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;F2</div>
             <hr />
             <div data-func="undo" className="menu-item">Undo</div>
             <div data-func="back" className="menu-item">Deck...</div>
@@ -27,7 +36,8 @@ class Menu extends Component {
         <div
           onMouseDown={showMenu.bind(this)}
           onMouseEnter={hoverMenu.bind(this)}
-          className={`menu-category${(this.props.window.solitaire.menu.isShowing && this.props.window.solitaire.menu.hovered === 'help') ? ' showing' : ''}`}
+          onMouseLeave={hoverMenu.bind(this)}
+          className={`menu-category${this.state.hovered === 'help' ? ' hovered' : ''}${(this.state.isShowing && this.state.hovered === 'help') ? ' showing' : ''}`}
         >
           Help
           <div className="drop-down-menu">
@@ -43,22 +53,8 @@ class Menu extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    window: state.window,
-  };
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
-    showMenu: (payload) => {
-      dispatch({ type: 'SHOW_MENU', payload });
-    },
-
-    hoverMenu: (payload) => {
-      dispatch({ type: 'HOVER_MENU', payload });
-    },
-
     deal: () => {
       dispatch({ type: 'DEAL' });
     },
@@ -89,4 +85,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+export default connect(null, mapDispatchToProps)(Menu);

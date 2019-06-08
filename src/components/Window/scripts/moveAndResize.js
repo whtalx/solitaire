@@ -1,5 +1,5 @@
 export default function moveAndResize(event) {
-  if (!event.target.classList || event.button !== 0) {
+  if (!event.target.classList) {
     return;
   }
 
@@ -13,6 +13,10 @@ export default function moveAndResize(event) {
     this.props.window.activity[this.props.window.activity.length - 1] !== this.props.name
   ) {
     this.props.activate(this.props.name);
+  }
+
+  if (event.button !== 0) {
+    return;
   }
 
   let currentWindow;
@@ -60,7 +64,7 @@ export default function moveAndResize(event) {
     });
   }
 
-  if (this.state && this.state.resize && this.props.name === 'solitaire') {
+  if (this.state && this.state.resize) {
     const shiftHeight = currentWindow.clientHeight;
     const shiftWidth = currentWindow.clientWidth;
     const centrer = {

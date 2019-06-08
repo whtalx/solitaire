@@ -68,9 +68,10 @@ class Window extends Component {
         <div
           className="window__header"
           onDoubleClick={
-            this.props.name === 'solitaire'
-            &&
-            (() => this.props.maximize.bind(this)(this.props.name))
+            this.props.name === 'solitaire' ?
+              (() => this.props.maximize.bind(this)(this.props.name))
+            :
+              () => {}
           }
         />
         {

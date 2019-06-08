@@ -1,3 +1,7 @@
 export default function hoverMenu(event) {
-  event.target.classList.contains('menu-category') && this.props.hoverMenu(event.target.firstChild.textContent.toLowerCase());
+  if (event.type === 'mouseenter') {
+  event.target.classList.contains('menu-category') && this.setState({ hovered: event.target.firstChild.textContent.toLowerCase() });
+  } else if (event.type === 'mouseleave') {
+    event.target.classList.contains('menu-category') && this.setState({ hovered: null });
+  }
 }
