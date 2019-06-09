@@ -16,11 +16,28 @@
     width: 100%;
     height: 5px;
     bottom: 0;
-    background: linear-gradient(to right, transparent, #f79631, transparent);
+    background: linear-gradient(to right, transparent 0, #f79631 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: orange 2s linear infinite ;
   }
   
   .button_ok {
     left: 331px;
     top: 290px;
   }
+}
+
+@-webkit-keyframes orange {
+  from { background-position: 100% 50%; }
+  to { background-position: -100% 50%; }
+}
+
+@-moz-keyframes orange {
+  from { background-position: 100% 50%; }
+  to { background-position: -100% 50%; }
+}
+
+@keyframes orange {
+  from { background-position: 100% 50%; }
+  to { background-position: -100% 50%; }
 }

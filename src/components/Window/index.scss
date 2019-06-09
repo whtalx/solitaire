@@ -4,155 +4,192 @@
   min-width: 145px;
   min-height: 37px;
   background-color: #efebde;
-}
-
-.window__header {
-  position: absolute;
-  left: 3px;
-  top: -29px;
-  width: calc(100% - 6px);
-  height: 29px;
-}
-
-.window__header:before {
-  content: '';
-  position: absolute;
-  left: -6px;
-  width: 6px;
-  height: 29px;
-}
-
-.window__header:after {
-  content: '';
-  position: absolute;
-  right: -6px;
-  width: 6px;
-  height: 29px;
-}
-
-.window__icon {
-  position: absolute;
-  top: -22px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  background: url('../../images/windows/icon.png');
-  background-size: 100% 100%;
-}
-
-.window__caption {
-  position: absolute;
-  top: -22px;
-  left: 3px;
-  font: bold 13px tahoma;
-  letter-spacing: .4px;
-}
-
-.window__icon + .window__caption {
-  left: 19px;
-}
-
-.window__button {
-  position: absolute;
-  top: -24px;
-  width: 21px;
-  height: 21px;
-  box-sizing: border-box;
-  border-radius: 3px;
-  border: 1px solid #fff;
-}
-
-.window__button_minimize {
-  right: 49px;
-  background: url('../../images/windows/button-minimize.png');
-}
-
-.window__button_maximize {
-  right: 26px;
-  background: url('../../images/windows/button-maximize.png');
-}
-
-.window__button_close {
-  right: 3px;
-  background: url('../../images/windows/button-close.png');
-}
-
-.window__button_help {
-  right: 26px;
-  background: url('../../images/windows/button-help.png');
-}
-
-.window.active {
-  border-image: url('../../images/windows/border-active.png') 3 stretch stretch;
-  z-index: 1;
 
   .window__header {
-    background-image: url('../../images/windows/header-active.png');
+    position: absolute;
+    left: 3px;
+    top: -29px;
+    width: calc(100% - 6px);
+    height: 29px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      width: 6px;
+      height: 29px;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      right: -6px;
+      width: 6px;
+      height: 29px;
+    }
   }
 
-  .window__header:before {
-    background-image: url('../../images/windows/header-left-active.png');
-  }
-
-  .window__header:after {
-    background-image: url('../../images/windows/header-right-active.png');
+  .window__icon {
+    position: absolute;
+    top: -22px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: url('../../images/windows/icon.png');
+    background-size: 100% 100%;
   }
 
   .window__caption {
-    color: #fff;
-    text-shadow: 1px 1px #0a1883;
+    position: absolute;
+    top: -22px;
+    left: 3px;
+    font: bold 13px tahoma;
+    letter-spacing: .4px;
   }
 
-  .window__button_minimize,
-  .window__button_maximize,
-  .window__button_close,
+  .window__icon + .window__caption {
+    left: 19px;
+  }
+
+  .window__button {
+    position: absolute;
+    top: -24px;
+    width: 21px;
+    height: 21px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: 1px solid #fff;
+  }
+
+  .window__button_minimize {
+    right: 49px;
+    background: url('../../images/windows/button-minimize.png');
+  }
+
+  .window__button_maximize {
+    right: 26px;
+    background: url('../../images/windows/button-maximize.png');
+  }
+
+  .window__button_restore {
+    background: url('../../images/windows/button-restore.png');
+  }
+
+  .window__button_close {
+    right: 3px;
+    background: url('../../images/windows/button-close.png');
+  }
+
   .window__button_help {
-    background-position: 0 0;
-  }
-}
-
-.window.inactive {
-  border-image: url('../../images/windows/border-inactive.png') 3 stretch stretch;
-  z-index: 0;
-
-  .window__header {
-    background-image: url('../../images/windows/header-inactive.png');
+    right: 26px;
+    background: url('../../images/windows/button-help.png');
   }
 
-  .window__header:before {
-    background-image: url('../../images/windows/header-left-inactive.png');
+  &.maximized {
+    width: 100%;
+    height: calc(100% - 29px);
+    border: none;
+
+    .window__button_restore {
+      right: 26px;
+    }
+
+    .window__header {
+      left: 0;
+      width: 100%;
+
+      &:before {
+        left: -1px;
+      }
+  
+      &:after {
+        right: -1px;
+      }
+    }
   }
 
-  .window__header:after {
-    background-image: url('../../images/windows/header-right-inactive.png');
+  &.minimized {
+    .window__button_restore {
+      right: 49px;
+    }
   }
 
-  .window__caption {
-    color: #d8e4f8;
-    text-shadow: none;
+  &.active {
+    border-image: url('../../images/windows/border-active.png') 3 stretch stretch;
+    z-index: 1;
+
+    .window__header {
+      background-image: url('../../images/windows/header-active.png');
+
+      &:before {
+        background-image: url('../../images/windows/header-left-active.png');
+      }
+
+      &:after {
+        background-image: url('../../images/windows/header-right-active.png');
+      }
+    }
+
+    .window__caption {
+      color: #fff;
+      text-shadow: 1px 1px #0a1883;
+    }
+
+    .window__button_minimize,
+    .window__button_maximize,
+    .window__button_restore,
+    .window__button_close,
+    .window__button_help {
+      background-position: 0 0;
+    }
   }
 
-  .window__button_minimize,
-  .window__button_maximize,
-  .window__button_close,
-  .window__button_help {
-    background-position: -57px 0;
-  }
-}
+  &.inactive {
+    border-image: url('../../images/windows/border-inactive.png') 3 stretch stretch;
+    z-index: 0;
 
-.window.active,
-.window.inactive {
-  .window__button_minimize:hover,
-  .window__button_maximize:hover,
-  .window__button_close:hover,
-  .window__button_help:hover {
-    background-position: -19px 0;
+    .window__header {
+      background-image: url('../../images/windows/header-inactive.png');
+
+      &:before {
+        background-image: url('../../images/windows/header-left-inactive.png');
+      }
+
+      &:after {
+        background-image: url('../../images/windows/header-right-inactive.png');
+      }
+    }
+
+    .window__caption {
+      color: #d8e4f8;
+      text-shadow: none;
+    }
+
+    .window__button_minimize,
+    .window__button_maximize,
+    .window__button_restore,
+    .window__button_close,
+    .window__button_help {
+      background-position: -57px 0;
+    }
   }
 
-  .window__button_minimize:active,
-  .window__button_maximize:active,
-  .window__button_close:active,
-  .window__button_help:active {
-    background-position: -38px 0;
+  &.active,
+  &.inactive {
+    .window__button_minimize:hover,
+    .window__button_maximize:hover,
+    .window__button_restore:hover,
+    .window__button_close:hover,
+    .window__button_help:hover {
+      background-position: -19px 0;
+    }
+
+    .window__button_minimize:active,
+    .window__button_maximize:active,
+    .window__button_restore:active,
+    .window__button_close:active,
+    .window__button_help:active {
+      background-position: -38px 0;
+    }
   }
 }

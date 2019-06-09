@@ -31,7 +31,12 @@ class Window extends Component {
           key={item}
           className={`window__button window__button_${item}`}
           onMouseDown={
-            (event) => {event.button === 0 && this.props[item].bind(this)(this.props.name)}
+            (event) => {
+              const target = event.target;
+              event.button === 0 && document.addEventListener('mouseup', (event) => {
+                target === event.target && this.props[item].bind(this)(this.props.name)
+              }, { once: true });
+            }
           }
         />
       );
@@ -39,7 +44,7 @@ class Window extends Component {
 
     return (
       <div
-        className={`window ${this.props.name} ${(this.props.window.activity.indexOf(this.props.name) === this.props.window.activity.length - 1) ? 'active' : 'inactive'}`}
+        className={`window ${this.props.name} ${(this.props.window.activity.indexOf(this.props.name) === this.props.window.activity.length - 1) ? 'active' : 'inactive'}${(this.props.name === 'solitaire' && this.props.window.solitaire.isMinimized) ? ' minimized' : ''}${(this.props.name === 'solitaire' && this.props.window.solitaire.isMaximized) ? ' maximized' : ''}`}
         onMouseDown={moveAndResize.bind(this)}
         style={{
           width:
@@ -69,7 +74,12 @@ class Window extends Component {
           className="window__header"
           onDoubleClick={
             this.props.name === 'solitaire' ?
-              (() => this.props.maximize.bind(this)(this.props.name))
+              (() => {
+                this.props.window.solitaire.isMaximized ?
+                  this.props.restore.bind(this)()
+                :
+                  !this.props.window.solitaire.isMinimized && this.props.maximize.bind(this)();
+              })
             :
               () => {}
           }
@@ -109,8 +119,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: 'MINIMIZE', payload });
     },
 
-    maximize: (payload) => {
-      dispatch({ type: 'MAXIMIZE', payload });
+    maximize: () => {
+      dispatch({ type: 'MAXIMIZE' });
+    },
+
+    restore: () => {
+      dispatch({ type: 'RESTORE' });
     },
 
     help: () => {

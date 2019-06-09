@@ -77,23 +77,61 @@ export default function window(state = initialState, action) {
       return newState;
     }
 
-    case 'MAXIMIZE': {
-      const window = action.payload;
+    case 'MINIMIZE': {
       const newState = { ...state };
-      if (newState[window].isMaximized) {
-        newState[window].style = { ...newState[window].lastStyle };
-        newState[window].lastStyle = null;
-        newState[window].isMaximized = false;
-        return newState;
+      for (let key in newState) {
+        if (key === 'solitaire' || key === 'activity') { continue; }
+        if (newState[key].isShowing) {
+          newState[key].isShowing = false;
+        }
       }
-      newState[window].lastStyle = { ...newState[window].style };
-      newState[window].style = {
-        width: 'calc(100vw - 6px)',
-        height: 'calc(100vh - 32px)',
+
+      newState.solitaire.lastStyle === null && (
+        newState.solitaire.lastStyle = { ...newState.solitaire.style }
+      );
+      newState.solitaire.style = {
+        width: 0,
+        height: 0,
+        left: 0,
+        top: document.documentElement.clientHeight,
+      };
+
+      newState.solitaire.isMaximized && (newState.solitaire.isMaximized = false);
+      newState.solitaire.isMinimized = true;
+      newState.solitaire.buttons = ['restore', 'maximize', 'close'];
+      return newState;
+    }
+
+    case 'MAXIMIZE': {
+      const newState = { ...state };
+      newState.solitaire.lastStyle === null && (newState.solitaire.lastStyle = { ...newState.solitaire.style });
+      newState.solitaire.style = {
+        width: '',
+        height: '',
         left: 0,
         top: 26,
       };
-      newState[window].isMaximized = true;
+
+      newState.solitaire.isMinimized && (newState.solitaire.isMinimized = false);
+      newState.solitaire.isMaximized = true;
+      newState.solitaire.buttons = ['minimize', 'restore', 'close'];
+      return newState;
+    }
+
+    case 'RESTORE': {
+      const newState = { ...state };
+      newState.solitaire.style = { ...newState.solitaire.lastStyle };
+      newState.solitaire.lastStyle = null;
+      newState.solitaire.isMinimized = false;
+      newState.solitaire.isMaximized = false;
+      newState.solitaire.buttons = ['minimize', 'maximize', 'close'];
+
+      newState.activity.forEach((item) => {
+        newState[item].isShowing = true;
+      });
+      newState.activity.splice(newState.activity.indexOf('solitaire'), 1);
+      newState.activity.unshift('solitaire');
+
       return newState;
     }
 

@@ -1,5 +1,3 @@
-
-/** TODO: prevent restore if maximized */
 export default function moveAndResize(event) {
   if (!event.target.classList) {
     return;
@@ -8,11 +6,9 @@ export default function moveAndResize(event) {
   if (
     (
       !event.target.classList.contains('window__button_close')
-    &&
-      !event.target.classList.contains('window__button_help')
+      &&!event.target.classList.contains('window__button_help')
     )
-  &&
-    this.props.window.activity[this.props.window.activity.length - 1] !== this.props.name
+    && this.props.window.activity[this.props.window.activity.length - 1] !== this.props.name
   ) {
     this.props.activate(this.props.name);
   }
@@ -46,13 +42,6 @@ export default function moveAndResize(event) {
   const shiftTop = currentWindow.offsetTop;
 
   const move = (event) => {
-    if (
-      this.props.name === 'solitaire'
-      && this.props.window.solitaire.isMaximized
-    ) {
-      this.props.maximize('solitaire');
-    }
-
     currentWindow.style.left = `${event.pageX - shiftX + shiftLeft}px`;
     currentWindow.style.top = `${event.pageY - shiftY + shiftTop}px`;
   }
@@ -224,6 +213,16 @@ export default function moveAndResize(event) {
     || event.target.classList.contains('window__icon')
     || event.target.classList.contains('window__caption')
   ) {
+    if (
+      this.props.name === 'solitaire'
+      && (
+        this.props.window.solitaire.isMaximized
+        || this.props.window.solitaire.isMinimized
+      )
+    ) {
+      return;
+    }
+    
     document.addEventListener('mousemove', move);
     document.addEventListener('mouseup', drop, { once: true });
   }
