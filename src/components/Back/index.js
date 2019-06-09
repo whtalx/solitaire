@@ -6,7 +6,7 @@ import Button from '../Button';
 class Back extends Component {
   constructor(props) {
     super(props);
-    this.state = { selected: parseInt(this.props.options.back) };
+    this.state = { selected: this.props.options.back };
   }
 
   render() {

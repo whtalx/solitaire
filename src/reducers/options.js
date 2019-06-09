@@ -1,13 +1,45 @@
-let back = localStorage.getItem('cards_back');
-back === null && (back = Math.round(Math.random() * 11));
+const draw = localStorage.getItem('cards_draw') ?
+  localStorage.getItem('cards_draw')
+:
+  'one';
+
+const scoring = localStorage.getItem('scoring_type') ?
+  localStorage.getItem('scoring_type')
+:
+  'standard';
+
+const cumulative = localStorage.getItem('score_cumulative') ?
+  localStorage.getItem('score_cumulative') === 'true'
+:
+  false;
+
+const timed = localStorage.getItem('game_timed') ?
+  localStorage.getItem('game_timed') === 'true'
+:
+  false;
+
+const status = localStorage.getItem('game_statusbar') ?
+  localStorage.getItem('game_statusbar') === 'true'
+:
+  true;
+
+const outline = localStorage.getItem('cards_outline') ?
+  localStorage.getItem('cards_outline') === 'true'
+:
+  false;
+
+const back = localStorage.getItem('cards_back') ?
+  parseInt(localStorage.getItem('cards_back'))
+:
+  Math.round(Math.random() * 11);
 
 const initialState = {
-  draw: 'one',
-  scoring: 'standard',
-  cumulative: false,
-  timed: false,
-  status: true,
-  outline: false,
+  draw,
+  scoring,
+  cumulative,
+  timed,
+  status,
+  outline,
   back
 };
 
@@ -24,37 +56,37 @@ export default function options(state = initialState, action) {
         outline,
       } = action.payload;
 
-      if (draw !== undefined && draw !== newState.draw) {
+      if (draw !== undefined) {
         newState.draw = draw;
+        localStorage.setItem('cards_draw', draw);
       }
-      if (scoring !== undefined && scoring !== newState.scoring) {
+      if (scoring !== undefined) {
         newState.scoring = scoring;
+        localStorage.setItem('scoring_type', scoring);
       }
-      if (cumulative !== undefined && cumulative !== newState.cumulative) {
+      if (cumulative !== undefined) {
         newState.cumulative = cumulative;
+        localStorage.setItem('score_cumulative', cumulative);
       }
-      if (timed !== undefined && timed !== newState.timed) {
+      if (timed !== undefined) {
         newState.timed = timed;
+        localStorage.setItem('game_timed', timed)
       }
-      if (status !== undefined && status !== newState.status) {
+      if (status !== undefined) {
         newState.status = status;
+        localStorage.setItem('game_statusbar', status)
       }
-      if (outline !== undefined && outline !== newState.outline) {
+      if (outline !== undefined) {
         newState.outline = outline;
+        localStorage.setItem('cards_outline', outline);
       }
 
       return newState;
     }
     
     case 'SET_BACK': {
-      const newState = { ...state };
-      const back = action.payload;
-      if (back !== undefined) {
-        newState.back = back;
-        localStorage.setItem('cards_back', back);
-      }
-
-      return newState;
+      localStorage.setItem('cards_back', action.payload);
+      return { ...state, back: action.payload };
     }
 
     default:
