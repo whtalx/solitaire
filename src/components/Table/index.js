@@ -5,33 +5,30 @@ import Deck from './Deck';
 import Waste from './Waste';
 import Tableau from './Tableau';
 import Foundation from './Foundation';
-import handleLeftMouseButton from './scripts/handleLeftMouseButton';
-import handleRightMouseButton from './scripts/handleRightMouseButton';
+import handleMouseDown from './scripts/handleMouseDown';
+import handleDoubleClick from './scripts/handleDoubleClick';
 
-/** TODO: doubleclick fundOne() */
 class Table extends Component {
   constructor(props) {
     super(props);
     this.deck = this.props.deck.bind(this);
     this.drop = this.props.drop.bind(this);
     this.turn = this.props.turn.bind(this);
-    this.fund = this.props.fund.bind(this);
-    this.handleLeftMouseButton = handleLeftMouseButton.bind(this);
-    this.handleRightMouseButton = handleRightMouseButton.bind(this);
-  }
-
-  componentDidMount() {
-    document.addEventListener('mousedown', this.handleLeftMouseButton);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleLeftMouseButton);
+    this.fundOne = this.props.fundOne.bind(this);
+    this.fundAll = this.props.fundAll.bind(this);
+    this.handleMouseDown = handleMouseDown.bind(this);
+    this.handleDoubleClick = handleDoubleClick.bind(this);
   }
 
   render() {
     return (
       <div className="table-wrapper">
-        <div className="table" onContextMenu={this.handleRightMouseButton}>
+        <div
+          className="table"
+          onMouseDown={this.handleMouseDown}
+          onContextMenu={() => { this.fundAll() }}
+          onDoubleClick={this.handleDoubleClick}
+        >
           <Deck deck={this.props.cards.deck} back={this.props.options.back} />
           <Waste waste={this.props.cards.waste} quantity={this.props.options.draw} />
           <Foundation foundation={this.props.cards.foundation} />
@@ -52,11 +49,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     deck: (quantity) => {
-      if (quantity === 'one') {
-        dispatch({ type: 'DRAW_ONE' });
-      } else if (quantity === 'three') {
-        dispatch({ type: 'DRAW_THREE' });
-      }
+      quantity === 'one' && dispatch({ type: 'DRAW_ONE' });
+      quantity === 'three' && dispatch({ type: 'DRAW_THREE' });
     },
 
     drop: (payload) => {
@@ -67,8 +61,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: 'TURN', payload });
     },
 
-    fund: () => {
-      dispatch({ type: 'FUND' });
+    fundOne: (payload) => {
+      dispatch({ type: 'FUND_ONE', payload });
+    },
+
+    fundAll: () => {
+      dispatch({ type: 'FUND_ALL' });
     },
   };
 }

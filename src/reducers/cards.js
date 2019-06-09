@@ -111,7 +111,27 @@ export default function cards(state = initialize(), action) {
       return newState;
     }
 
-    case 'FUND': {
+    case 'FUND_ONE': {
+      const newState = { ...state };
+      let card;
+      if (Number.isFinite(action.payload.parent_index)) {
+        card = newState[action.payload.parent][action.payload.parent_index][action.payload.index];
+      } else {
+        card = newState[action.payload.parent][action.payload.index];
+      }
+      const foundationIndex = canFundIt(card, newState.foundation);
+      if (Number.isFinite(foundationIndex)) {
+        if (Number.isFinite(action.payload.parent_index)) {
+          newState.foundation[foundationIndex].push(newState[action.payload.parent][action.payload.parent_index].pop());
+        } else {
+          newState.foundation[foundationIndex].push(newState[action.payload.parent].pop());
+        }
+      }
+
+      return newState;
+    }
+
+    case 'FUND_ALL': {
       const newState = { ...state };
 
       whileLoop:

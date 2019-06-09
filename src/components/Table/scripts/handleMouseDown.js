@@ -1,19 +1,13 @@
 import compareCards from './compareCards';
 
-export default function handleLeftMouseButton(event) {
+export default function handleMouseDown(event) {
   if (
-    !event.target.classList
-  ||
     !event.target.classList.contains('card')
-  ||
-    event.button !== 0
-  ||
-    (
+    || event.button !== 0
+    || (
       event.target.attributes.getNamedItem('data-parent')
-    &&
-      event.target.attributes.getNamedItem('data-parent').value === 'waste'
-    &&
-      this.props.cards.waste.length !== parseInt(event.target.attributes.getNamedItem('data-index').value) + 1
+      &&event.target.attributes.getNamedItem('data-parent').value === 'waste'
+      &&this.props.cards.waste.length !== parseInt(event.target.attributes.getNamedItem('data-index').value) + 1
     )
   ) {
     return;
@@ -47,12 +41,9 @@ export default function handleLeftMouseButton(event) {
         const target = targets[key];
         if (
           !target
-        ||
-          !target.classList
-        ||
-          !target.parentElement
-        ||
-          target === card
+          || !target.classList
+          || !target.parentElement
+          || target === card
         ) {
           continue;
         }
@@ -71,8 +62,7 @@ export default function handleLeftMouseButton(event) {
         } else if (
           (
             target.classList.contains('tableau')
-          ||
-            target.classList.contains('foundation')
+            || target.classList.contains('foundation')
           )
         &&
           compareCards(card, target)
