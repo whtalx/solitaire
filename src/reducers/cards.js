@@ -20,6 +20,7 @@ const initialize = () =>{
       [],
       [],
     ],
+    history: [],
   };
 
   deckJSON.cards.forEach((item) => {

@@ -1,10 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import './index.scss';
 
-export default function StatusBar() {
+function StatusBar(props) {
   return (
     <div className="status-bar">
-      <div className="status-bar__text">Score: 1234567890!@#$%^&*()_+-=&nbsp;</div>
+      <div className="description">{props.game.description}</div>
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    game: state.game,
+  };
+}
+
+export default connect(mapStateToProps)(StatusBar);

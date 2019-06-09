@@ -52,6 +52,14 @@
   }
 }
 
+.drop-down-menu.game {
+  width: 135px;
+}
+
+.drop-down-menu.help {
+  width: 192px;
+}
+
 .menu-item {
   line-height: 17px;
   position: relative;
@@ -59,8 +67,13 @@
   height: 17px;
   padding: 0 17px;
   margin: 0;
-}
 
-.menu-item.inactive {
-  color: #a9a699;
+  *:last-child {
+    position: absolute;
+    right: 17px;
+  }
+
+  &.disabled {
+    color: #a9a699;
+  }
 }
