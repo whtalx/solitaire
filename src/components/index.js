@@ -67,7 +67,7 @@ class App extends Component {
       return <Bsod />
     }
     return (
-      <div className="root">
+      <div className={`root${this.props.window.solitaire.isShowing ? (this.props.window.solitaire.cursor ? ` ${this.props.window.solitaire.cursor}` : '') : ' wait'}`}>
         {this.props.window.solitaire.isShowing &&
         <Window
           name="solitaire"

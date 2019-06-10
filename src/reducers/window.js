@@ -9,9 +9,11 @@ const initialState = {
       left: null,
       top: null,
     },
+    cursor: null,
     lastStyle: null,
     isMinimized: false,
     isMaximized: false,
+    isResizing: false,
   },
 
   back: {
@@ -135,6 +137,12 @@ export default function window(state = initialState, action) {
       return newState;
     }
 
+    case 'START_RESIZING': {
+      const newState = { ...state };
+      newState.solitaire.isResizing = true;
+      return newState;
+    }
+
     case 'RESIZE': {
       const newState = { ...state };
       const { top, left, width, height } = action.payload;
@@ -142,6 +150,12 @@ export default function window(state = initialState, action) {
       Number.isFinite(height) && (newState.solitaire.style.height = height);
       Number.isFinite(left) && (newState.solitaire.style.left = left);
       Number.isFinite(top) && (newState.solitaire.style.top = top);
+      return newState;
+    }
+
+    case 'END_RESIZING': {
+      const newState = { ...state };
+      newState.solitaire.isResizing = false;
       return newState;
     }
 
@@ -179,6 +193,18 @@ export default function window(state = initialState, action) {
         }
         newState.activity.push(action.payload);
       }
+      return newState;
+    }
+
+    case 'CURSOR': {
+      const newState = { ...state };
+
+      if (action.payload) {
+        newState.solitaire.cursor = action.payload;
+      } else {
+        newState.solitaire.cursor = null;
+      }
+
       return newState;
     }
 

@@ -99,11 +99,11 @@
       width: 100%;
 
       &:before {
-        left: -1px;
+        left: 0;
       }
   
       &:after {
-        right: -1px;
+        right: 0;
       }
     }
   }

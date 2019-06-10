@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './index.scss';
 import moveAndResize from './scripts/moveAndResize';
 import resizeCursors from './scripts/resizeCursors';
-import { connect } from 'react-redux';
 
 class Window extends Component {
   constructor(props) {
     super(props);
-    if (this.props.name === 'solitaire') {
-      this.state = {
-        resize: null,
-      };
-      this.resizeCursors = resizeCursors.bind(this);
-    }
-  }
 
-  componentDidMount() {
-    this.resizeCursors && document.addEventListener('mousemove', this.resizeCursors);
-  }
+    this.handleMouseMove = this.props.name === 'solitaire' ? 
+      resizeCursors.bind(this)
+    :
+      null;
 
-  componentWillUnmount() {
-    this.resizeCursors && document.removeEventListener('mousemove', this.resizeCursors);
+    this.handleMouseLeave = this.props.name === 'solitaire' ? 
+      () => {
+        (this.props.window.solitaire.cursor && !this.props.window.solitaire.isResizing) && this.props.cursor()
+      }
+    :
+      null;
   }
 
   render() {
@@ -46,6 +44,8 @@ class Window extends Component {
       <div
         className={`window ${this.props.name} ${(this.props.window.activity.indexOf(this.props.name) === this.props.window.activity.length - 1) ? 'active' : 'inactive'}${(this.props.name === 'solitaire' && this.props.window.solitaire.isMinimized) ? ' minimized' : ''}${(this.props.name === 'solitaire' && this.props.window.solitaire.isMaximized) ? ' maximized' : ''}`}
         onMouseDown={moveAndResize.bind(this)}
+        onMouseMove={this.handleMouseMove}
+        onMouseLeave={this.handleMouseLeave}
         style={{
           width:
             Number.isFinite(window.style.width) ?
@@ -111,8 +111,16 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: 'MOVE', payload });
     },
 
+    startResizing: () => {
+      dispatch({ type: 'START_RESIZING' });
+    },
+
     resize: (payload) => {
       dispatch({ type: 'RESIZE', payload });
+    },
+
+    endResizing: () => {
+      dispatch({ type: 'END_RESIZING' });
     },
 
     minimize: (payload) => {
@@ -137,6 +145,10 @@ const mapDispatchToProps = (dispatch) => {
 
     activate: (payload) => {
       dispatch({ type: 'ACTIVATE', payload });
+    },
+
+    cursor: (payload) => {
+      dispatch({ type: 'CURSOR', payload });
     },
   };
 }
