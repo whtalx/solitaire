@@ -3,15 +3,15 @@ import './index.scss';
 
 export default function Card(props) {
   const draw = {
-    2: 'second',
-    3: 'third'
+    2: 'center',
+    3: 'door'
   }
   const status =  {
     ok: 'ok',
     notok: 'notok',
     empty: 'empty',
     downturned: `closed back-${props.back}`,
-    upturned: `opened ${props.value} ${props.suit}${draw[props.draw] ? ` draw-${draw[props.draw]}` : '' }`
+    upturned: `opened ${props.value} ${props.suit}${draw[props.draw] ? ` ${draw[props.draw]}` : '' }`
   };
   return (
     <div

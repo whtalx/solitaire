@@ -48,33 +48,28 @@ export default function cards(state = initialize(), action) {
       return initialize();
     }
 
-    case 'DRAW_ONE': {
+    case 'DRAW': {
       const newState = { ...state };
-      if (state.deck.length > 0) {
-        newState.waste.push({ ...newState.deck.shift(), status: 'upturned' });
-        return newState;
-      }
-      newState.deck = newState.waste.map((item) => {
-        return { ...item, status: 'downturned' }
-      });
-      newState.waste = [];
-      return newState;
-    }
 
-    case 'DRAW_THREE': {
-      const newState = { ...state };
       if (state.deck.length > 0) {
-        newState.waste = newState.waste.map((item) => {
-          return { ...item, draw: null }
-        });
-        newState.waste.push(...newState.deck.splice(0, 3).map((item, index) => {
-          return { ...item, draw: index + 1, status: 'upturned' }
-        }));
-        return newState;
+        if (action.payload === 'one') {
+          newState.waste.push({ ...newState.deck.shift(), status: 'upturned' });
+          return newState;
+        } else if (action.payload === 'three') {
+          newState.waste = newState.waste.map((item) => {
+            return { ...item, draw: null }
+          });
+          newState.waste.push(...newState.deck.splice(0, 3).map((item, index) => {
+            return { ...item, draw: index + 1, status: 'upturned' }
+          }));
+          return newState;
+        }
       }
+
       newState.deck = newState.waste.map((item) => {
         return { ...item, status: 'downturned' }
       });
+      
       newState.waste = [];
       return newState;
     }

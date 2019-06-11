@@ -8,17 +8,26 @@ class Window extends Component {
   constructor(props) {
     super(props);
 
-    this.handleMouseMove = this.props.name === 'solitaire' ? 
-      resizeCursors.bind(this)
-    :
-      null;
+    if (this.props.name === 'solitaire') {
+      this.handleMouseMove = resizeCursors.bind(this);
 
-    this.handleMouseLeave = this.props.name === 'solitaire' ? 
-      () => {
-        (this.props.window.solitaire.cursor && !this.props.window.solitaire.isResizing) && this.props.cursor()
-      }
-    :
-      null;
+      this.handleMouseLeave = () => {
+          if (
+            this.props.window.solitaire.cursor
+            && !this.props.window.solitaire.isResizing
+          ) {
+            this.props.cursor();
+          }
+        };
+  
+      this.handleDoubleClick = () => {
+        if (this.props.window.solitaire.isMaximized) {
+          this.props.restore.bind(this)()
+        } else if (!this.props.window.solitaire.isMinimized) {
+          this.props.maximize.bind(this)();
+        }
+      };
+    }
   }
 
   render() {
@@ -26,23 +35,42 @@ class Window extends Component {
     const buttons = window.buttons.map((item) => {
       return (
         <div
-          key={item}
+          key={this.props.name + item}
           className={`window__button window__button_${item}`}
           onMouseDown={
             (event) => {
-              const target = event.target;
-              event.button === 0 && document.addEventListener('mouseup', (event) => {
-                target === event.target && this.props[item].bind(this)(this.props.name)
-              }, { once: true });
+              if (this.props.name !== 'restart') {
+                const target = event.target;
+                if (event.button === 0) {
+                  document.addEventListener('mouseup', (event) => {
+                    if (target === event.target) {
+                      this.props[item].bind(this)(this.props.name);
+                    }
+                  }, { once: true });
+                }
+              }
             }
           }
         />
       );
     });
 
+    let status =
+      this.props.window.activity.indexOf(this.props.name) === this.props.window.activity.length - 1 ?
+        'active'
+      :
+        'inactive';
+
+    if (this.props.name === 'solitaire') {
+      this.props.window.solitaire.isMinimized ?
+        status += ' minimized'
+      :
+        this.props.window.solitaire.isMaximized && (status += ' maximized');
+    }
+
     return (
       <div
-        className={`window ${this.props.name} ${(this.props.window.activity.indexOf(this.props.name) === this.props.window.activity.length - 1) ? 'active' : 'inactive'}${(this.props.name === 'solitaire' && this.props.window.solitaire.isMinimized) ? ' minimized' : ''}${(this.props.name === 'solitaire' && this.props.window.solitaire.isMaximized) ? ' maximized' : ''}`}
+        className={`window ${this.props.name} ${status}`}
         onMouseDown={moveAndResize.bind(this)}
         onMouseMove={this.handleMouseMove}
         onMouseLeave={this.handleMouseLeave}
@@ -72,17 +100,7 @@ class Window extends Component {
       >
         <div
           className="window__header"
-          onDoubleClick={
-            this.props.name === 'solitaire' ?
-              (() => {
-                this.props.window.solitaire.isMaximized ?
-                  this.props.restore.bind(this)()
-                :
-                  !this.props.window.solitaire.isMinimized && this.props.maximize.bind(this)();
-              })
-            :
-              () => {}
-          }
+          onDoubleClick={this.handleDoubleClick}
         />
         {
           this.props.name === 'solitaire' ?

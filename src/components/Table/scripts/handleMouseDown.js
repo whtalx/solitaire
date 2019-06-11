@@ -6,8 +6,8 @@ export default function handleMouseDown(event) {
     || event.button !== 0
     || (
       event.target.attributes.getNamedItem('data-parent')
-      &&event.target.attributes.getNamedItem('data-parent').value === 'waste'
-      &&this.props.cards.waste.length !== parseInt(event.target.attributes.getNamedItem('data-index').value) + 1
+      && event.target.attributes.getNamedItem('data-parent').value === 'waste'
+      && this.props.cards.waste.length !== parseInt(event.target.attributes.getNamedItem('data-index').value) + 1
     )
   ) {
     return;
@@ -54,7 +54,7 @@ export default function handleMouseDown(event) {
             && !target.parentElement.classList.contains('waste')
             && compareCards(card, target)
           ) {
-            this.drop(compareCards(card, target));
+            this.props.drop.bind(this)(compareCards(card, target));
             break;
           } else {
             continue;
@@ -67,7 +67,7 @@ export default function handleMouseDown(event) {
         &&
           compareCards(card, target)
         ) {
-          this.drop(compareCards(card, target));
+          this.props.drop.bind(this)(compareCards(card, target));
           break;
         }
       }
@@ -76,10 +76,12 @@ export default function handleMouseDown(event) {
     card.style.zIndex = 69;
     document.addEventListener('mouseup', handleMouseUp, { once: true });
     document.addEventListener('mousemove', handleMouseMove);
+
   } else if (card.parentElement.classList.contains('deck')) {
-    this.deck(this.props.options.draw);
+    this.props.draw.bind(this)(this.props.options.draw);
+
   } else if (card.classList.contains('closed')) {
-    this.turn({
+    this.props.turn.bind(this)({
       parent: card.attributes.getNamedItem('data-parent').value.match(/\w/g).join('').match(/\D/g).join(''),
       parent_index: parseInt(card.attributes.getNamedItem('data-parent').value.match(/\d/)),
       index: parseInt(card.attributes.getNamedItem('data-index').value),

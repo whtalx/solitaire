@@ -10,6 +10,7 @@ import Help from './Help';
 import About from './About';
 import Bsod from './Bsod';
 import { connect } from 'react-redux';
+import Restart from './Restart';
 
 class App extends Component {
   constructor(props) {
@@ -81,6 +82,7 @@ class App extends Component {
         {this.props.window.options.isShowing && <Window name="options" children={<Options />} />}
         {this.props.window.help.isShowing && <Window name="help" children={<Help />} />}
         {this.props.window.about.isShowing && <Window name="about" children={<About />} />}
+        {this.props.window.restart.isShowing && <Window name="restart" children={<Restart />} />}
       </div>
     );
   }

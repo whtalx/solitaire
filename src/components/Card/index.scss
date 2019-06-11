@@ -7,25 +7,16 @@
     background: url('../../images/cards/ok.png');
   }
 
-  &.notok {
+  &.not-ok {
     background: url('../../images/cards/notok.png');
   }
 
   &.closed {
     background: url('../../images/cards/back.png');
-
-    .opened,
-    .closed {
-      margin-top: 3px;
-    }
   }
 
   &.opened {
     background: url('../../images/cards/deck.png');
-
-    .opened {
-      margin-top: 15px;
-    }
   }
 
   &.back-0,

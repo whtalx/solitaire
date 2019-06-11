@@ -10,7 +10,7 @@ export default function handleDoubleClick(event) {
   ) {
     return;
   }
-  this.fundOne({
+  this.props.fundOne.bind(this)({
     parent: event.target.attributes.getNamedItem('data-parent').value.match(/\w/g).join('').match(/\D/g).join(''),
     parent_index: parseInt(event.target.attributes.getNamedItem('data-parent').value.match(/\d/)),
     index: parseInt(event.target.attributes.getNamedItem('data-index').value),

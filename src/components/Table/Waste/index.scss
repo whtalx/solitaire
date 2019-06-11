@@ -1,0 +1,35 @@
+.waste {
+  *:nth-child(n+12) {
+    margin: 1px 0 0 2px;
+  }
+
+  *:nth-child(n+22) {
+    margin: 2px 0 0 4px;
+  }
+
+  &.waste.by-three {
+    & > .center {
+      margin: 1px 0 0 14px;
+    }
+
+    & > .door {
+      margin: 2px 0 0 28px;
+    }
+
+    & > .center:nth-child(n+12) {
+      margin: 2px 0 0 16px;
+    }
+    
+    & > .door:nth-child(n+12) {
+      margin: 3px 0 0 30px;
+    }
+
+    & > .center:nth-child(n+22) {
+      margin: 3px 0 0 18px;
+    }
+
+    & > .door:nth-child(n+22) {
+      margin: 4px 0 0 32px;
+    }
+  }
+}

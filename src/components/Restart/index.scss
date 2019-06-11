@@ -1,0 +1,57 @@
+.restart {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .restart-icon {
+    display: inline-block;
+    position: relative;
+    left: 15px;
+    top: 13px;
+    width: 32px;
+    height: 32px;
+    background: url('../../images/windows/error.png')
+  }
+
+  .restart-message {
+    display: inline-block;
+    position: relative;
+    left: 32px;
+    top: 4px;
+    font: 12px tahoma;
+    line-height: 32px;
+  }
+
+  .button_ok {
+    top: 61px;
+    left: 12px;
+
+    &:after {
+      content: 'Yes';
+    }
+  }
+
+  .button_cancel {
+    top: 61px;
+    left: 93px;
+    
+    &:after {
+      content: 'No';
+    }
+  }
+}
+
+.window.restart {
+  .window__button_close {
+    background-position: -57px 0;
+    opacity: .6;
+
+    &:active {
+      background-position: -57px 0;
+    }
+
+    &:hover {
+      background-position: -57px 0;
+    }
+  }
+}

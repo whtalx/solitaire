@@ -1,0 +1,9 @@
+.deck {
+  & > *:nth-child(n+11) {
+    margin: 1px 0 0 2px;
+  }
+
+  & > *:nth-child(n+21) {
+    margin: 2px 0 0 4px;
+  }
+}

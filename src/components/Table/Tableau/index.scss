@@ -1,0 +1,16 @@
+.tableau {
+  .card {
+    &.closed {
+      & > .opened,
+      & > .closed {
+        margin-top: 3px;
+      }
+    }
+
+    &.opened {
+      & > .opened {
+        margin-top: 15px;
+      }
+    }
+  }
+}

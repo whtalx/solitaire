@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import './index.scss';
 import Deck from './Deck';
@@ -8,31 +8,20 @@ import Foundation from './Foundation';
 import handleMouseDown from './scripts/handleMouseDown';
 import handleDoubleClick from './scripts/handleDoubleClick';
 
-class Table extends Component {
-  constructor(props) {
-    super(props);
-    this.deck = this.props.deck.bind(this);
-    this.drop = this.props.drop.bind(this);
-    this.turn = this.props.turn.bind(this);
-    this.fundOne = this.props.fundOne.bind(this);
-    this.fundAll = this.props.fundAll.bind(this);
-    this.handleMouseDown = handleMouseDown.bind(this);
-    this.handleDoubleClick = handleDoubleClick.bind(this);
-  }
-
+class Table extends PureComponent {
   render() {
     return (
       <div className="table-wrapper">
         <div
           className="table"
-          onMouseDown={this.handleMouseDown}
-          onContextMenu={() => { this.fundAll() }}
-          onDoubleClick={this.handleDoubleClick}
+          onMouseDown={handleMouseDown.bind(this)}
+          onContextMenu={this.props.fundAll.bind(this)}
+          onDoubleClick={handleDoubleClick.bind(this)}
         >
-          <Deck deck={this.props.cards.deck} back={this.props.options.back} />
-          <Waste waste={this.props.cards.waste} quantity={this.props.options.draw} />
-          <Foundation foundation={this.props.cards.foundation} />
-          <Tableau tableau={this.props.cards.tableau} back={this.props.options.back} />
+          <Deck />
+          <Waste />
+          <Foundation />
+          <Tableau />
         </div>
       </div>
     );
@@ -48,9 +37,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deck: (quantity) => {
-      quantity === 'one' && dispatch({ type: 'DRAW_ONE' });
-      quantity === 'three' && dispatch({ type: 'DRAW_THREE' });
+    draw: (payload) => {
+      dispatch({ type: 'DRAW', payload });
     },
 
     drop: (payload) => {

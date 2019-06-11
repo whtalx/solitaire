@@ -52,6 +52,18 @@ const initialState = {
     },
   },
 
+  restart: {
+    isShowing: false,
+    caption: 'Solitaire',
+    buttons: ['close'],
+    style: {
+      width: 179,
+      height: 94,
+      left: null,
+      top: null,
+    },
+  },
+
   about: {
     isShowing: false,
     caption: 'About Solitaire',
