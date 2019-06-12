@@ -1,15 +1,14 @@
 export default function moveAndResize(event) {
   if (
-    (
-      !event.target.classList.contains('window__button_close')
-      &&!event.target.classList.contains('window__button_help')
-    )
-    && this.props.window.activity[this.props.window.activity.length - 1] !== this.props.name
+    this.props.window.activity[this.props.window.activity.length - 1] !== this.props.name
   ) {
     this.props.activate(this.props.name);
   }
 
-  if (event.button !== 0) {
+  if (
+    event.button !== 0
+    || this.props.window[this.props.name].isBlocked
+  ) {
     return;
   }
 

@@ -2,6 +2,7 @@ export default function showMenu(event) {
   if (
     event.button !== 0
     || !event.target.classList.contains('menu-category')
+    || this.props.window[this.props.parent].isBlocked
   ) {
     return;
   }

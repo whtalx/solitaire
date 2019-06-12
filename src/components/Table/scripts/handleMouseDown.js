@@ -1,6 +1,12 @@
 import compareCards from './compareCards';
 
 export default function handleMouseDown(event) {
+  if (this.props.window.solitaire.isBlocked) {
+    return;
+  } else if (this.props.window.activity[this.props.window.activity.length - 1] !== 'solitaire') {
+    this.props.activate();
+  }
+  
   if (
     !event.target.classList.contains('card')
     || event.button !== 0

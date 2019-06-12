@@ -47,7 +47,6 @@ class Menu extends PureComponent {
         (className += ' hovered');
         this.props.window[this.props.parent].menu.isShowing && (className += ' showing');
       }
-      console.dir(this.props.window[this.props.parent].menu.hovered === category)
       menu.push(
         <div
           key={`menu-category-${category}`}

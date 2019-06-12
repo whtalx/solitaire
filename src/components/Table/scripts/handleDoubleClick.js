@@ -1,6 +1,7 @@
 export default function handleDoubleClick(event) {
   if (
-    !event.target.classList.contains('opened')
+    this.props.window.solitaire.isBlocked
+    || !event.target.classList.contains('opened')
     || !event.target.attributes.getNamedItem('data-parent')
     || event.target.dataset.parent.match('foundation')
     || (

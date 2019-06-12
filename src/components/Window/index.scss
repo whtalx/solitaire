@@ -116,9 +116,8 @@
 
   &.active {
     border-image: url('../../images/windows/border-active.png') 3 stretch stretch;
-    z-index: 1;
 
-    .window__header {
+    & > .window__header {
       background-image: url('../../images/windows/header-active.png');
 
       &:before {
@@ -146,9 +145,8 @@
 
   &.inactive {
     border-image: url('../../images/windows/border-inactive.png') 3 stretch stretch;
-    z-index: 0;
 
-    .window__header {
+    & > .window__header {
       background-image: url('../../images/windows/header-inactive.png');
 
       &:before {
@@ -160,7 +158,7 @@
       }
     }
 
-    .window__caption {
+    & > .window__caption {
       color: #d8e4f8;
       text-shadow: none;
     }
@@ -174,8 +172,8 @@
     }
   }
 
-  &.active,
-  &.inactive {
+  &.active:not(.blocked):not(.restart),
+  &.inactive:not(.blocked):not(.restart) {
     .window__button_minimize:hover,
     .window__button_maximize:hover,
     .window__button_restore:hover,
@@ -192,4 +190,41 @@
       background-position: -38px 0;
     }
   }
+
+  &.alert {
+    animation: border .2s linear 4;
+  
+    & > .window__header {
+      animation: header .2s linear 4;
+  
+      &:before {
+        animation: headerBefore .2s linear 4;
+      }
+  
+      &:after {
+        animation: headerAfter .2s linear 4;
+      }
+    }
+    
+    @keyframes header {
+      from { background-image: url('../../images/windows/header-active.png'); }
+      to { background-image: url('../../images/windows/header-inactive.png'); }
+    }
+    
+    @keyframes headerBefore {
+      from { background-image: url('../../images/windows/header-left-active.png'); }
+      to { background-image: url('../../images/windows/header-left-inactive.png'); }
+    }
+    
+    @keyframes headerAfter {
+      from { background-image: url('../../images/windows/header-right-active.png'); }
+      to { background-image: url('../../images/windows/header-right-inactive.png'); }
+    }
+  
+    @keyframes border {
+      from { border-image-source: url('../../images/windows/border-active.png'); }
+      to { border-image-source: url('../../images/windows/border-inactive.png'); }
+    }
+  }
 }
+

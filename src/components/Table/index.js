@@ -15,7 +15,11 @@ class Table extends PureComponent {
         <div
           className="table"
           onMouseDown={handleMouseDown.bind(this)}
-          onContextMenu={this.props.fundAll.bind(this)}
+          onContextMenu={() => {
+            if (this.props.window.activity[this.props.window.activity.length - 1] === 'solitaire') {
+              this.props.fundAll();
+            }
+          }}
           onDoubleClick={handleDoubleClick.bind(this)}
         >
           <Deck />
@@ -32,6 +36,7 @@ const mapStateToProps = (state) => {
   return {
     cards: state.cards,
     options: state.options,
+    window: state.window,
   };
 }
 
@@ -55,6 +60,10 @@ const mapDispatchToProps = (dispatch) => {
 
     fundAll: () => {
       dispatch({ type: 'FUND_ALL' });
+    },
+
+    activate: () => {
+      dispatch({ type: 'ACTIVATE', payload: 'solitaire' });
     },
   };
 }

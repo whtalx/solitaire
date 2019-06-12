@@ -8,7 +8,12 @@
  */
 
 export default function resizeCursors(event) {
-  if (this.props.window.solitaire.isResizing) { return; }
+  if (
+    this.props.window[this.props.name].isResizing
+    || this.props.window[this.props.name].isBlocked
+  ) {
+      return;
+    }
 
   let currentWindow = null;
   if (event.target === document.getElementsByClassName('solitaire')[0]) {
@@ -16,7 +21,7 @@ export default function resizeCursors(event) {
   } else if (event.target === document.getElementsByClassName('solitaire')[0].firstElementChild) {
     currentWindow = event.target.offsetParent;
   } else {
-    this.props.window.solitaire.cursor && this.props.cursor();
+    this.props.window[this.props.name].cursor && this.props.cursor();
     return;
   }
 
@@ -175,8 +180,8 @@ export default function resizeCursors(event) {
 
   const cursor = direction(event.pageX, event.pageY);
   if (cursor) {
-    this.props.window.solitaire.cursor !== cursor && this.props.cursor(cursor);
+    this.props.window[this.props.name].cursor !== cursor && this.props.cursor(cursor);
   } else {
-    this.props.window.solitaire.cursor && this.props.cursor();
+    this.props.window[this.props.name].cursor && this.props.cursor();
   }
 }

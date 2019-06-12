@@ -1,6 +1,5 @@
 const initialState = {
   solitaire: {
-    isShowing: true,
     caption: 'Solitaire',
     buttons: ['minimize', 'maximize', 'close'],
     menu: {
@@ -96,27 +95,34 @@ const initialState = {
           },
         },
       },
+
       hovered: null,
       isShowing: false,
     },
+
     status: {
       description: '',
     },
+
     style: {
       width: 585,
       height: 404,
       left: null,
       top: null,
     },
+
     cursor: null,
     lastStyle: null,
-    isMinimized: false,
+    isBlocked: false,
     isMaximized: false,
+    isMinimized: false,
     isResizing: false,
+    isResizable: true,
+    isShowing: true,
   },
 
   back: {
-    isShowing: false,
+    alert: false,
     caption: 'Select Card Back',
     buttons: ['help', 'close'],
     style: {
@@ -125,10 +131,13 @@ const initialState = {
       left: null,
       top: null,
     },
+
+    isBlocking: true,
+    isShowing: false,
   },
 
   options: {
-    isShowing: false,
+    alert: false,
     caption: 'Options',
     buttons: ['help', 'close'],
     style: {
@@ -137,10 +146,13 @@ const initialState = {
       left: null,
       top: null,
     },
+
+    isBlocking: true,
+    isShowing: false,
   },
 
   help: {
-    isShowing: false,
+    alert: false,
     caption: 'Solitaire',
     buttons: ['close'],
     style: {
@@ -149,10 +161,13 @@ const initialState = {
       left: null,
       top: null,
     },
+
+    isBlocking: true,
+    isShowing: false,
   },
 
   restart: {
-    isShowing: false,
+    alert: false,
     caption: 'Solitaire',
     buttons: ['close'],
     style: {
@@ -161,10 +176,13 @@ const initialState = {
       left: null,
       top: null,
     },
+
+    isBlocking: true,
+    isShowing: false,
   },
 
   about: {
-    isShowing: false,
+    alert: false,
     caption: 'About Solitaire',
     buttons: ['close'],
     style: {
@@ -173,6 +191,9 @@ const initialState = {
       left: null,
       top: null,
     },
+
+    isBlocking: true,
+    isShowing: false,
   },
 
   activity: ['solitaire'],
@@ -275,6 +296,17 @@ export default function window(state = initialState, action) {
       if (newState.activity.indexOf('') >= 0) {
         newState.activity.splice(newState.activity.indexOf(''), 1);
       }
+
+      if (
+        action.payload === 'solitaire'
+        && newState.solitaire.isBlocked
+      ) {
+        if (!newState[newState.activity[newState.activity.length - 1]].alert) {
+          newState[newState.activity[newState.activity.length - 1]].alert = true;
+        }
+        return newState;
+      }
+
       newState.activity.splice(newState.activity.indexOf(action.payload), 1);
       newState.activity.push(action.payload);
       return newState;
@@ -282,7 +314,19 @@ export default function window(state = initialState, action) {
 
     case 'DEACTIVATE': {
       const newState = { ...state };
+      if (newState.activity.indexOf('') >= 0) {
+        return newState;
+      }
       newState.activity.push('');
+      return newState;
+    }
+
+    case 'CANCEL_ALERT': {
+      const newState = { ...state };
+      if (newState[action.payload].alert) {
+        newState[action.payload].alert = false;
+      }
+      
       return newState;
     }
 
@@ -296,7 +340,10 @@ export default function window(state = initialState, action) {
           }
         }
         return newState;
+      } else if (newState[action.payload].isBlocking) {
+        newState.solitaire.isBlocked = false;
       }
+
       newState[action.payload].isShowing = false;
       newState[action.payload].style.left = null;
       newState[action.payload].style.top = null;
@@ -307,6 +354,14 @@ export default function window(state = initialState, action) {
     case 'SHOW_WINDOW': {
       const newState = { ...state };
       if(newState[action.payload]) {
+
+        if (
+          action.payload !== 'solitaire'
+          && newState[action.payload].isBlocking
+        ) {
+          newState.solitaire.isBlocked = true;
+        }
+
         newState[action.payload].isShowing = true;
         if (newState.activity.includes(action.payload)) {
           newState.activity.splice(newState.activity.indexOf(action.payload), 1);

@@ -8,23 +8,24 @@ class Window extends Component {
   constructor(props) {
     super(props);
 
-    if (this.props.name === 'solitaire') {
+    if (this.props.window[this.props.name].isResizable) {
       this.handleMouseMove = resizeCursors.bind(this);
 
       this.handleMouseLeave = () => {
           if (
-            this.props.window.solitaire.cursor
-            && !this.props.window.solitaire.isResizing
+            this.props.window[this.props.name].cursor
+            && !this.props.window[this.props.name].isResizing
           ) {
             this.props.cursor();
           }
         };
   
       this.handleDoubleClick = () => {
-        if (this.props.window.solitaire.isMaximized) {
-          this.props.restore.bind(this)()
-        } else if (!this.props.window.solitaire.isMinimized) {
-          this.props.maximize.bind(this)();
+        if (this.props.window[this.props.name].isBlocked) { return; }
+        if (this.props.window[this.props.name].isMaximized) {
+          this.props.restore.bind(this)(this.props.name)
+        } else if (!this.props.window[this.props.name].isMinimized) {
+          this.props.maximize.bind(this)(this.props.name);
         }
       };
     }
@@ -39,7 +40,7 @@ class Window extends Component {
           className={`window__button window__button_${item}`}
           onMouseDown={
             (event) => {
-              if (this.props.name !== 'restart') {
+              if (this.props.name !== 'restart' && !this.props.window[this.props.name].isBlocked) {
                 const target = event.target;
                 if (event.button === 0) {
                   document.addEventListener('mouseup', (event) => {
@@ -55,22 +56,31 @@ class Window extends Component {
       );
     });
 
-    let status =
+    let className = `window ${this.props.name}`
       this.props.window.activity.indexOf(this.props.name) === this.props.window.activity.length - 1 ?
-        'active'
+        className += ' active'
       :
-        'inactive';
+        className += ' inactive';
 
-    if (this.props.name === 'solitaire') {
-      this.props.window.solitaire.isMinimized ?
-        status += ' minimized'
+    if (this.props.window[this.props.name].isResizable) {
+      this.props.window[this.props.name].isMinimized ?
+        className += ' minimized'
       :
-        this.props.window.solitaire.isMaximized && (status += ' maximized');
+        this.props.window[this.props.name].isMaximized && (className += ' maximized');
     }
+
+    if (this.props.window[this.props.name].alert) {
+      className += ' alert'
+      setTimeout(() => {
+        this.props.window[this.props.name].alert && this.props.cancelAlert(this.props.name);
+      }, 800)
+    }
+
+    this.props.window[this.props.name].isBlocked && (className += ' blocked');
 
     return (
       <div
-        className={`window ${this.props.name} ${status}`}
+        className={className}
         onMouseDown={moveAndResize.bind(this)}
         onMouseMove={this.handleMouseMove}
         onMouseLeave={this.handleMouseLeave}
@@ -167,6 +177,10 @@ const mapDispatchToProps = (dispatch) => {
 
     cursor: (payload) => {
       dispatch({ type: 'CURSOR', payload });
+    },
+
+    cancelAlert: (payload) => {
+      dispatch({ type: 'CANCEL_ALERT', payload });
     },
   };
 }

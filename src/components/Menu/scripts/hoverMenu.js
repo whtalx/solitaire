@@ -1,5 +1,11 @@
 export default function hoverMenu(event) {
-  if (!event.target.classList.contains('menu-category')) { return; }
+  if (
+    !event.target.classList.contains('menu-category')
+    || this.props.window[this.props.parent].isBlocked
+  ) {
+    return;
+  }
+
   const item = event.target.firstChild.textContent.toLowerCase();
   switch (event.type) {
     case 'mouseenter': {
