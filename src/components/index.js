@@ -24,17 +24,32 @@ class App extends Component {
   handleKeyDown(event) {
     if (
       event.which === this.state.key
-      || (event.which !== 112 && event.which !== 113)
+      || this.props.window.activity[this.props.window.activity.length - 1] !== 'solitaire'
+      || this.props.window.solitaire.isMinimized
+      || (
+        event.which !== 112     //F1
+        && event.which !== 113  //F2
+        && event.which !== 17   //ctrl
+        && event.which !== 65   //A
+        )
     ) {
       return;
     }
+    console.log(event.which)
 
-    this.setState({ key: event.which });
     if (event.which === 112) {
       this.props.help();
     } else if (event.which === 113) {
       this.props.deal();
+    } else if (event.which === 17) {
+    } else if (
+      event.which === 65
+      && this.state.key === 17
+    ) {
+      this.props.fundAll();
     }
+
+    this.setState({ key: event.which });
   }
 
   handleKeyUp(event) {
@@ -45,16 +60,24 @@ class App extends Component {
     event.preventDefault();
   }
 
+  handleMouseDown(event) {
+    if (event.target.classList.contains('root')) {
+      this.props.deactivate();
+    }
+  }
+
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown.bind(this));
     document.addEventListener('keyup', this.handleKeyUp.bind(this));
     document.addEventListener('contextmenu', this.handleRightMouseButton);
+    document.addEventListener('mousedown', this.handleMouseDown.bind(this));
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown.bind(this));
     document.removeEventListener('keyup', this.handleKeyUp.bind(this));
     document.removeEventListener('contextmenu', this.handleRightMouseButton);
+    document.removeEventListener('mousedown', this.handleMouseDown.bind(this));
   }
 
   render() {
@@ -103,6 +126,14 @@ const mapDispatchToProps = (dispatch) => {
 
     help: () => {
       dispatch({ type: 'SHOW_WINDOW', payload: 'help' });
+    },
+
+    deactivate: () => {
+      dispatch({ type: 'DEACTIVATE' });
+    },
+
+    fundAll: () => {
+      dispatch({ type: 'FUND_ALL' });
     },
   };
 }

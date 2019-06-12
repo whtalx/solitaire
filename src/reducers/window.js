@@ -173,8 +173,17 @@ export default function window(state = initialState, action) {
 
     case 'ACTIVATE': {
       const newState = { ...state };
+      if (newState.activity.indexOf('') >= 0) {
+        newState.activity.splice(newState.activity.indexOf(''), 1);
+      }
       newState.activity.splice(newState.activity.indexOf(action.payload), 1);
       newState.activity.push(action.payload);
+      return newState;
+    }
+
+    case 'DEACTIVATE': {
+      const newState = { ...state };
+      newState.activity.push('');
       return newState;
     }
 
