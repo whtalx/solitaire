@@ -8,16 +8,14 @@ export default function showMenu(event) {
 
   const handleMouseDown = (event) => {
     if (
-      event.target.classList.contains('menu-item')
-      && !event.target.classList.contains('disabled')
+      event.target.classList.contains('drop-down-menu')
+      || (
+        event.target.tagName === 'HR'
+        && event.target.offsetParent
+        && event.target.offsetParent.classList.contains('drop-down-menu')
+      )
     ) {
-      if (event.button === 0) {
-        this.props[event.target.dataset.func]();
-        this.setState({ hovered: null, isShowing: false });
-        document.removeEventListener('mousedown', handleMouseDown);
-      } else {
-        return;
-      }
+      return;
     } else if (
       event.target.tagName === 'SPAN'
       && event.target.offsetParent
@@ -25,22 +23,33 @@ export default function showMenu(event) {
     ) {
       if (event.button === 0) {
         this.props[event.target.offsetParent.dataset.func]();
-        this.setState({ hovered: null, isShowing: false });
-        document.removeEventListener('mousedown', handleMouseDown);
       } else {
         return;
       }
-    } else if (event.target.classList.contains('disabled')) {
-      return;
-    } else if (!event.target.classList.contains('menu-category')) {
-      this.setState({ hovered: null, isShowing: false });
-      document.removeEventListener('mousedown', handleMouseDown);
+    } else if (event.target.classList.contains('menu-item')) {
+      if (
+        event.button === 0
+        && !event.target.classList.contains('disabled')
+      ) {
+        this.props[event.target.dataset.func]();
+      } else {
+        return;
+      }
     }
+    
+    this.props.showMenu({
+      window: this.props.parent,
+      show: false,
+    });
+    document.removeEventListener('mousedown', handleMouseDown);
   }
 
-  this.setState({ isShowing: !this.state.isShowing });
+  this.props.showMenu({
+    window: this.props.parent,
+    show: !this.props.window[this.props.parent].menu.isShowing,
+  });
 
-  if (!this.state.isShowing) {
+  if (this.props.window[this.props.parent].menu.isShowing) {
     document.addEventListener('mousedown', handleMouseDown);
   } else {
     document.removeEventListener('mousedown', handleMouseDown);

@@ -3,6 +3,105 @@ const initialState = {
     isShowing: true,
     caption: 'Solitaire',
     buttons: ['minimize', 'maximize', 'close'],
+    menu: {
+      categories: {
+        game: {
+          deal: {
+            id: 0,
+            type: 'menu-item',
+            description: 'Deal a new game',
+            function: 'deal',
+            text: 'Deal F2',
+          },
+
+          break_first: {
+            id: 1,
+            type: 'break',
+          },
+
+          undo: {
+            id: 2,
+            type: 'menu-item',
+            description: 'Undo last action',
+            function: 'undo',
+            text: 'Undo',
+          },
+
+          back: {
+            id: 3,
+            type: 'menu-item',
+            description: 'Choose new deck back',
+            function: 'back',
+            text: 'Deck...',
+          },
+
+          options: {
+            id: 4,
+            type: 'menu-item',
+            description: 'Change Solitaire options',
+            function: 'options',
+            text: 'Options...',
+          },
+
+          break_second: {
+            id: 5,
+            type: 'break',
+          },
+
+          exit: {
+            id: 6,
+            type: 'menu-item',
+            description: 'Exit Solitaire',
+            function: 'exit',
+            text: 'Exit',
+          },
+        },
+
+        help: {
+          contents: {
+            id: 0,
+            type: 'menu-item',
+            description: 'Index of Solitaire help topics',
+            function: 'help',
+            text: 'Contents F1',
+          },
+
+          search: {
+            id: 1,
+            type: 'menu-item',
+            description: 'Search the Help Engine for a specific topic',
+            function: 'help',
+            text: 'Search for Help on...',
+          },
+
+          howTo: {
+            id: 2,
+            type: 'menu-item',
+            description: 'Help using help',
+            function: 'help',
+            text: 'How to Use Help',
+          },
+
+          break_first: {
+            id: 3,
+            type: 'break',
+          },
+
+          about: {
+            id: 4,
+            type: 'menu-item',
+            description: 'About Solitaire',
+            function: 'about',
+            text: 'About Solitaire',
+          },
+        },
+      },
+      hovered: null,
+      isShowing: false,
+    },
+    status: {
+      description: '',
+    },
     style: {
       width: 585,
       height: 404,
@@ -225,6 +324,42 @@ export default function window(state = initialState, action) {
       } else {
         newState.solitaire.cursor = null;
       }
+
+      return newState;
+    }
+
+    case 'SHOW_MENU': {
+      const newState = { ...state };
+
+      if (action.payload.show) {
+        newState[action.payload.window].menu.isShowing = true;
+      } else {
+        newState[action.payload.window].menu.isShowing = false;
+        newState[action.payload.window].menu.hovered = null;
+        newState[action.payload.window].status.description = '';
+      }
+
+      return newState;
+    }
+
+    case 'HOVER_MENU': {
+      const newState = { ...state };
+
+      action.payload.hover ?
+        newState[action.payload.window].menu.hovered = action.payload.hover
+      :
+        newState[action.payload.window].menu.hovered = null;
+
+      return newState;
+    }
+
+    case 'DESCRIBE_MENU': {
+      const newState = { ...state };
+
+      action.payload.describe ?
+        newState[action.payload.window].status.description = newState[action.payload.window].menu.categories[newState[action.payload.window].menu.hovered][action.payload.describe].description
+        :
+        newState[action.payload.window].status.description = '';
 
       return newState;
     }

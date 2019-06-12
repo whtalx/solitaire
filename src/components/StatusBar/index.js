@@ -5,14 +5,14 @@ import './index.scss';
 function StatusBar(props) {
   return (
     <div className="status-bar">
-      <div className="description">{props.game.description}</div>
+      <div className="description">{props.window.solitaire.status.description}</div>
     </div>
   );
 }
 
 const mapStateToProps = (state) => {
   return {
-    game: state.game,
+    window: state.window,
   };
 }
 

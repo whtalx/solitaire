@@ -1,7 +1,6 @@
 const initialState = {
   score: 0,
-  time: 0,  
-  description: '',
+  time: 0,
   rollThrough: true,
   scoring: {
     standard: {
@@ -32,9 +31,6 @@ const initialState = {
 
 export default function game(state = initialState, action) {
   switch (action.type) {
-    case 'MENU_DESCRIPTION': {
-      return { ...state, description: action.payload };
-    }
 
     default:
       return state;

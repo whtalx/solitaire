@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './index.scss';
 import Menu from './Menu';
-import Table from './Table';
-import Window from './Window';
-import StatusBar from './StatusBar';
 import Back from './Back';
-import Options from './Options';
 import Help from './Help';
-import About from './About';
 import Bsod from './Bsod';
-import { connect } from 'react-redux';
+import Table from './Table';
+import About from './About';
+import Window from './Window';
+import Options from './Options';
 import Restart from './Restart';
+import StatusBar from './StatusBar';
 
 class App extends Component {
   constructor(props) {
@@ -35,7 +35,6 @@ class App extends Component {
     ) {
       return;
     }
-    console.log(event.which)
 
     if (event.which === 112) {
       this.props.help();
@@ -81,14 +80,12 @@ class App extends Component {
   }
 
   render() {
+    if (this.state.bsod) { return <Bsod /> }
     if (!this.props.window.solitaire.isShowing) {
-      if (window.history.length > 1) {
-        window.history.back();
-      }
-      setTimeout(() => { this.setState({ bsod: true })}, 2000);
-    }
-    if (this.state.bsod) {
-      return <Bsod />
+      window.history.length > 1 ?
+        window.history.back()
+      :
+        setTimeout(() => { this.setState({ bsod: true })}, 2000);
     }
     return (
       <div className={`root${this.props.window.solitaire.isShowing ? (this.props.window.solitaire.cursor ? ` ${this.props.window.solitaire.cursor}` : '') : ' wait'}`}>
@@ -96,7 +93,7 @@ class App extends Component {
         <Window
           name="solitaire"
           children={[
-            <Menu key="menu" />,
+            <Menu key="menu" parent="solitaire" />,
             <Table key="table" />,
             this.props.options.status ? <StatusBar key="statusBar" /> : '',
           ]}

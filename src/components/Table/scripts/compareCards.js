@@ -6,15 +6,15 @@ export default function compareCards(firstCard, secondCard) {
     const first = {
       value: firstCard.classList[2],
       suit: firstCard.classList[3],
-      parent: firstCard.attributes.getNamedItem('data-parent').value,
-      index: parseInt(firstCard.attributes.getNamedItem('data-index').value),
+      parent: firstCard.dataset.parent,
+      index: parseInt(firstCard.dataset.index),
     };
     if (secondCard.classList.value.match(/card opened/)) {
       const second = {
         value: secondCard.classList[2],
         suit: secondCard.classList[3],
-        parent: secondCard.attributes.getNamedItem('data-parent').value,
-        index: parseInt(secondCard.attributes.getNamedItem('data-index').value),
+        parent: secondCard.dataset.parent,
+        index: parseInt(secondCard.dataset.index),
       };
       if (
         valuesComparison[first.value] === valuesComparison[second.value] + 1

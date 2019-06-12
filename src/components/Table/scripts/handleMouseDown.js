@@ -6,8 +6,8 @@ export default function handleMouseDown(event) {
     || event.button !== 0
     || (
       event.target.attributes.getNamedItem('data-parent')
-      && event.target.attributes.getNamedItem('data-parent').value === 'waste'
-      && this.props.cards.waste.length !== parseInt(event.target.attributes.getNamedItem('data-index').value) + 1
+      && event.target.dataset.parent === 'waste'
+      && this.props.cards.waste.length !== parseInt(event.target.dataset.index) + 1
     )
   ) {
     return;
@@ -82,9 +82,9 @@ export default function handleMouseDown(event) {
 
   } else if (card.classList.contains('closed')) {
     this.props.turn.bind(this)({
-      parent: card.attributes.getNamedItem('data-parent').value.match(/\w/g).join('').match(/\D/g).join(''),
-      parent_index: parseInt(card.attributes.getNamedItem('data-parent').value.match(/\d/)),
-      index: parseInt(card.attributes.getNamedItem('data-index').value),
+      parent: card.dataset.parent.match(/\w/g).join('').match(/\D/g).join(''),
+      parent_index: parseInt(card.dataset.parent.match(/\d/)),
+      index: parseInt(card.dataset.index),
     });
   }
 }
