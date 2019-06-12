@@ -95,7 +95,7 @@ class App extends Component {
           children={[
             <Menu key="menu" parent="solitaire" />,
             <Table key="table" />,
-            this.props.options.status ? <StatusBar key="statusBar" /> : '',
+            this.props.game.options.status ? <StatusBar key="statusBar" /> : '',
           ]}
         />}
         {this.props.window.back.isShowing && <Window name="back" children={<Back />} />}
@@ -110,7 +110,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    options: state.options,
+    game: state.game,
     window: state.window,
   };
 }

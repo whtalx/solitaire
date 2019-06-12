@@ -7,7 +7,7 @@ import Button from '../Button';
 class Options extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...this.props.options };
+    this.state = { ...this.props.game.options };
   }
 
   render() {
@@ -104,7 +104,7 @@ class Options extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    options: state.options,
+    game: state.game,
   };
 }
 

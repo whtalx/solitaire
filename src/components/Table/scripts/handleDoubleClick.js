@@ -6,7 +6,7 @@ export default function handleDoubleClick(event) {
     || event.target.dataset.parent.match('foundation')
     || (
       event.target.dataset.parent === 'waste'
-      && this.props.cards.waste.length !== parseInt(event.target.dataset.index) + 1
+      && this.props.game.cards.waste.length !== parseInt(event.target.dataset.index) + 1
     )
   ) {
     return;

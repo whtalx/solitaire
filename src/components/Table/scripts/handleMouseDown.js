@@ -13,7 +13,7 @@ export default function handleMouseDown(event) {
     || (
       event.target.attributes.getNamedItem('data-parent')
       && event.target.dataset.parent === 'waste'
-      && this.props.cards.waste.length !== parseInt(event.target.dataset.index) + 1
+      && this.props.game.cards.waste.length !== parseInt(event.target.dataset.index) + 1
     )
   ) {
     return;
@@ -83,9 +83,11 @@ export default function handleMouseDown(event) {
     document.addEventListener('mouseup', handleMouseUp, { once: true });
     document.addEventListener('mousemove', handleMouseMove);
 
-  } else if (card.parentElement.classList.contains('deck')) {
-    this.props.draw.bind(this)(this.props.options.draw);
-
+  } else if (
+    card.parentElement.classList.contains('deck')
+    && !card.classList.contains('not-ok')
+  ) {
+    this.props.draw.bind(this)(this.props.game.options.draw);
   } else if (card.classList.contains('closed')) {
     this.props.turn.bind(this)({
       parent: card.dataset.parent.match(/\w/g).join('').match(/\D/g).join(''),

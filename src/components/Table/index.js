@@ -34,8 +34,7 @@ class Table extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    cards: state.cards,
-    options: state.options,
+    game: state.game,
     window: state.window,
   };
 }

@@ -5,7 +5,7 @@ import makeCard from '../scripts/makeCard';
 
 class Waste extends PureComponent {
   render() {
-    const waste = this.props.cards.waste.map((item, index) => {
+    const waste = this.props.game.cards.waste.map((item, index) => {
       return makeCard({
         ...item,
         parent: 'waste',
@@ -13,7 +13,7 @@ class Waste extends PureComponent {
       });
     })
     return(
-      <div className={`waste by-${this.props.options.draw}`}>
+      <div className={`waste by-${this.props.game.options.draw}`}>
         {waste}
       </div>
     );
@@ -22,8 +22,7 @@ class Waste extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    cards: state.cards,
-    options: state.options,
+    game: state.game,
   };
 }
 

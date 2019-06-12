@@ -8,7 +8,7 @@ export default function Card(props) {
   }
   const status =  {
     ok: 'ok',
-    notok: 'notok',
+    notok: 'not-ok',
     empty: 'empty',
     downturned: `closed back-${props.back}`,
     upturned: `opened ${props.value} ${props.suit}${draw[props.draw] ? ` ${draw[props.draw]}` : '' }`

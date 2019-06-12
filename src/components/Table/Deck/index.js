@@ -5,17 +5,20 @@ import makeCard from '../scripts/makeCard';
 
 class Deck extends PureComponent {
   render() {
-    const deck = this.props.cards.deck.length ?
-      this.props.cards.deck.map((item, index) => {
+    const deck = this.props.game.cards.deck.length ?
+      this.props.game.cards.deck.map((item, index) => {
         return makeCard({
           ...item,
           parent: 'deck',
           index: index,
-          back: this.props.cards.back,
+          back: this.props.game.options.back,
         });
       })
     :
-    makeCard({ status: 'ok' });
+      this.props.game.status.rollThrough ?
+        makeCard({ status: 'ok' })
+      :
+        makeCard({ status: 'notok' });
 
     return (
       <div className="deck">
@@ -27,7 +30,7 @@ class Deck extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    cards: state.cards,
+    game: state.game,
   };
 }
 

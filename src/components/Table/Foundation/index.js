@@ -5,7 +5,7 @@ import makeCard from '../scripts/makeCard';
 
 class Foundation extends PureComponent {
   render() {
-    return this.props.cards.foundation.map((item, index) => {
+    return this.props.game.cards.foundation.map((item, index) => {
       return (
         <div key={`f-${index}`} className={`foundation foundation-${index}`}>
           {
@@ -27,7 +27,7 @@ class Foundation extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    cards: state.cards,
+    game: state.game,
   };
 }
 
