@@ -85,13 +85,13 @@ class Options extends Component {
             type="ok"
             selected 
             click={() => {
+              this.props.set(this.state);
               if (
                 this.props.scoring !== this.state.scoring
                 || this.props.draw !== this.state.draw
               ) {
                 this.props.deal();
               }
-              this.props.set(this.state);
               this.props.close();
             }}
           />

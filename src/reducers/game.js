@@ -1,148 +1,41 @@
-import deckJSON from '../data/deck.json';
-import valuesComparison from '../data/valuesComparison.json';
+import canFundIt from './scripts/canFundIt';
+import getOptions from './scripts/getOptions';
+import getCards from './scripts/getCards';
+import getScore from './scripts/getScore';
+import scoreFactor from './scripts/scoreFactor';
 
-const canFundIt = (card, array) => {
-  for (let i = 0; i < array.length; i++) {
-    if (
-      array[i].length === 0
-      && card.value === 'ace'
-    ) {
-      return i;
-    } else if (
-      array[i].length > 0
-      && card.suit === array[i][array[i].length - 1].suit
-      && valuesComparison[card.value] === valuesComparison[array[i][array[i].length - 1].value] + 1
-    ) {
-      return i;
-    }
-  }
-  return false;
-}
-
-const getCards = () =>{
-  const cards = {
-    deck: [],
-    waste: [],
-    foundation: [
-      [],
-      [],
-      [],
-      [],
-    ],
-    tableau: [
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-    ],
-  };
-
-  deckJSON.cards.forEach((item) => {
-    cards.deck.push({
-      code: item.code,
-      value: item.value.toLowerCase(),
-      suit: item.suit.toLowerCase(),
-      status: 'downturned',
-    });
-  });
-  
-  for (let i = 1; i <= 7; i++) {
-    for (let j = 1; j <= i; j++) {
-      cards.tableau[i - 1].push({
-        ...cards.deck.pop(),
-        status: j === i ? 'upturned' : 'downturned',
-      });
-    }
-  }
-
-  return cards;
-}
-
-const getOptions = () => {
-  return {
-    draw: localStorage.getItem('cards_draw') ?
-      localStorage.getItem('cards_draw')
-    :
-      'one',
-
-    scoring: localStorage.getItem('scoring_type') ?
-      localStorage.getItem('scoring_type')
-    :
-      'standard',
-
-    cumulative: localStorage.getItem('score_cumulative') ?
-      localStorage.getItem('score_cumulative') === 'true'
-    :
-      false,
-
-    timed: localStorage.getItem('game_timed') ?
-      localStorage.getItem('game_timed') === 'true'
-    :
-      false,
-
-    status: localStorage.getItem('game_statusbar') ?
-      localStorage.getItem('game_statusbar') === 'true'
-    :
-      true,
-
-    outline: localStorage.getItem('cards_outline') ?
-      localStorage.getItem('cards_outline') === 'true'
-    :
-      false,
-
-    back: localStorage.getItem('cards_back') ?
-      parseInt(localStorage.getItem('cards_back'))
-    :
-      Math.round(Math.random() * 11),
-  };
-}
+const cards = getCards();
+const options = getOptions();
+const score = getScore(options);
 
 const initialState = {
   status: {
-    score: 0,
+    score,
     time: 0,
     bonus: 0,
-    rollThrough: true,
+    rollsCount: 0,
+    rollThrough: !(options.scoring === 'vegas' && options.draw === 'one'),
     history: [],
   },
 
-  scoring: {
-    standard: {
-      start: 0,
-      wasteToTableau: 5,
-      wasteToFoundation: 10,
-      tableauToFoundation: 10,
-      turn: 5,
-      undo: -2,
-      foundationToTableau: -15,
-      recycleWaste: -100,
-      time: -2,
-    },
-  
-    vegas: {
-      start: -52,
-      wasteToTableau: 0,
-      wasteToFoundation: 5,
-      tableauToFoundation: 5,
-      turn: 0,
-      undo: 0,
-      foundationToTableau: -5,
-      recycleWaste: 0,
-      time: 0,
-    },
-  },
-
-  cards: getCards(),
-  options: getOptions(),
+  cards,
+  options,
 };
 
 export default function game(state = initialState, action) {
   switch (action.type) {
     case 'DEAL': {
-      return { ...state, cards: getCards() };
+      const newState = { ...state };
+      newState.cards = getCards();
+      newState.status = {
+        score: getScore(newState.options),
+        time: 0,
+        bonus: 0,
+        rollsCount: 0,
+        rollThrough: !(newState.options.scoring === 'vegas' && newState.options.draw === 'one'),
+        history: [],
+      };
+      return newState;
     }
 
     case 'DRAW': {
@@ -162,12 +55,29 @@ export default function game(state = initialState, action) {
           return newState;
         }
       }
+      
+      newState.status.score += scoreFactor[newState.options.scoring].recycleWaste;
+      if (
+        newState.options.scoring === 'standard'
+        && newState.status.score < 0
+      ) {
+        newState.status.score = 0;
+      }
 
       newState.cards.deck = newState.cards.waste.map((item) => {
         return { ...item, status: 'downturned' }
       });
       
       newState.cards.waste = [];
+      newState.status.rollsCount += 1;
+      if (
+        newState.options.scoring === 'vegas'
+        && newState.options.draw === 'three'
+        && newState.status.rollsCount === 2
+      ) {
+        newState.status.rollThrough = false;
+      }
+
       return newState;
     }
 
@@ -181,11 +91,18 @@ export default function game(state = initialState, action) {
           const quantity = newState.cards.tableau[from.parent_index].length - index;
           newState.cards.tableau[to.parent_index].push(...newState.cards.tableau[from.parent_index].splice(index, quantity));
         } else if (to.parent === 'foundation') {
+          newState.status.score += scoreFactor[newState.options.scoring].tableauToFoundation;
           newState.cards.foundation[to.parent_index].push(newState.cards.tableau[from.parent_index].pop());
         }
       } else if (from.parent === 'waste') {
+        if (to.parent === 'tableau') {
+          newState.status.score += scoreFactor[newState.options.scoring].wasteToTableau;
+        } else if (to.parent === 'foundation') {
+          newState.status.score += scoreFactor[newState.options.scoring].wasteToFoundation;
+        }
         newState.cards[to.parent][to.parent_index].push(newState.cards.waste.pop());
       } else if (from.parent === 'foundation') {
+        newState.status.score += scoreFactor[newState.options.scoring].foundationToTableau;
         newState.cards[to.parent][to.parent_index].push(newState.cards.foundation[from.parent_index].pop());
       }
 
@@ -197,6 +114,7 @@ export default function game(state = initialState, action) {
       const card = action.payload;
 
       if (newState.cards.tableau[card.parent_index].length - 1 === card.index) {
+        newState.status.score += scoreFactor[newState.options.scoring].turn;
         newState.cards.tableau[card.parent_index][card.index].status = 'upturned';
       }
 
@@ -213,6 +131,12 @@ export default function game(state = initialState, action) {
       }
       const foundationIndex = canFundIt(card, newState.cards.foundation);
       if (Number.isFinite(foundationIndex)) {
+        if (action.payload.parent === 'tableau') {
+          newState.status.score += scoreFactor[newState.options.scoring].tableauToFoundation;
+        } else if (action.payload.parent === 'waste') {
+          newState.status.score += scoreFactor[newState.options.scoring].wasteToFoundation;
+        }
+
         if (Number.isFinite(action.payload.parent_index)) {
           newState.cards.foundation[foundationIndex].push(newState.cards[action.payload.parent][action.payload.parent_index].pop());
         } else {
@@ -231,6 +155,7 @@ export default function game(state = initialState, action) {
         if (newState.cards.waste.length > 0) {
           const isWasteOK = canFundIt(newState.cards.waste[newState.cards.waste.length - 1], newState.cards.foundation);
           if (Number.isFinite(isWasteOK)) {
+            newState.status.score += scoreFactor[newState.options.scoring].wasteToFoundation;
             newState.cards.foundation[isWasteOK].push(newState.cards.waste.pop());
             continue;
           }
@@ -243,6 +168,7 @@ export default function game(state = initialState, action) {
           ) {
             const isTableauOK = canFundIt(newState.cards.tableau[i][newState.cards.tableau[i].length - 1], newState.cards.foundation);
             if (Number.isFinite(isTableauOK)) {
+              newState.status.score += scoreFactor[newState.options.scoring].tableauToFoundation;
               newState.cards.foundation[isTableauOK].push(newState.cards.tableau[i].pop());
               continue whileLoop;
             }
@@ -273,14 +199,24 @@ export default function game(state = initialState, action) {
       if (scoring !== undefined) {
         newState.options.scoring = scoring;
         localStorage.setItem('scoring_type', scoring);
+        localStorage.getItem('score') && localStorage.removeItem('score');
       }
       if (cumulative !== undefined) {
         newState.options.cumulative = cumulative;
         localStorage.setItem('score_cumulative', cumulative);
+        if (cumulative) {
+          if (localStorage.getItem('score')) {
+            newState.status.score += parseInt(localStorage.getItem('score'));
+          }
+          localStorage.setItem('score', newState.status.score);
+        } else {
+          localStorage.getItem('score') && localStorage.removeItem('score');
+        }
       }
       if (timed !== undefined) {
         newState.options.timed = timed;
         localStorage.setItem('game_timed', timed)
+        localStorage.getItem('score') && localStorage.removeItem('score');
       }
       if (status !== undefined) {
         newState.options.status = status;
