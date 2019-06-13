@@ -192,38 +192,46 @@
   }
 
   &.alert {
-    animation: border .2s linear 4;
+    animation: border .2s linear infinite;
   
     & > .window__header {
-      animation: header .2s linear 4;
+      animation: header .2s linear infinite;
   
       &:before {
-        animation: headerBefore .2s linear 4;
+        animation: headerBefore .2s linear infinite;
       }
   
       &:after {
-        animation: headerAfter .2s linear 4;
+        animation: headerAfter .2s linear infinite;
       }
     }
     
     @keyframes header {
-      from { background-image: url('../../images/windows/header-active.png'); }
-      to { background-image: url('../../images/windows/header-inactive.png'); }
+      0% { background-image: url('../../images/windows/header-active.png'); }
+      49% { background-image: url('../../images/windows/header-active.png'); }
+      50% { background-image: url('../../images/windows/header-inactive.png'); }
+      100% { background-image: url('../../images/windows/header-inactive.png'); }
     }
     
     @keyframes headerBefore {
-      from { background-image: url('../../images/windows/header-left-active.png'); }
-      to { background-image: url('../../images/windows/header-left-inactive.png'); }
+      0% { background-image: url('../../images/windows/header-left-active.png'); }
+      49% { background-image: url('../../images/windows/header-left-active.png'); }
+      50% { background-image: url('../../images/windows/header-left-inactive.png'); }
+      100% { background-image: url('../../images/windows/header-left-inactive.png'); }
     }
     
     @keyframes headerAfter {
-      from { background-image: url('../../images/windows/header-right-active.png'); }
-      to { background-image: url('../../images/windows/header-right-inactive.png'); }
+      0% { background-image: url('../../images/windows/header-right-active.png'); }
+      49% { background-image: url('../../images/windows/header-right-active.png'); }
+      50% { background-image: url('../../images/windows/header-right-inactive.png'); }
+      100% { background-image: url('../../images/windows/header-right-inactive.png'); }
     }
   
     @keyframes border {
-      from { border-image-source: url('../../images/windows/border-active.png'); }
-      to { border-image-source: url('../../images/windows/border-inactive.png'); }
+      0% { border-image-source: url('../../images/windows/border-active.png'); }
+      49% { border-image-source: url('../../images/windows/border-active.png'); }
+      50% { border-image-source: url('../../images/windows/border-inactive.png'); }
+      100% { border-image-source: url('../../images/windows/border-inactive.png'); }
     }
   }
 }

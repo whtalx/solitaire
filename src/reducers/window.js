@@ -293,20 +293,25 @@ export default function window(state = initialState, action) {
 
     case 'ACTIVATE': {
       const newState = { ...state };
-      if (newState.activity.indexOf('') >= 0) {
-        newState.activity.splice(newState.activity.indexOf(''), 1);
-      }
 
       if (
-        action.payload === 'solitaire'
-        && newState.solitaire.isBlocked
+        newState[action.payload].isBlocked
+        && newState.activity.indexOf(action.payload) + 1 < newState.activity.length - 1
       ) {
-        if (!newState[newState.activity[newState.activity.length - 1]].alert) {
-          newState[newState.activity[newState.activity.length - 1]].alert = true;
-        }
+        newState.activity.indexOf('') >= 0 && newState.activity.splice(newState.activity.indexOf(''), 1);
+        const part = newState.activity.splice(newState.activity.indexOf(action.payload), 2);
+        newState.activity.push(...part);
+        return newState;
+      } else if (
+        newState[action.payload].isBlocked
+        && newState.activity.indexOf(action.payload) + 1 === newState.activity.length - 1
+        && !newState[newState.activity[newState.activity.length - 1]].alert
+      ) {
+        newState[newState.activity[newState.activity.length - 1]].alert = true;
         return newState;
       }
 
+      newState.activity.indexOf('') >= 0 && newState.activity.splice(newState.activity.indexOf(''), 1);
       newState.activity.splice(newState.activity.indexOf(action.payload), 1);
       newState.activity.push(action.payload);
       return newState;
