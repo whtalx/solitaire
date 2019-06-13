@@ -8,7 +8,7 @@ export default function getScore(options) {
     && options.cumulative
     && localStorage.getItem('score')
   ) {
-    score = localStorage.getItem('score');
+    score = parseInt(localStorage.getItem('score'));
   }
 
   return score;

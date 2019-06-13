@@ -2,7 +2,8 @@ import canFundIt from './scripts/canFundIt';
 import getOptions from './scripts/getOptions';
 import getCards from './scripts/getCards';
 import getScore from './scripts/getScore';
-import scoreFactor from './scripts/scoreFactor';
+import setScore from './scripts/setScore';
+import saveHistory from './scripts/saveHistory';
 
 const cards = getCards();
 const options = getOptions();
@@ -15,7 +16,7 @@ const initialState = {
     bonus: 0,
     rollsCount: 0,
     rollThrough: !(options.scoring === 'vegas' && options.draw === 'one'),
-    history: [],
+    history: {},
   },
 
   cards,
@@ -33,13 +34,15 @@ export default function game(state = initialState, action) {
         bonus: 0,
         rollsCount: 0,
         rollThrough: !(newState.options.scoring === 'vegas' && newState.options.draw === 'one'),
-        history: [],
+        history: {},
       };
       return newState;
     }
 
     case 'DRAW': {
       const newState = { ...state };
+
+      newState.status.history = saveHistory(newState, 'deck', 'waste');
 
       if (state.cards.deck.length > 0) {
         if (action.payload === 'one') {
@@ -55,15 +58,8 @@ export default function game(state = initialState, action) {
           return newState;
         }
       }
-      
-      newState.status.score += scoreFactor[newState.options.scoring].recycleWaste;
-      if (
-        newState.options.scoring === 'standard'
-        && newState.status.score < 0
-      ) {
-        newState.status.score = 0;
-      }
 
+      newState.status.score = setScore(newState, 'recycleWaste');
       newState.cards.deck = newState.cards.waste.map((item) => {
         return { ...item, status: 'downturned' }
       });
@@ -89,20 +85,31 @@ export default function game(state = initialState, action) {
         if (to.parent === 'tableau') {
           const index = from.index;
           const quantity = newState.cards.tableau[from.parent_index].length - index;
+          newState.status.history = saveHistory(newState, 'tableau');
           newState.cards.tableau[to.parent_index].push(...newState.cards.tableau[from.parent_index].splice(index, quantity));
         } else if (to.parent === 'foundation') {
-          newState.status.score += scoreFactor[newState.options.scoring].tableauToFoundation;
+          newState.status.history = saveHistory(newState, 'tableau', 'foundation');
+          newState.status.score = setScore(newState, 'tableauToFoundation');
           newState.cards.foundation[to.parent_index].push(newState.cards.tableau[from.parent_index].pop());
         }
       } else if (from.parent === 'waste') {
         if (to.parent === 'tableau') {
-          newState.status.score += scoreFactor[newState.options.scoring].wasteToTableau;
+          newState.status.history = saveHistory(newState, 'waste', 'tableau');
+          newState.status.score = setScore(newState, 'wasteToTableau');
         } else if (to.parent === 'foundation') {
-          newState.status.score += scoreFactor[newState.options.scoring].wasteToFoundation;
+          newState.status.history = saveHistory(newState, 'waste', 'foundation');
+          newState.status.score = setScore(newState, 'wasteToFoundation');
         }
+
         newState.cards[to.parent][to.parent_index].push(newState.cards.waste.pop());
       } else if (from.parent === 'foundation') {
-        newState.status.score += scoreFactor[newState.options.scoring].foundationToTableau;
+        if (to.parent === 'tableau') {
+          newState.status.history = saveHistory(newState, 'foundation', 'tableau');
+          newState.status.score = setScore(newState, 'foundationToTableau');
+        } else {
+        newState.status.history = saveHistory(newState, 'foundation');
+        }
+
         newState.cards[to.parent][to.parent_index].push(newState.cards.foundation[from.parent_index].pop());
       }
 
@@ -114,7 +121,8 @@ export default function game(state = initialState, action) {
       const card = action.payload;
 
       if (newState.cards.tableau[card.parent_index].length - 1 === card.index) {
-        newState.status.score += scoreFactor[newState.options.scoring].turn;
+        newState.status.history = {};
+        newState.status.score = setScore(newState, 'turn');
         newState.cards.tableau[card.parent_index][card.index].status = 'upturned';
       }
 
@@ -131,15 +139,14 @@ export default function game(state = initialState, action) {
       }
       const foundationIndex = canFundIt(card, newState.cards.foundation);
       if (Number.isFinite(foundationIndex)) {
-        if (action.payload.parent === 'tableau') {
-          newState.status.score += scoreFactor[newState.options.scoring].tableauToFoundation;
-        } else if (action.payload.parent === 'waste') {
-          newState.status.score += scoreFactor[newState.options.scoring].wasteToFoundation;
-        }
 
         if (Number.isFinite(action.payload.parent_index)) {
+          newState.status.history = saveHistory(newState, 'foundation', 'tableau');
+          newState.status.score = setScore(newState, 'tableauToFoundation');
           newState.cards.foundation[foundationIndex].push(newState.cards[action.payload.parent][action.payload.parent_index].pop());
         } else {
+          newState.status.history = saveHistory(newState, 'foundation', 'waste');
+          newState.status.score = setScore(newState, 'wasteToFoundation');
           newState.cards.foundation[foundationIndex].push(newState.cards[action.payload.parent].pop());
         }
       }
@@ -155,7 +162,8 @@ export default function game(state = initialState, action) {
         if (newState.cards.waste.length > 0) {
           const isWasteOK = canFundIt(newState.cards.waste[newState.cards.waste.length - 1], newState.cards.foundation);
           if (Number.isFinite(isWasteOK)) {
-            newState.status.score += scoreFactor[newState.options.scoring].wasteToFoundation;
+            newState.status.history = saveHistory(newState, 'foundation', 'waste');
+            newState.status.score = setScore(newState, 'wasteToFoundation');
             newState.cards.foundation[isWasteOK].push(newState.cards.waste.pop());
             continue;
           }
@@ -168,7 +176,8 @@ export default function game(state = initialState, action) {
           ) {
             const isTableauOK = canFundIt(newState.cards.tableau[i][newState.cards.tableau[i].length - 1], newState.cards.foundation);
             if (Number.isFinite(isTableauOK)) {
-              newState.status.score += scoreFactor[newState.options.scoring].tableauToFoundation;
+              newState.status.history = saveHistory(newState, 'foundation', 'tableau');
+              newState.status.score = setScore(newState, 'tableauToFoundation');
               newState.cards.foundation[isTableauOK].push(newState.cards.tableau[i].pop());
               continue whileLoop;
             }
@@ -205,9 +214,6 @@ export default function game(state = initialState, action) {
         newState.options.cumulative = cumulative;
         localStorage.setItem('score_cumulative', cumulative);
         if (cumulative) {
-          if (localStorage.getItem('score')) {
-            newState.status.score += parseInt(localStorage.getItem('score'));
-          }
           localStorage.setItem('score', newState.status.score);
         } else {
           localStorage.getItem('score') && localStorage.removeItem('score');
@@ -234,6 +240,48 @@ export default function game(state = initialState, action) {
       const newState = { ...state };
       newState.options.back = action.payload;
       localStorage.setItem('cards_back', action.payload);
+      return newState;
+    }
+    
+    case 'UNDO': {
+      const newState = { ...state };
+
+      if (
+        Object.keys(newState.status.history).includes('deck')
+        && newState.status.history.deck.length === 0
+      ) {
+        newState.status.rollsCount -= 1;
+      }
+
+      if (Object.keys(newState.status.history).includes('foundation')) {
+        if (Object.keys(newState.status.history).includes('tableau')) {
+          let foundationLengthWas = 0;
+          let foundationLengthIs = 0;
+
+          newState.status.history.foundation.forEach((item)  => {
+            foundationLengthWas += item.length;
+          });
+
+          newState.cards.foundation.forEach((item)  => {
+            foundationLengthIs += item.length;
+          });
+
+          if (foundationLengthIs < foundationLengthWas) {
+            newState.status.score = setScore(newState, 'undoFoundationToTableau');
+          } else {
+            newState.status.score = setScore(newState, 'undoTableauToFoundation');
+          }
+        } else if (Object.keys(newState.status.history).includes('waste')) {
+          newState.status.score = setScore(newState, 'undoWasteToFoundation');
+        }
+      }
+
+      for (let key in newState.status.history) {
+        newState.cards[key] = [...newState.status.history[key]];
+      }
+
+      newState.status.history = {};
+      newState.status.score = setScore(newState, 'undo');
       return newState;
     }
 

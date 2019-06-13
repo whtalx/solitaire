@@ -15,7 +15,7 @@ class Menu extends PureComponent {
       for (let item in categories[category]) {
         if (categories[category][item].type === 'menu-item') {
           let className = 'menu-item';
-          if (item === 'undo' && this.props.game.status.history.length === 0) {
+          if (item === 'undo' && Object.keys(this.props.game.status.history).length === 0) {
             className += ' disabled';
           }
           items.push(

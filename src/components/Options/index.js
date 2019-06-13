@@ -75,9 +75,9 @@ class Options extends Component {
             checked={this.state.cumulative}
             disabled={!(this.state.scoring === 'vegas')}
             click={() => {
-              this.state.scoring === 'vegas'
-              &&
-              this.setState({ cumulative: !this.state.cumulative })
+              if (this.state.scoring === 'vegas') {
+              this.setState({ cumulative: !this.state.cumulative });
+              }
             }}
             label="Cumulative Score"
           />
@@ -85,12 +85,14 @@ class Options extends Component {
             type="ok"
             selected 
             click={() => {
-              this.props.set(this.state);
               if (
-                this.props.scoring !== this.state.scoring
-                || this.props.draw !== this.state.draw
+                this.props.game.options.scoring !== this.state.scoring
+                || this.props.game.options.draw !== this.state.draw
               ) {
+                this.props.set(this.state);
                 this.props.deal();
+              } else {
+                this.props.set(this.state);
               }
               this.props.close();
             }}
