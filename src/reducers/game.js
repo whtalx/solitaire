@@ -17,6 +17,8 @@ const initialState = {
     rollsCount: 0,
     rollThrough: !(options.scoring === 'vegas' && options.draw === 'one'),
     history: {},
+    cardsInFoundation: 0,
+    isCelebrating: false,
     isPlaying: false,
   },
 
@@ -36,6 +38,8 @@ export default function game(state = initialState, action) {
         rollsCount: 0,
         rollThrough: !(newState.options.scoring === 'vegas' && newState.options.draw === 'one'),
         history: {},
+        cardsInFoundation: 0,
+        isCelebrating: false,
         isPlaying: false,
       };
       return newState;
@@ -92,6 +96,7 @@ export default function game(state = initialState, action) {
         } else if (to.parent === 'foundation') {
           newState.status.history = saveHistory(newState, 'tableau', 'foundation');
           newState.status.score = setScore(newState, 'tableauToFoundation');
+          newState.status.cardsInFoundation += 1;
           newState.cards.foundation[to.parent_index].push(newState.cards.tableau[from.parent_index].pop());
         }
       } else if (from.parent === 'waste') {
@@ -101,6 +106,7 @@ export default function game(state = initialState, action) {
         } else if (to.parent === 'foundation') {
           newState.status.history = saveHistory(newState, 'waste', 'foundation');
           newState.status.score = setScore(newState, 'wasteToFoundation');
+          newState.status.cardsInFoundation += 1;
         }
 
         newState.cards[to.parent][to.parent_index].push(newState.cards.waste.pop());
@@ -108,6 +114,7 @@ export default function game(state = initialState, action) {
         if (to.parent === 'tableau') {
           newState.status.history = saveHistory(newState, 'foundation', 'tableau');
           newState.status.score = setScore(newState, 'foundationToTableau');
+          newState.status.cardsInFoundation -= 1;
         } else {
         newState.status.history = saveHistory(newState, 'foundation');
         }
@@ -151,6 +158,8 @@ export default function game(state = initialState, action) {
           newState.status.score = setScore(newState, 'wasteToFoundation');
           newState.cards.foundation[foundationIndex].push(newState.cards[action.payload.parent].pop());
         }
+
+        newState.status.cardsInFoundation += 1;
       }
 
       return newState;
@@ -167,6 +176,7 @@ export default function game(state = initialState, action) {
             newState.status.history = saveHistory(newState, 'foundation', 'waste');
             newState.status.score = setScore(newState, 'wasteToFoundation');
             newState.cards.foundation[isWasteOK].push(newState.cards.waste.pop());
+            newState.status.cardsInFoundation += 1;
             continue;
           }
         }
@@ -181,6 +191,7 @@ export default function game(state = initialState, action) {
               newState.status.history = saveHistory(newState, 'foundation', 'tableau');
               newState.status.score = setScore(newState, 'tableauToFoundation');
               newState.cards.foundation[isTableauOK].push(newState.cards.tableau[i].pop());
+              newState.status.cardsInFoundation += 1;
               continue whileLoop;
             }
           }
@@ -293,13 +304,13 @@ export default function game(state = initialState, action) {
       return newState;
     }
 
-    case 'START_TIMER': {
+    case 'START_GAME': {
       const newState = { ...state };
       !newState.status.isPlaying && (newState.status.isPlaying = true);
       return newState;
     }
 
-    case 'STOP_TIMER': {
+    case 'STOP_GAME': {
       const newState = { ...state };
       newState.status.isPlaying && (newState.status.isPlaying = false);
       return newState;
@@ -311,6 +322,29 @@ export default function game(state = initialState, action) {
       newState.status.time = action.payload;
       newState.status.time % 10 === 0
         && (newState.status.score = setScore(newState, 'time'));
+      return newState;
+    }
+
+    case 'START_CELEBRATING': {
+      const newState = { ...state };
+      newState.status.isPlaying = false;
+      newState.status.isCelebrating = true;
+
+      if (
+        newState.options.timed
+        && newState.options.scoring === 'standard'
+        && newState.status.time > 30
+        ) {
+          newState.status.bonus = Math.floor(700000 / newState.status.time);
+          newState.status.score += newState.status.bonus;
+      }
+
+      return newState;
+    }
+
+    case 'STOP_CELEBRATING': {
+      const newState = { ...state };
+      newState.status.isCelebrating && (newState.status.isCelebrating = false);
       return newState;
     }
 

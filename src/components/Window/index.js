@@ -141,7 +141,7 @@ const mapDispatchToProps = (dispatch) => ({
   cursor: (payload) => dispatch({ type: 'CURSOR', payload }),
   cancelAlert: (payload) => dispatch({ type: 'CANCEL_ALERT', payload }),
   close: (payload) => {
-    payload === 'solitaire' && dispatch({ type: 'STOP_TIMER' });
+    payload === 'solitaire' && dispatch({ type: 'STOP_GAME' });
     dispatch({ type: 'CLOSE', payload });
   },
 });

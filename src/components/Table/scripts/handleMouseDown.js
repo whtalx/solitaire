@@ -1,12 +1,7 @@
 import compareCards from './compareCards';
 
 export default function handleMouseDown(event) {
-  if (
-    this.props.game.options.timed
-    && this.timer === null
-  ) {
-    this.startTimer();
-  }
+  !this.props.game.status.isPlaying && this.startGame();
 
   if (this.props.window.solitaire.isBlocked) {
     return;

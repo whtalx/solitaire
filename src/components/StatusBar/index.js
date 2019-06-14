@@ -17,8 +17,8 @@ function StatusBar(props) {
     <div className="status-bar">
       <div className="description">
         {
-          props.game.status.bonus > 0
-            ? `Bonus: ${props.game.status.bonus}`
+          props.game.status.isCelebrating && props.game.status.bonus > 0
+            ? `Bonus: ${props.game.status.bonus} Press Esc or a mouse button to stop...`
             : props.window.solitaire.status.description
         }
       </div>

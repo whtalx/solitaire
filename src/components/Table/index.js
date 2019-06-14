@@ -9,9 +9,10 @@ import handleMouseDown from './scripts/handleMouseDown';
 import handleDoubleClick from './scripts/handleDoubleClick';
 
 class Table extends PureComponent {
-  startTimer() {
+  startGame() {
+    this.props.startGame();
     if (this.timer === null) {
-      this.props.startTimer();
+      /** TODO: worker */
       this.timer = setInterval(() => {
         this.props.game.options.timed
           && this.props.tick(++this.props.game.status.time);
@@ -29,6 +30,26 @@ class Table extends PureComponent {
     ) {
       clearInterval(this.timer);
       this.timer = null;
+    }
+
+    if (this.props.game.status.cardsInFoundation === 52) {
+      if (
+        !this.props.game.status.isCelebrating
+        && this.props.game.status.isPlaying
+      ) {
+        this.props.startCelebrating();
+      }
+
+      return (
+        <div className="table-wrapper">
+          <div
+            className="celebrating"
+            onMouseDown={() => {
+              this.props.game.status.isCelebrating && this.props.stopCelebrating()
+            }}
+          />
+        </div>
+      );
     }
 
     return (
@@ -64,8 +85,13 @@ const mapDispatchToProps = (dispatch) => ({
   fundOne: (payload) => dispatch({ type: 'FUND_ONE', payload }),
   fundAll: () => dispatch({ type: 'FUND_ALL' }),
   activate: () => dispatch({ type: 'ACTIVATE', payload: 'solitaire' }),
-  startTimer: () => dispatch({ type: 'START_TIMER' }),
+  startGame: () => dispatch({ type: 'START_GAME' }),
   tick: (payload) => dispatch({ type: 'TICK', payload }),
+  startCelebrating: () => dispatch({ type: 'START_CELEBRATING' }),
+  stopCelebrating: () => {
+    dispatch({ type: 'STOP_CELEBRATING' });
+    dispatch({ type: 'SHOW_WINDOW', payload: 'restart' });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);
