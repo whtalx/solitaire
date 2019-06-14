@@ -42,13 +42,12 @@
     background: linear-gradient(to bottom, #fff3ce 0%, #e79600 100%);
   }
 
-  &:active,
-  &.button_selected:active,
+  &:active:hover,
   &.button_selected:active:hover {
     background: linear-gradient(to bottom, #d6cfc6 0%, #f7f3ef 100%);
   }
-  &:active:after,
-  &.button_selected:active:after {
+  &:active:hover:after,
+  &.button_selected:active:hover:after {
     background: none;
   }
 }

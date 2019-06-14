@@ -2,10 +2,7 @@ import valuesComparison from '../../data/valuesComparison.json';
 
 export default function canFundIt(card, array) {
   for (let i = 0; i < array.length; i++) {
-    if (
-      array[i].length === 0
-      && card.value === 'ace'
-    ) {
+    if (array[i].length === 0 && card.value === 'ace') {
       return i;
     } else if (
       array[i].length > 0

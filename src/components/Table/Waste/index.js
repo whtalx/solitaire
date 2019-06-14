@@ -1,30 +1,27 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import './index.scss';
 import makeCard from '../scripts/makeCard';
 
-class Waste extends PureComponent {
-  render() {
-    const waste = this.props.game.cards.waste.map((item, index) => {
-      return makeCard({
-        ...item,
-        parent: 'waste',
-        index: index,
-      });
-    })
-    return(
-      <div className={`waste by-${this.props.game.options.draw}`}>
-        {waste}
-      </div>
-    );
-  }
+function Waste(props) {
+  return(
+    <div className={`waste by-${props.game.options.draw}`}>
+      {
+        props.game.cards.waste.map((item, index) => {
+          return makeCard({
+            ...item,
+            parent: 'waste',
+            index: index,
+          });
+        })
+      }
+    </div>
+  );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    game: state.game,
-  };
-}
+const mapStateToProps = (state) => ({
+  game: state.game,
+});
 
 export default connect(mapStateToProps)(Waste);
 

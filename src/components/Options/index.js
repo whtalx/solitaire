@@ -75,9 +75,8 @@ class Options extends Component {
             checked={this.state.cumulative}
             disabled={!(this.state.scoring === 'vegas')}
             click={() => {
-              if (this.state.scoring === 'vegas') {
-              this.setState({ cumulative: !this.state.cumulative });
-              }
+              this.state.scoring === 'vegas'
+                && this.setState({ cumulative: !this.state.cumulative });
             }}
             label="Cumulative Score"
           />
@@ -88,9 +87,9 @@ class Options extends Component {
               if (
                 this.props.game.options.scoring !== this.state.scoring
                 || this.props.game.options.draw !== this.state.draw
+                || this.props.game.options.timed !== this.state.timed
               ) {
-                this.props.set(this.state);
-                this.props.deal();
+                this.props.setAndDeal(this.state);
               } else {
                 this.props.set(this.state);
               }
@@ -104,26 +103,17 @@ class Options extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    game: state.game,
-  };
-}
+const mapStateToProps = (state) => ({
+  game: state.game,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    set: (payload) => {
-      dispatch({ type: 'SET_OPTIONS', payload });
-    },
-
-    deal: () => {
-      dispatch({ type: 'DEAL' });
-    },
-
-    close: () => {
-      dispatch({ type: 'CLOSE', payload: 'options' });
-    },
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  close: () => dispatch({ type: 'CLOSE', payload: 'options' }),
+  set: (payload) => dispatch({ type: 'SET_OPTIONS', payload }),
+  setAndDeal: (payload) => {
+    dispatch({ type: 'SET_OPTIONS', payload });
+    dispatch({ type: 'DEAL' });
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Options);

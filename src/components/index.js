@@ -24,6 +24,7 @@ class App extends Component {
   handleKeyDown(event) {
     if (
       event.which === this.state.key
+      || !this.props.window.solitaire.isShowing
       || this.props.window.activity[this.props.window.activity.length - 1] !== 'solitaire'
       || this.props.window.solitaire.isMinimized
       || (
@@ -87,52 +88,65 @@ class App extends Component {
       :
         setTimeout(() => { this.setState({ bsod: true })}, 2000);
     }
+
+    let className = 'root';
+    if (this.props.window.solitaire.isShowing) {
+      this.props.window.solitaire.cursor
+        ? className += ` ${this.props.window.solitaire.cursor}`
+        : this.props.window.help.cursor
+          && (className += ` ${this.props.window.help.cursor}`);
+    } else {
+      className += ' wait';
+    }
+
     return (
-      <div className={`root${this.props.window.solitaire.isShowing ? (this.props.window.solitaire.cursor ? ` ${this.props.window.solitaire.cursor}` : '') : ' wait'}`}>
+      <div className={className}>
         {this.props.window.solitaire.isShowing &&
         <Window
           name="solitaire"
           children={[
             <Menu key="menu" parent="solitaire" />,
             <Table key="table" />,
-            this.props.game.options.status ? <StatusBar key="statusBar" /> : '',
+            this.props.game.options.status
+              ? <StatusBar key="statusBar" />
+              : '',
           ]}
         />}
-        {this.props.window.back.isShowing && <Window name="back" children={<Back />} />}
-        {this.props.window.options.isShowing && <Window name="options" children={<Options />} />}
-        {this.props.window.help.isShowing && <Window name="help" children={<Help />} />}
-        {this.props.window.about.isShowing && <Window name="about" children={<About />} />}
-        {this.props.window.restart.isShowing && <Window name="restart" children={<Restart />} />}
+        {
+          this.props.window.back.isShowing
+            && <Window name="back" children={<Back />} />
+        }
+        {
+          this.props.window.options.isShowing
+            && <Window name="options" children={<Options />} />
+        }
+        {
+          this.props.window.help.isShowing
+            && <Window name="help" children={<Help />} />
+        }
+        {
+          this.props.window.about.isShowing
+            && <Window name="about" children={<About />} />
+        }
+        {
+          this.props.window.restart.isShowing
+            && <Window name="restart" children={<Restart />} />
+        }
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    game: state.game,
-    window: state.window,
-  };
-}
+const mapStateToProps = (state) => ({
+  game: state.game,
+  window: state.window,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    deal: () => {
-      dispatch({ type: 'DEAL' });
-    },
-
-    help: () => {
-      dispatch({ type: 'SHOW_WINDOW', payload: 'help' });
-    },
-
-    deactivate: () => {
-      dispatch({ type: 'DEACTIVATE' });
-    },
-
-    fundAll: () => {
-      dispatch({ type: 'FUND_ALL' });
-    },
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  deal: () => dispatch({ type: 'DEAL' }),
+  help: () => dispatch({ type: 'SHOW_WINDOW', payload: 'help' }),
+  deactivate: () => dispatch({ type: 'DEACTIVATE' }),
+  fundAll: () => dispatch({ type: 'FUND_ALL' }),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

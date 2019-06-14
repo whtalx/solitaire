@@ -1,18 +1,13 @@
 export default function moveAndResize(event) {
-  if (
-    this.props.window.activity[this.props.window.activity.length - 1] !== this.props.name
-  ) {
+  if (this.props.window.activity[this.props.window.activity.length - 1] !== this.props.name) {
     this.props.activate(this.props.name);
   }
 
-  if (
-    event.button !== 0
-    || this.props.window[this.props.name].isBlocked
-  ) {
+  if (event.button !== 0 || this.props.window[this.props.name].isBlocked) {
     return;
   }
 
-  let currentWindow;
+  let currentWindow = null;
 
   if (event.target.classList.contains('window')) {
     currentWindow = event.target;
@@ -26,16 +21,27 @@ export default function moveAndResize(event) {
     return;
   }
 
+  this.setState({ freezeCursor: true });
+
   const shiftX = event.pageX;
   const shiftY = event.pageY;
   const shiftLeft = currentWindow.offsetLeft;
   const shiftTop = currentWindow.offsetTop;
+  const setListeners = (func) => {
+    document.addEventListener('mousemove', func);
+    document.addEventListener('mouseup', () => {
+      document.removeEventListener('mousemove', func);
+      this.setState({ freezeCursor: false });
+      this.props.window[this.props.name].cursor !== null
+        && this.props.cursor({ window: this.props.name, cursor: null });
+    }, { once: true });
+  }
 
-  if (this.props.window.solitaire.cursor) {
-    this.props.startResizing();
+  if (this.props.window[this.props.name].cursor) {
+    if (!this.props.window[this.props.name].isResizable) { return; }
+
     const shiftHeight = currentWindow.clientHeight;
-    const shiftWidth = currentWindow.clientWidth;
-  
+    const shiftWidth = currentWindow.clientWidth;  
     const resizeBottom = (event) => {
       if (
         event.pageY > document.documentElement.clientHeight
@@ -43,7 +49,9 @@ export default function moveAndResize(event) {
       ) {
         return;
       }
+
       this.props.resize({
+        window: this.props.name,
         top: currentWindow.offsetTop,
         height: event.pageY - shiftY + shiftHeight
       });
@@ -59,6 +67,7 @@ export default function moveAndResize(event) {
   
       if (shiftY - event.pageY + shiftHeight > 37) {
         this.props.resize({
+          window: this.props.name,
           top: event.pageY - shiftY + shiftTop,
           height: shiftY - event.pageY + shiftHeight,
         });
@@ -72,7 +81,9 @@ export default function moveAndResize(event) {
         ) {
         return;
       }
+
       this.props.resize({
+        window: this.props.name,
         left: currentWindow.offsetLeft,
         width: event.pageX - shiftX + shiftWidth,
       });
@@ -88,6 +99,7 @@ export default function moveAndResize(event) {
   
       if (shiftX - event.pageX + shiftWidth > 145) {
         this.props.resize({
+          window: this.props.name,
           left: event.pageX - shiftX + shiftLeft,
           width: shiftX - event.pageX + shiftWidth,
         });
@@ -119,68 +131,36 @@ export default function moveAndResize(event) {
       y: currentWindow.offsetTop + currentWindow.clientTop + currentWindow.clientHeight / 2,
     };
 
-    switch (this.props.window.solitaire.cursor) {
+    switch (this.props.window[this.props.name].cursor) {
       case 'nwse-resize':
         if (event.pageX < centrer.x && event.pageY < centrer.y) {
-          document.addEventListener('mousemove', resizeLeftTop);
-          document.addEventListener('mouseup', () => {
-            document.removeEventListener('mousemove', resizeLeftTop);
-            this.props.endResizing();
-          }, { once: true });
+          setListeners(resizeLeftTop);
         } else if (event.pageX > centrer.x && event.pageY > centrer.y) {
-          document.addEventListener('mousemove', resizeRightBottom);
-          document.addEventListener('mouseup', () => {
-            document.removeEventListener('mousemove', resizeRightBottom);
-            this.props.endResizing();
-          }, { once: true });
+          setListeners(resizeRightBottom);
         }
         break;
     
       case 'nesw-resize':
         if (event.pageX < centrer.x && event.pageY > centrer.y) {
-          document.addEventListener('mousemove', resizeLeftBottom);
-          document.addEventListener('mouseup', () => {
-            document.removeEventListener('mousemove', resizeLeftBottom);
-            this.props.endResizing();
-          }, { once: true });
+          setListeners(resizeLeftBottom);
         } else if (event.pageX > centrer.x && event.pageY < centrer.y) {
-          document.addEventListener('mousemove', resizeRightTop);
-          document.addEventListener('mouseup', () => {
-            document.removeEventListener('mousemove', resizeRightTop);
-            this.props.endResizing();
-          }, { once: true });
+          setListeners(resizeRightTop);
         }
         break;
     
       case 'ns-resize':
         if (event.pageY > centrer.y) {
-          document.addEventListener('mousemove', resizeBottom);
-          document.addEventListener('mouseup', () => {
-            document.removeEventListener('mousemove', resizeBottom);
-            this.props.endResizing();
-          }, { once: true });
+          setListeners(resizeBottom);
         } else if (event.pageY < centrer.y) {
-          document.addEventListener('mousemove', resizeTop);
-          document.addEventListener('mouseup', () => {
-            document.removeEventListener('mousemove', resizeTop);
-            this.props.endResizing();
-          }, { once: true });
+          setListeners(resizeTop);
         }
         break;
     
       case 'ew-resize':
         if (event.pageX < centrer.x) {
-          document.addEventListener('mousemove', resizeLeft);
-          document.addEventListener('mouseup', () => {
-            document.removeEventListener('mousemove', resizeLeft);
-            this.props.endResizing();
-          }, { once: true });
+          setListeners(resizeLeft);
         } else if (event.pageX > centrer.x) {
-          document.addEventListener('mousemove', resizeRight);
-          document.addEventListener('mouseup', () => {
-            document.removeEventListener('mousemove', resizeRight);
-            this.props.endResizing();
-          }, { once: true });
+          setListeners(resizeRight);
         }
         break;
 
@@ -193,11 +173,8 @@ export default function moveAndResize(event) {
     || event.target.classList.contains('window__caption')
   ) {
     if (
-      this.props.name === 'solitaire'
-      && (
-        this.props.window.solitaire.isMaximized
-        || this.props.window.solitaire.isMinimized
-      )
+      this.props.window[this.props.name].isMaximized
+      || this.props.window[this.props.name].isMinimized
     ) {
       return;
     }
@@ -209,10 +186,7 @@ export default function moveAndResize(event) {
         top: event.pageY - shiftY + shiftTop,
       });
     }
-    
-    document.addEventListener('mousemove', move);
-    document.addEventListener('mouseup', () => {
-      document.removeEventListener('mousemove', move);
-    }, { once: true });
+
+    setListeners(move);
   }
 }

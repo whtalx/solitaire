@@ -8,17 +8,13 @@ function Help(props) {
     <div className="error">
       <div className="error-icon" />
       <div className="error-message">Unable load Solitaire Help application</div>
-      <Button type="ok" selected click={() => {props.close()}} />
+      <Button type="ok" selected click={props.close} />
     </div>
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    close: () => {
-      dispatch({ type: 'CLOSE', payload: 'help' });
-    },
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  close: () => dispatch({ type: 'CLOSE', payload: 'help' }),
+});
 
 export default connect(null, mapDispatchToProps)(Help);

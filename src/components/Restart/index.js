@@ -8,22 +8,18 @@ function Restart(props) {
     <div className="restart">
       <div className="restart-icon" />
       <div className="restart-message">Deal Again?</div>
-      <Button type="ok" selected click={() => {props.close(); props.deal();}} />
-      <Button type="cancel" click={() => {props.close()}} />
+      <Button type="ok" selected click={props.closeAndDeal} />
+      <Button type="cancel" click={props.close} />
     </div>
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    deal: () => {
-      dispatch({ type: 'DEAL' });
-    },
-
-    close: () => {
-      dispatch({ type: 'CLOSE', payload: 'restart' });
-    },
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  close: () => dispatch({ type: 'CLOSE', payload: 'restart' }),
+  closeAndDeal: () => {
+    dispatch({ type: 'CLOSE', payload: 'restart' });
+    dispatch({ type: 'DEAL' });
+  },
+});
 
 export default connect(null, mapDispatchToProps)(Restart);

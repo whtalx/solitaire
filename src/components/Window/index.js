@@ -9,14 +9,16 @@ class Window extends Component {
     super(props);
 
     if (this.props.window[this.props.name].isResizable) {
+      this.state = { freezeCursor: false };
+
       this.handleMouseMove = resizeCursors.bind(this);
 
       this.handleMouseLeave = () => {
           if (
-            this.props.window[this.props.name].cursor
-            && !this.props.window[this.props.name].isResizing
+            this.props.window[this.props.name].cursor !== null
+            && !this.state.freezeCursor
           ) {
-            this.props.cursor();
+            this.props.cursor({ window: this.props.name, cursor: null });
           }
         };
   
@@ -27,7 +29,7 @@ class Window extends Component {
         } else if (!this.props.window[this.props.name].isMinimized) {
           this.props.maximize.bind(this)(this.props.name);
         }
-      };
+      }
     }
   }
 
@@ -40,7 +42,10 @@ class Window extends Component {
           className={`window__button window__button_${item}`}
           onMouseDown={
             (event) => {
-              if (this.props.name !== 'restart' && !this.props.window[this.props.name].isBlocked) {
+              if (
+                this.props.name !== 'restart'
+                && !this.props.window[this.props.name].isBlocked
+              ) {
                 const target = event.target;
                 if (event.button === 0) {
                   document.addEventListener('mouseup', (event) => {
@@ -57,23 +62,23 @@ class Window extends Component {
     });
 
     let className = `window ${this.props.name}`
-      this.props.window.activity.indexOf(this.props.name) === this.props.window.activity.length - 1 ?
-        className += ' active'
-      :
-        className += ' inactive';
+    this.props.window.activity[this.props.window.activity.length - 1] === this.props.name
+      ? className += ' active'
+      : className += ' inactive';
 
     if (this.props.window[this.props.name].isResizable) {
-      this.props.window[this.props.name].isMinimized ?
-        className += ' minimized'
-      :
-        this.props.window[this.props.name].isMaximized && (className += ' maximized');
+      this.props.window[this.props.name].isMinimized
+        ? className += ' minimized'
+        : this.props.window[this.props.name].isMaximized
+            && (className += ' maximized');
     }
 
     if (this.props.window[this.props.name].alert) {
       className += ' alert'
       setTimeout(() => {
-        this.props.window[this.props.name].alert && this.props.cancelAlert(this.props.name);
-      }, 800)
+        this.props.window[this.props.name].alert
+          && this.props.cancelAlert(this.props.name);
+      }, 800);
     }
 
     this.props.window[this.props.name].isBlocked && (className += ' blocked');
@@ -85,26 +90,22 @@ class Window extends Component {
         onMouseMove={this.handleMouseMove}
         onMouseLeave={this.handleMouseLeave}
         style={{
-          width:
-            Number.isFinite(window.style.width) ?
-              `${window.style.width}px`
-            :
-              window.style.width,
-          height:
-              Number.isFinite(window.style.height) ?
-                `${window.style.height}px`
-              :
-                window.style.height,
-          left:
-            Number.isFinite(window.style.left) ?
-              `${window.style.left}px`
-            :
-              `calc(50vw - ${window.style.width / 2}px)`,
-          top:
-            Number.isFinite(window.style.top) ?
-              `${window.style.top}px`
-            :
-              `calc(50vh - ${window.style.height / 2}px)`,
+          width: Number.isFinite(window.style.width)
+            ? `${window.style.width}px`
+            : window.style.width,
+
+          height: Number.isFinite(window.style.height)
+            ? `${window.style.height}px`
+            : window.style.height,
+
+          left: Number.isFinite(window.style.left)
+            ? `${window.style.left}px`
+            : `calc(50vw - ${window.style.width / 2}px)`,
+
+          top: Number.isFinite(window.style.top)
+            ? `${window.style.top}px`
+            : `calc(50vh - ${window.style.height / 2}px)`,
+
           zIndex: this.props.window.activity.indexOf(this.props.name),
         }}
       >
@@ -113,12 +114,10 @@ class Window extends Component {
           onDoubleClick={this.handleDoubleClick}
         />
         {
-          this.props.name === 'solitaire' ?
-            <div className="window__icon" />
-          :
-            ''
+          this.props.name === 'solitaire'
+            ? <div className="window__icon" />
+            : ''
         }
-        
         <div className="window__caption">{window.caption}</div>
         {buttons}
         {this.props.children}
@@ -127,62 +126,24 @@ class Window extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    window: state.window,
-  };
-}
+const mapStateToProps = (state) => ({
+  window: state.window,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    move: (payload) => {
-      dispatch({ type: 'MOVE', payload });
-    },
-
-    startResizing: () => {
-      dispatch({ type: 'START_RESIZING' });
-    },
-
-    resize: (payload) => {
-      dispatch({ type: 'RESIZE', payload });
-    },
-
-    endResizing: () => {
-      dispatch({ type: 'END_RESIZING' });
-    },
-
-    minimize: (payload) => {
-      dispatch({ type: 'MINIMIZE', payload });
-    },
-
-    maximize: () => {
-      dispatch({ type: 'MAXIMIZE' });
-    },
-
-    restore: () => {
-      dispatch({ type: 'RESTORE' });
-    },
-
-    help: () => {
-      dispatch({ type: 'SHOW_WINDOW', payload: 'help' });
-    },
-
-    close: (payload) => {
-      dispatch({ type: 'CLOSE', payload });
-    },
-
-    activate: (payload) => {
-      dispatch({ type: 'ACTIVATE', payload });
-    },
-
-    cursor: (payload) => {
-      dispatch({ type: 'CURSOR', payload });
-    },
-
-    cancelAlert: (payload) => {
-      dispatch({ type: 'CANCEL_ALERT', payload });
-    },
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  move: (payload) => dispatch({ type: 'MOVE', payload }),
+  resize: (payload) => dispatch({ type: 'RESIZE', payload }),
+  minimize: (payload) => dispatch({ type: 'MINIMIZE', payload }),
+  maximize: (payload) => dispatch({ type: 'MAXIMIZE', payload }),
+  restore: (payload) => dispatch({ type: 'RESTORE', payload }),
+  help: () => dispatch({ type: 'SHOW_WINDOW', payload: 'help' }),
+  activate: (payload) => dispatch({ type: 'ACTIVATE', payload }),
+  cursor: (payload) => dispatch({ type: 'CURSOR', payload }),
+  cancelAlert: (payload) => dispatch({ type: 'CANCEL_ALERT', payload }),
+  close: (payload) => {
+    payload === 'solitaire' && dispatch({ type: 'STOP_TIMER' });
+    dispatch({ type: 'CLOSE', payload });
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Window);

@@ -12,24 +12,26 @@ class Back extends Component {
   render() {
     const grid = [];
     for (let i = 0; i < 12; i++) {
+      let className = `grid-item back-${i}`;
+      this.state.selected === i && (className += ' selected');
       grid.push(
         <div
           key={`bg-${i}`}
-          className={`grid-item back-${i}${this.state.selected === i ? ' selected' : ''}`}
-          onMouseDown={(event) => {event.button === 0 && this.setState({ selected: i })}}
+          className={className}
+          onMouseDown={(event) => {
+            event.button === 0 && this.setState({ selected: i })
+          }}
         />
       );
     }
+
     return (
       <div className="back-contents">
         <div className="back-grid">{grid}</div>
         <Button
           type="ok"
           selected
-          click={() => {
-            this.props.set(this.state.selected);
-            this.props.close();
-          }}
+          click={() => { this.props.set(this.state.selected) }}
         />
         <Button type="cancel" click={() => { this.props.close() }} />
       </div>
@@ -37,22 +39,16 @@ class Back extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    game: state.game,
-  };
-}
+const mapStateToProps = (state) => ({
+  game: state.game,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    set: (payload) => {
-      dispatch({ type: 'SET_BACK', payload });
-    },
-
-    close: () => {
-      dispatch({ type: 'CLOSE', payload: 'back' });
-    },
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  close: () => dispatch({ type: 'CLOSE', payload: 'back' }),
+  set: (payload) => {
+    dispatch({ type: 'SET_BACK', payload });
+    dispatch({ type: 'CLOSE', payload: 'back' });
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Back);

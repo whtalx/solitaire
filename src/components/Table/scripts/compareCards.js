@@ -9,6 +9,7 @@ export default function compareCards(firstCard, secondCard) {
       parent: firstCard.dataset.parent,
       index: parseInt(firstCard.dataset.index),
     };
+
     if (secondCard.classList.value.match(/card opened/)) {
       const second = {
         value: secondCard.classList[2],
@@ -16,6 +17,7 @@ export default function compareCards(firstCard, secondCard) {
         parent: secondCard.dataset.parent,
         index: parseInt(secondCard.dataset.index),
       };
+
       if (
         valuesComparison[first.value] === valuesComparison[second.value] + 1
         && second.parent.match(/foundation/)
@@ -89,5 +91,6 @@ export default function compareCards(firstCard, secondCard) {
       }
     }
   }
+
   return false;
 }

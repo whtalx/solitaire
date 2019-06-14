@@ -202,142 +202,159 @@ const initialState = {
 export default function window(state = initialState, action) {
   switch (action.type) {
     case 'MOVE': {
-      const { window, left, top } = action.payload;
       const newState = { ...state };
-      if (newState[window]) {
-        newState[window].style.left = left;
-        newState[window].style.top = top;
-      }
+      const { window, left, top } = action.payload;
+      if (!newState[window]) { return newState; }
+
+      newState[window].style.left = left;
+      newState[window].style.top = top;
       return newState;
     }
 
     case 'MINIMIZE': {
       const newState = { ...state };
-      for (let key in newState) {
-        if (key === 'solitaire' || key === 'activity') { continue; }
-        if (newState[key].isShowing) {
-          newState[key].isShowing = false;
+      const window = action.payload;
+      if (!newState[window]) { return newState; }
+
+      if (window === 'solitaire') {
+        for (let key in newState) {
+          if (key === 'solitaire' || key === 'activity') { continue; }
+          if (newState[key].isShowing && newState[key].isBlocking) {
+            newState[key].isShowing = false;
+          }
         }
       }
 
-      newState.solitaire.lastStyle === null && (
-        newState.solitaire.lastStyle = { ...newState.solitaire.style }
-      );
-      newState.solitaire.style = {
+      newState[window].isMaximized && (newState[window].isMaximized = false);
+      newState[window].isMinimized = true;
+      newState[window].buttons = ['restore', 'maximize', 'close'];
+      newState[window].lastStyle === null
+        && (newState[window].lastStyle = { ...newState[window].style });
+      newState[window].style = {
         width: 0,
         height: 0,
         left: 0,
         top: document.documentElement.clientHeight,
       };
-
-      newState.solitaire.isMaximized && (newState.solitaire.isMaximized = false);
-      newState.solitaire.isMinimized = true;
-      newState.solitaire.buttons = ['restore', 'maximize', 'close'];
       return newState;
     }
 
     case 'MAXIMIZE': {
       const newState = { ...state };
-      newState.solitaire.lastStyle === null && (newState.solitaire.lastStyle = { ...newState.solitaire.style });
-      newState.solitaire.style = {
+      const window = action.payload;
+      if (!newState[window]) { return newState; }
+
+      newState[window].isMinimized && (newState[window].isMinimized = false);
+      newState[window].isMaximized = true;
+      newState[window].buttons = ['minimize', 'restore', 'close'];
+      newState[window].lastStyle === null
+        && (newState[window].lastStyle = { ...newState[window].style });
+      newState[window].style = {
         width: '',
         height: '',
         left: 0,
         top: 26,
       };
-
-      newState.solitaire.isMinimized && (newState.solitaire.isMinimized = false);
-      newState.solitaire.isMaximized = true;
-      newState.solitaire.buttons = ['minimize', 'restore', 'close'];
       return newState;
     }
 
     case 'RESTORE': {
       const newState = { ...state };
-      newState.solitaire.style = { ...newState.solitaire.lastStyle };
-      newState.solitaire.lastStyle = null;
-      newState.solitaire.isMinimized = false;
-      newState.solitaire.isMaximized = false;
-      newState.solitaire.buttons = ['minimize', 'maximize', 'close'];
+      const window = action.payload;
+      if (!newState[window]) { return newState; }
 
-      newState.activity.forEach((item) => {
-        newState[item].isShowing = true;
-      });
-      newState.activity.splice(newState.activity.indexOf('solitaire'), 1);
-      newState.activity.unshift('solitaire');
+      newState[window].style = { ...newState[window].lastStyle };
+      newState[window].lastStyle = null;
+      newState[window].isMinimized = false;
+      newState[window].isMaximized = false;
+      newState[window].buttons = ['minimize', 'maximize', 'close'];
 
-      return newState;
-    }
+      if (window === 'solitaire') {
+        newState.activity.forEach((item) => {
+          if (!newState[item].isShowing && newState[item].isBlocking) {
+            newState[item].isShowing = true;
+          }
+        });
+        newState.activity.splice(newState.activity.indexOf('solitaire'), 1);
+        newState.activity.unshift('solitaire');
+      }
 
-    case 'START_RESIZING': {
-      const newState = { ...state };
-      newState.solitaire.isResizing = true;
       return newState;
     }
 
     case 'RESIZE': {
       const newState = { ...state };
-      const { top, left, width, height } = action.payload;
-      Number.isFinite(width) && (newState.solitaire.style.width = width);
-      Number.isFinite(height) && (newState.solitaire.style.height = height);
-      Number.isFinite(left) && (newState.solitaire.style.left = left);
-      Number.isFinite(top) && (newState.solitaire.style.top = top);
-      return newState;
-    }
+      const { window, top, left, width, height } = action.payload;
+      if (!newState[window] || !newState[window].isResizable) { return newState; }
 
-    case 'END_RESIZING': {
-      const newState = { ...state };
-      newState.solitaire.isResizing = false;
+      Number.isFinite(width) && (newState[window].style.width = width);
+      Number.isFinite(height) && (newState[window].style.height = height);
+      Number.isFinite(left) && (newState[window].style.left = left);
+      Number.isFinite(top) && (newState[window].style.top = top);
+
       return newState;
     }
 
     case 'ACTIVATE': {
       const newState = { ...state };
+      const window = action.payload;
+      if (!newState[window]) { return newState; }
 
-      if (
-        newState[action.payload].isBlocked
-        && newState.activity.indexOf(action.payload) + 1 < newState.activity.length - 1
-      ) {
-        newState.activity.indexOf('') >= 0 && newState.activity.splice(newState.activity.indexOf(''), 1);
-        const part = newState.activity.splice(newState.activity.indexOf(action.payload), 2);
-        newState.activity.push(...part);
-        return newState;
-      } else if (
-        newState[action.payload].isBlocked
-        && newState.activity.indexOf(action.payload) + 1 === newState.activity.length - 1
-        && !newState[newState.activity[newState.activity.length - 1]].alert
-      ) {
-        newState[newState.activity[newState.activity.length - 1]].alert = true;
-        return newState;
+      if (newState[window].isBlocked) {
+        if (newState.activity.indexOf(window) + 1 < newState.activity.length - 1) {
+          newState.activity.indexOf('') >= 0
+            && newState.activity.splice(newState.activity.indexOf(''), 1);
+          const part = newState.activity.splice(newState.activity.indexOf(window), 2);
+          newState.activity.push(...part);
+          return newState;
+        } else if (newState.activity.indexOf(window) + 1 === newState.activity.length - 1) {
+          !newState[newState.activity[newState.activity.length - 1]].alert
+            && (newState[newState.activity[newState.activity.length - 1]].alert = true);
+          return newState;
+        }
       }
 
       newState.activity.indexOf('') >= 0 && newState.activity.splice(newState.activity.indexOf(''), 1);
-      newState.activity.splice(newState.activity.indexOf(action.payload), 1);
-      newState.activity.push(action.payload);
+      newState.activity.splice(newState.activity.indexOf(window), 1);
+      newState.activity.push(window);
       return newState;
     }
 
     case 'DEACTIVATE': {
       const newState = { ...state };
-      if (newState.activity.indexOf('') >= 0) {
-        return newState;
-      }
+      if (newState.activity.indexOf('') >= 0) { return newState; }
+      newState.activity.forEach((item) => {
+        if (
+          newState[item]
+          && newState[item].alert
+        ) {
+          newState[item].alert = false;
+        }
+      });
+
       newState.activity.push('');
       return newState;
     }
 
     case 'CANCEL_ALERT': {
       const newState = { ...state };
-      if (newState[action.payload].alert) {
-        newState[action.payload].alert = false;
+      const window = action.payload;
+      if (!newState[window]) { return newState; }
+
+      if (newState[window].alert) {
+        newState[window].alert = false;
       }
-      
+
       return newState;
     }
 
     case 'CLOSE': {
       const newState = { ...state };
-      if (action.payload === 'solitaire') {
+      const window = action.payload;
+      if (!newState[window]) { return newState; }
+
+
+      if (window === 'solitaire') {
         for (let key in newState) {
           if (newState[key] instanceof Array) { continue; }
           if (newState[key].isShowing) {
@@ -345,58 +362,57 @@ export default function window(state = initialState, action) {
           }
         }
         return newState;
-      } else if (newState[action.payload].isBlocking) {
+      } else if (newState[window].isBlocking) {
         newState.solitaire.isBlocked = false;
       }
 
-      newState[action.payload].isShowing = false;
-      newState[action.payload].style.left = null;
-      newState[action.payload].style.top = null;
-      newState.activity.splice(newState.activity.indexOf(action.payload), 1);
+      newState[window].isShowing = false;
+      newState[window].style.left = null;
+      newState[window].style.top = null;
+      newState.activity.splice(newState.activity.indexOf(window), 1);
       return newState;
     }
 
     case 'SHOW_WINDOW': {
       const newState = { ...state };
-      if(newState[action.payload]) {
+      const window = action.payload;
+      if (!newState[window]) { return newState; }
 
-        if (
-          action.payload !== 'solitaire'
-          && newState[action.payload].isBlocking
-        ) {
-          newState.solitaire.isBlocked = true;
-        }
-
-        newState[action.payload].isShowing = true;
-        if (newState.activity.includes(action.payload)) {
-          newState.activity.splice(newState.activity.indexOf(action.payload), 1);
-        }
-        newState.activity.push(action.payload);
+      if (
+        window !== 'solitaire'
+        && newState[action.payload].isBlocking
+      ) {
+        newState.solitaire.isBlocked = true;
       }
+
+      newState[window].isShowing = true;
+
+      newState.activity.includes(window)
+        && newState.activity.splice(newState.activity.indexOf(window), 1);
+      newState.activity.push(window);
+
       return newState;
     }
 
     case 'CURSOR': {
       const newState = { ...state };
-
-      if (action.payload) {
-        newState.solitaire.cursor = action.payload;
-      } else {
-        newState.solitaire.cursor = null;
-      }
-
+      const { window, cursor } = action.payload;
+      if (!newState[window] || !newState[window].isResizable) { return newState; }
+      newState[window].cursor = cursor;
       return newState;
     }
 
     case 'SHOW_MENU': {
       const newState = { ...state };
+      const { window, show } = action.payload;
+      if (!newState[window] || !newState[window].menu) { return newState; }
 
-      if (action.payload.show) {
-        newState[action.payload.window].menu.isShowing = true;
+      if (show) {
+        newState[window].menu.isShowing = true;
       } else {
-        newState[action.payload.window].menu.isShowing = false;
-        newState[action.payload.window].menu.hovered = null;
-        newState[action.payload.window].status.description = '';
+        newState[window].menu.isShowing = false;
+        newState[window].menu.hovered = null;
+        newState[window].status.description = '';
       }
 
       return newState;
@@ -404,22 +420,20 @@ export default function window(state = initialState, action) {
 
     case 'HOVER_MENU': {
       const newState = { ...state };
-
-      action.payload.hover ?
-        newState[action.payload.window].menu.hovered = action.payload.hover
-      :
-        newState[action.payload.window].menu.hovered = null;
-
+      const { window, hover } = action.payload;
+      if (!newState[window] || !newState[window].menu) { return newState; }
+      newState[window].menu.hovered = hover;
       return newState;
     }
 
     case 'DESCRIBE_MENU': {
       const newState = { ...state };
+      const { window, describe } = action.payload;
+      if (!newState[window] || !newState[window].menu) { return newState; }
 
-      action.payload.describe ?
-        newState[action.payload.window].status.description = newState[action.payload.window].menu.categories[newState[action.payload.window].menu.hovered][action.payload.describe].description
-        :
-        newState[action.payload.window].status.description = '';
+      action.payload.describe
+        ? newState[window].status.description = newState[window].menu.categories[newState[window].menu.hovered][describe].description
+        : newState[window].status.description = '';
 
       return newState;
     }

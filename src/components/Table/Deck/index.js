@@ -1,37 +1,31 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import './index.scss';
 import makeCard from '../scripts/makeCard';
 
-class Deck extends PureComponent {
-  render() {
-    const deck = this.props.game.cards.deck.length ?
-      this.props.game.cards.deck.map((item, index) => {
-        return makeCard({
-          ...item,
-          parent: 'deck',
-          index: index,
-          back: this.props.game.options.back,
-        });
-      })
-    :
-      this.props.game.status.rollThrough ?
-        makeCard({ status: 'ok' })
-      :
-        makeCard({ status: 'notok' });
-
-    return (
-      <div className="deck">
-        {deck}
-      </div>
-    );
-  }
+function Deck(props) {
+  return (
+    <div className="deck">
+      {
+        props.game.cards.deck.length
+          ? props.game.cards.deck.map((item, index) => {
+              return makeCard({
+                ...item,
+                parent: 'deck',
+                index: index,
+                back: props.game.options.back,
+              });
+            })
+          : props.game.status.rollThrough
+              ? makeCard({ status: 'ok' })
+              : makeCard({ status: 'notok' })
+      }
+    </div>
+  );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    game: state.game,
-  };
-}
+const mapStateToProps = (state) => ({
+  game: state.game,
+});
 
 export default connect(mapStateToProps)(Deck);

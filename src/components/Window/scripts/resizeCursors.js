@@ -9,19 +9,24 @@
 
 export default function resizeCursors(event) {
   if (
-    this.props.window[this.props.name].isResizing
-    || this.props.window[this.props.name].isBlocked
+    this.props.window[this.props.name].isBlocked
+    || this.state.freezeCursor
   ) {
       return;
     }
 
   let currentWindow = null;
-  if (event.target === document.getElementsByClassName('solitaire')[0]) {
+  if (
+    event.target === document.getElementsByClassName('solitaire')[0]
+  ) {
     currentWindow = event.target
-  } else if (event.target === document.getElementsByClassName('solitaire')[0].firstElementChild) {
+  } else if (
+    event.target === document.getElementsByClassName('solitaire')[0].firstElementChild
+  ) {
     currentWindow = event.target.offsetParent;
   } else {
-    this.props.window[this.props.name].cursor && this.props.cursor();
+    this.props.window[this.props.name].cursor !== null
+      && this.props.cursor({ window: this.props.name, cursor: null });
     return;
   }
 
@@ -81,107 +86,80 @@ export default function resizeCursors(event) {
     bottom: b.bottom,
   }
 
-  const coordinates = {
-    isInCenter: (x, y) => {
-      return (
-        x > l.right
-        && x < r.left
-        && y > t.bottom
-        && y < b.top
-      );
-    },
-
-    isInTop: (x, y) => {
-      return (
-        x > t.left
-        && x < t.right
-        && y > t.top
-        && y < t.bottom
-      );
-    },
-
-    isInBottom: (x, y) => {
-      return (
-        x > b.left
-        && x < b.right
-        && y > b.top
-        && y < b.bottom
-      );
-    },
-
-    isInLeft: (x, y) => {
-      return (
-        x > l.left
-        && x < l.right
-        && y > l.top
-        && y < l.bottom
-      );
-    },
-
-    isInRight: (x, y) => {
-      return (
-        x > r.left
-        && x < r.right
-        && y > r.top
-        && y < r.bottom
-      );
-    },
-
-    isInTopLeft: (x, y) => {
-      return (
-        x > tl.left
-        && x < tl.right
-        && y > tl.top
-        && y < tl.bottom
-      );
-    },
-
-    isInTopRight: (x, y) => {
-      return (
-        x > tr.left
-        && x < tr.right
-        && y > tr.top
-        && y < tr.bottom
-      );
-    },
-
-    isInBottomLeft: (x, y) => {
-      return (
-        x > bl.left
-        && x < bl.right
-        && y > bl.top
-        && y < bl.bottom
-      );
-    },
-
-    isInBottomRight: (x, y) => {
-      return (
-        x > br.left
-        && x < br.right
-        && y > br.top
-        && y < br.bottom
-      );
-    },
-  }
-
-  const direction = (x, y) => {
-    if (coordinates.isInCenter(x, y)) {
+  const cursorDirection = (x, y) => {
+    if (
+      x >= l.right
+      && x <= r.left
+      && y >= t.bottom
+      && y <= b.top
+    ) {
       return;
-    } else if (coordinates.isInTop(x, y) || coordinates.isInBottom(x, y)) {
+    } else if (
+      (
+        x >= t.left
+        && x <= t.right
+        && y >= t.top
+        && y <= t.bottom
+      ) || (
+        x >= b.left
+        && x <= b.right
+        && y >= b.top
+        && y <= b.bottom
+      )
+    ) {
       return 'ns-resize';
-    } else if (coordinates.isInLeft(x, y) || coordinates.isInRight(x, y)) {
+    } else if (
+      (
+        x >= l.left
+        && x <= l.right
+        && y >= l.top
+        && y <= l.bottom
+      ) || (
+        x >= r.left
+        && x <= r.right
+        && y >= r.top
+        && y <= r.bottom
+      )
+    ) {
       return 'ew-resize';
-    } else if (coordinates.isInTopLeft(x, y) || coordinates.isInBottomRight(x, y)) {
+    } else if (
+      (
+        x >= tl.left
+        && x <= tl.right
+        && y >= tl.top
+        && y <= tl.bottom
+      ) || (
+        x > br.left
+        && x <= br.right
+        && y >= br.top
+        && y <= br.bottom
+      )
+    ) {
       return 'nwse-resize';
-    } else if (coordinates.isInTopRight(x, y) || coordinates.isInBottomLeft(x, y)) {
+    } else if (
+      (
+        x >= bl.left
+        && x <= bl.right
+        && y >= bl.top
+        && y <= bl.bottom
+      ) || (
+        x >= tr.left
+        && x <= tr.right
+        && y >= tr.top
+        && y <= tr.bottom
+      )
+    ) {
       return 'nesw-resize';
     }
   }
 
-  const cursor = direction(event.pageX, event.pageY);
-  if (cursor) {
-    this.props.window[this.props.name].cursor !== cursor && this.props.cursor(cursor);
+  const cursor = cursorDirection(event.pageX, event.pageY);
+
+  if (cursor !== undefined) {
+    this.props.window[this.props.name].cursor !== cursor
+      && this.props.cursor({ window: this.props.name, cursor });
   } else {
-    this.props.window[this.props.name].cursor && this.props.cursor();
+    this.props.window[this.props.name].cursor !== null
+      && this.props.cursor({ window: this.props.name, cursor: null });
   }
 }

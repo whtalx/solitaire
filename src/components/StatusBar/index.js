@@ -17,37 +17,30 @@ function StatusBar(props) {
     <div className="status-bar">
       <div className="description">
         {
-          props.game.status.bonus > 0 ?
-            `Bonus: ${props.game.status.bonus}`
-          :
-            props.window.solitaire.status.description
+          props.game.status.bonus > 0
+            ? `Bonus: ${props.game.status.bonus}`
+            : props.window.solitaire.status.description
         }
       </div>
       <div className="status">
         {
-          props.game.options.scoring !== 'none' ?
-          <div className={scoreClassName}>
-            Score: {score}
-          </div>
-          :
-            ''
+          props.game.options.scoring !== 'none'
+            ? <div className={scoreClassName}>Score: {score}</div>
+            : ''
         }
         {
-          props.game.options.timed ?
-            <div className="time">Time: {props.game.status.time}</div>
-          :
-            ''
+          props.game.options.timed
+            ? <div className="time">Time: {props.game.status.time}</div>
+            : ''
         }
       </div>
     </div>
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    game: state.game,
-    window: state.window,
-  };
-}
+const mapStateToProps = (state) => ({
+  game: state.game,
+  window: state.window,
+});
 
 export default connect(mapStateToProps)(StatusBar);

@@ -17,6 +17,7 @@ const initialState = {
     rollsCount: 0,
     rollThrough: !(options.scoring === 'vegas' && options.draw === 'one'),
     history: {},
+    isPlaying: false,
   },
 
   cards,
@@ -35,13 +36,13 @@ export default function game(state = initialState, action) {
         rollsCount: 0,
         rollThrough: !(newState.options.scoring === 'vegas' && newState.options.draw === 'one'),
         history: {},
+        isPlaying: false,
       };
       return newState;
     }
 
     case 'DRAW': {
       const newState = { ...state };
-
       newState.status.history = saveHistory(newState, 'deck', 'waste');
 
       if (state.cards.deck.length > 0) {
@@ -63,9 +64,10 @@ export default function game(state = initialState, action) {
       newState.cards.deck = newState.cards.waste.map((item) => {
         return { ...item, status: 'downturned' }
       });
-      
+
       newState.cards.waste = [];
       newState.status.rollsCount += 1;
+
       if (
         newState.options.scoring === 'vegas'
         && newState.options.draw === 'three'
@@ -137,9 +139,9 @@ export default function game(state = initialState, action) {
       } else {
         card = newState.cards[action.payload.parent][action.payload.index];
       }
+
       const foundationIndex = canFundIt(card, newState.cards.foundation);
       if (Number.isFinite(foundationIndex)) {
-
         if (Number.isFinite(action.payload.parent_index)) {
           newState.status.history = saveHistory(newState, 'foundation', 'tableau');
           newState.status.score = setScore(newState, 'tableauToFoundation');
@@ -205,29 +207,35 @@ export default function game(state = initialState, action) {
         newState.options.draw = draw;
         localStorage.setItem('cards_draw', draw);
       }
+
       if (scoring !== undefined) {
         newState.options.scoring = scoring;
         localStorage.setItem('scoring_type', scoring);
         localStorage.getItem('score') && localStorage.removeItem('score');
       }
+
       if (cumulative !== undefined) {
         newState.options.cumulative = cumulative;
         localStorage.setItem('score_cumulative', cumulative);
+
         if (cumulative) {
           localStorage.setItem('score', newState.status.score);
         } else {
           localStorage.getItem('score') && localStorage.removeItem('score');
         }
       }
+
       if (timed !== undefined) {
         newState.options.timed = timed;
         localStorage.setItem('game_timed', timed)
         localStorage.getItem('score') && localStorage.removeItem('score');
       }
+
       if (status !== undefined) {
         newState.options.status = status;
         localStorage.setItem('game_statusbar', status)
       }
+
       if (outline !== undefined) {
         newState.options.outline = outline;
         localStorage.setItem('cards_outline', outline);
@@ -235,14 +243,14 @@ export default function game(state = initialState, action) {
 
       return newState;
     }
-    
+
     case 'SET_BACK': {
       const newState = { ...state };
       newState.options.back = action.payload;
       localStorage.setItem('cards_back', action.payload);
       return newState;
     }
-    
+
     case 'UNDO': {
       const newState = { ...state };
 
@@ -282,6 +290,27 @@ export default function game(state = initialState, action) {
 
       newState.status.history = {};
       newState.status.score = setScore(newState, 'undo');
+      return newState;
+    }
+
+    case 'START_TIMER': {
+      const newState = { ...state };
+      !newState.status.isPlaying && (newState.status.isPlaying = true);
+      return newState;
+    }
+
+    case 'STOP_TIMER': {
+      const newState = { ...state };
+      newState.status.isPlaying && (newState.status.isPlaying = false);
+      return newState;
+    }
+
+    case 'TICK': {
+      const newState = { ...state };
+      if (!newState.status.isPlaying) { return; }
+      newState.status.time = action.payload;
+      newState.status.time % 10 === 0
+        && (newState.status.score = setScore(newState, 'time'));
       return newState;
     }
 

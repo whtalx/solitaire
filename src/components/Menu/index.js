@@ -9,15 +9,18 @@ class Menu extends PureComponent {
   render() {
     const categories = this.props.window[this.props.parent].menu.categories;
     const menu = [];
-
     for (let category in categories) {
       const items = [];
       for (let item in categories[category]) {
         if (categories[category][item].type === 'menu-item') {
           let className = 'menu-item';
-          if (item === 'undo' && Object.keys(this.props.game.status.history).length === 0) {
+          if (
+            item === 'undo'
+            && Object.keys(this.props.game.status.history).length === 0
+          ) {
             className += ' disabled';
           }
+
           items.push(
             <div
               key={item}
@@ -26,12 +29,11 @@ class Menu extends PureComponent {
               data-func={categories[category][item].function}
             >
               {
-                categories[category][item].id === 0 ?
-                  categories[category][item].text.split(' ').map((itemText) => {
-                    return <span key={itemText}>{itemText}</span>
-                  })
-                :
-                  categories[category][item].text
+                categories[category][item].id === 0
+                  ? categories[category][item].text.split(' ').map((itemText) =>
+                      <span key={itemText}>{itemText}</span>
+                    )
+                  : categories[category][item].text
               }
             </div>
             );
@@ -44,9 +46,11 @@ class Menu extends PureComponent {
 
       let className = 'menu-category';
       if (this.props.window[this.props.parent].menu.hovered === category) {
-        (className += ' hovered');
-        this.props.window[this.props.parent].menu.isShowing && (className += ' showing');
+        className += ' hovered';
+        this.props.window[this.props.parent].menu.isShowing
+          && (className += ' showing');
       }
+
       menu.push(
         <div
           key={`menu-category-${category}`}
@@ -74,55 +78,22 @@ class Menu extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    game: state.game,
-    window: state.window,
-  };
-}
+const mapStateToProps = (state) => ({
+  game: state.game,
+  window: state.window,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    deal: () => {
-      dispatch({ type: 'DEAL' });
-    },
-
-    undo: () => {
-      dispatch({ type: 'UNDO' });
-    },
-
-    back: () => {
-      dispatch({ type: 'SHOW_WINDOW', payload: 'back' });
-    },
-
-    options: () => {
-      dispatch({ type: 'SHOW_WINDOW', payload: 'options' });
-    },
-
-    exit: () => {
-      dispatch({ type: 'CLOSE', payload: 'solitaire' });
-    },
-
-    help: () => {
-      dispatch({ type: 'SHOW_WINDOW', payload: 'help' });
-    },
-
-    about: () => {
-      dispatch({ type: 'SHOW_WINDOW', payload: 'about' });
-    },
-
-    showMenu: (payload) => {
-      dispatch({ type: 'SHOW_MENU', payload });
-    },
-
-    hoverMenu: (payload) => {
-      dispatch({ type: 'HOVER_MENU', payload });
-    },
-
-    describeMenu: (payload) => {
-      dispatch({ type: 'DESCRIBE_MENU', payload });
-    },
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  deal: () => dispatch({ type: 'DEAL' }),
+  undo: () => dispatch({ type: 'UNDO' }),
+  back: () => dispatch({ type: 'SHOW_WINDOW', payload: 'back' }),
+  options: () => dispatch({ type: 'SHOW_WINDOW', payload: 'options' }),
+  exit: () => dispatch({ type: 'CLOSE', payload: 'solitaire' }),
+  help: () => dispatch({ type: 'SHOW_WINDOW', payload: 'help' }),
+  about: () => dispatch({ type: 'SHOW_WINDOW', payload: 'about' }),
+  showMenu: (payload) => dispatch({ type: 'SHOW_MENU', payload }),
+  hoverMenu: (payload) => dispatch({ type: 'HOVER_MENU', payload }),
+  describeMenu: (payload) => dispatch({ type: 'DESCRIBE_MENU', payload }),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);
