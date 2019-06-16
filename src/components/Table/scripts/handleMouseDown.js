@@ -1,17 +1,25 @@
 import compareCards from './compareCards';
 
 export default function handleMouseDown(event) {
-  !this.props.game.status.isPlaying && this.startGame();
-
   if (this.props.window.solitaire.isBlocked) {
     return;
-  } else if (this.props.window.activity[this.props.window.activity.length - 1] !== 'solitaire') {
+  } else if (
+    this.props.window.activity[this.props.window.activity.length - 1] !== 'solitaire'
+  ) {
     this.props.activate();
+  }
+
+  if (event.button !== 0) {
+    event.button === 2 && this.props.fundAll();
+    return;
+  }
+
+  if (!this.props.game.status.isPlaying) {
+    this.startGame();
   }
 
   if (
     !event.target.classList.contains('card')
-    || event.button !== 0
     || (
       event.target.attributes.getNamedItem('data-parent')
       && event.target.dataset.parent === 'waste'

@@ -1,6 +1,7 @@
 export default function handleDoubleClick(event) {
   if (
     this.props.window.solitaire.isBlocked
+    || event.button !== 0
     || !event.target.classList.contains('opened')
     || !event.target.attributes.getNamedItem('data-parent')
     || event.target.dataset.parent.match('foundation')

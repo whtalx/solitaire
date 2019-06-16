@@ -7,29 +7,35 @@ import Tableau from './Tableau';
 import Foundation from './Foundation';
 import handleMouseDown from './scripts/handleMouseDown';
 import handleDoubleClick from './scripts/handleDoubleClick';
+import worker from './scripts/worker';
 
 class Table extends PureComponent {
+  startTimer() {
+    this.timer = new Worker(worker);
+    this.timer.onmessage = (message) => {
+      this.props.tick(message.data);
+    }
+  }
+
+  stopTimer() {
+    this.timer.terminate();
+    this.timer = undefined;
+  }
+
   startGame() {
     this.props.startGame();
-    if (this.timer === null) {
-      /** TODO: worker */
-      this.timer = setInterval(() => {
-        this.props.game.options.timed
-          && this.props.tick(++this.props.game.status.time);
-      }, 1000);
+    if (this.props.game.options.timed && this.timer === undefined) {
+      this.startTimer();
     }
   }
 
   render() {
     if (
-      this.timer !== null
-      && (
-        !this.props.game.status.isPlaying
-        || !this.props.game.options.timed
-      )
+      !this.props.game.status.isPlaying
+      && this.props.game.options.timed
+      && this.timer !== undefined
     ) {
-      clearInterval(this.timer);
-      this.timer = null;
+      this.stopTimer();
     }
 
     if (this.props.game.status.cardsInFoundation === 52) {
@@ -45,7 +51,8 @@ class Table extends PureComponent {
           <div
             className="celebrating"
             onMouseDown={() => {
-              this.props.game.status.isCelebrating && this.props.stopCelebrating()
+              this.props.game.status.isCelebrating
+                && this.props.stopCelebrating()
             }}
           />
         </div>
@@ -57,10 +64,6 @@ class Table extends PureComponent {
         <div
           className="table"
           onMouseDown={handleMouseDown.bind(this)}
-          onContextMenu={() => {
-            this.props.window.activity[this.props.window.activity.length - 1] === 'solitaire'
-              && this.props.fundAll();
-          }}
           onDoubleClick={handleDoubleClick.bind(this)}
         >
           <Deck />
