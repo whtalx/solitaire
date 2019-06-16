@@ -25,35 +25,59 @@ export default function handleMouseDown(event) {
       && event.target.dataset.parent === 'waste'
       && this.props.game.cards.waste.length !== parseInt(event.target.dataset.index) + 1
     )
+    || (
+      event.target.attributes.getNamedItem('data-parent')
+      && event.target.dataset.parent === 'deck'
+      && this.props.game.cards.deck.length !== parseInt(event.target.dataset.index) + 1
+    )
   ) {
     return;
   }
 
   event.stopPropagation();
-  const card = event.target;
 
-  if (card.classList.contains('opened')) {
+  if (event.target.classList.contains('opened')) {
+    let card = event.target;
+    let moveCard = false;
+    let targetPlace = null;
+    const parentElement = card.parentElement;
+    const isOutline = this.props.game.options.outline;
+
+    if (isOutline) {
+      card = card.cloneNode(true);
+      card.classList.add('outline');
+      card.style.display = 'none';
+      parentElement.appendChild(card);
+    }
+
+    card.style.zIndex = 69;
+
     const shiftX = event.pageX;
     const shiftY = event.pageY;
     const handleMouseMove = (event) => {
-      card.style.left = event.pageX - shiftX + 'px';
-      card.style.top = event.pageY - shiftY + 'px';
-    }
+      card.style.display === 'none' && (card.style.display = '');
+      card.style.transform = `translate(${event.pageX - shiftX}px,${event.pageY - shiftY}px)`;
 
-    const handleMouseUp = () => {
-      document.removeEventListener('mousemove', handleMouseMove);
+      const getTarget = (horizontal, vertical) => {
+        const elements = document.elementsFromPoint(horizontal, vertical);
+        if (elements.includes(card)) {
+          return elements[elements.indexOf(card) + 1];
+        }
+
+        return elements[0];
+      }
+
       const rect = card.getBoundingClientRect();
-      card.style.left = '';
-      card.style.top = '';
-      card.style.zIndex = '';
-      
       const targets = {
-        left_top: document.elementFromPoint(rect.left, rect.top),
-        right_top: document.elementFromPoint(rect.right, rect.top),
-        left_bottom: document.elementFromPoint(rect.left, rect.bottom),
-        right_bottom: document.elementFromPoint(rect.right, rect.bottom),
+        left_top: getTarget(rect.left + 1, rect.top + 1),
+        right_top: getTarget(rect.left + 69, rect.top + 1),
+        left_bottom: getTarget(rect.left + 1, rect.top + 94),
+        right_bottom: getTarget(rect.left + 69, rect.top + 94),
       };
+
+      let counter = 0;
       for (let key in targets) {
+        counter++;
         const target = targets[key];
         if (
           !target
@@ -61,48 +85,91 @@ export default function handleMouseDown(event) {
           || !target.parentElement
           || target === card
         ) {
+          if (counter === 4 && targetPlace !== null) {
+            isOutline && targetPlace.classList.remove('inverted');
+            targetPlace = null;
+            moveCard = false;
+          }
+
           continue;
         }
-        
-        if (target.classList.contains('card')) {
+
+        if (target === targetPlace) {
+          break;
+        } else if (target.classList.contains('card')) {
           if (
             target.classList.contains('opened')
             && !target.parentElement.classList.contains('waste')
             && compareCards(card, target)
           ) {
-            this.props.drop.bind(this)(compareCards(card, target));
+            moveCard = compareCards(card, target);
+
+            if (targetPlace !== null && isOutline) {
+              targetPlace.classList.remove('inverted');
+            }
+
+            targetPlace = target;
+            isOutline && targetPlace.classList.add('inverted');
             break;
           } else {
-            continue;
+          continue;
           }
         } else if (
           (
             target.classList.contains('tableau')
             || target.classList.contains('foundation')
           )
-        &&
-          compareCards(card, target)
+          && compareCards(card, target)
         ) {
-          this.props.drop.bind(this)(compareCards(card, target));
+          moveCard = compareCards(card, target);
+
+          if (targetPlace !== null && isOutline) {
+            targetPlace.classList.remove('inverted');
+          }
+
+          targetPlace = target;
+          isOutline && targetPlace.classList.add('inverted');
           break;
+        } else if (counter === 4 && targetPlace !== null) {
+          isOutline && targetPlace.classList.remove('inverted');
+          targetPlace = null;
+          moveCard = false;
         }
       }
     }
 
-    card.style.zIndex = 69;
+    const handleMouseUp = () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      if (isOutline) {
+        parentElement.removeChild(card);
+      } else {
+        card.style.transform = '';
+        card.style.zIndex = '';
+      }
+
+      if (targetPlace) {
+        this.props.drop.bind(this)(moveCard);
+        isOutline && targetPlace.classList.remove('inverted');
+      }
+    }
+
     document.addEventListener('mouseup', handleMouseUp, { once: true });
     document.addEventListener('mousemove', handleMouseMove);
 
   } else if (
-    card.parentElement.classList.contains('deck')
-    && !card.classList.contains('not-ok')
+    event.target.parentElement.classList.contains('deck')
+    && !event.target.classList.contains('not-ok')
   ) {
     this.props.draw.bind(this)(this.props.game.options.draw);
-  } else if (card.classList.contains('closed')) {
+  } else if (
+    event.target.classList.contains('closed')
+    && event.target.children.length === 0
+  ) {
+    console.log(event.target)
     this.props.turn.bind(this)({
-      parent: card.dataset.parent.match(/\w/g).join('').match(/\D/g).join(''),
-      parent_index: parseInt(card.dataset.parent.match(/\d/)),
-      index: parseInt(card.dataset.index),
+      parent: event.target.dataset.parent.match(/\w/g).join('').match(/\D/g).join(''),
+      parent_index: parseInt(event.target.dataset.parent.match(/\d/)),
+      index: parseInt(event.target.dataset.index),
     });
   }
 }

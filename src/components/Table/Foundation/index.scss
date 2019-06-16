@@ -1,9 +1,14 @@
 .foundation {
   width: 71px;
   height: 96px;
-  background: url('../../../images/cards/empty.png');
-  
+  background-color: #008200;
+  background-image: url('../../../images/cards/empty.png');
+
   &.foundation-0 {
     grid-column: 4 / 5;
+  }
+
+  &.inverted {
+    filter: invert(1);
   }
 }

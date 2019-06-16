@@ -122,4 +122,20 @@
   &.king {
     background-position-y: -96px * 12;
   }
+
+  &.outline {
+    mix-blend-mode: difference;
+
+    &,
+    & * {
+      width: 70px;
+      height: 95px;
+      outline: 1px solid #fff;
+      background: #000;
+    }
+  }
+
+  &.inverted {
+    filter: invert(1);
+  }
 }

@@ -318,7 +318,7 @@ export default function game(state = initialState, action) {
 
     case 'TICK': {
       const newState = { ...state };
-      if (!newState.status.isPlaying) { return; }
+      if (!newState.status.isPlaying) { return newState; }
       newState.status.time = action.payload;
       newState.status.time % 10 === 0
         && (newState.status.score = setScore(newState, 'time'));

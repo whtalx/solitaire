@@ -31,8 +31,10 @@ class Table extends PureComponent {
 
   render() {
     if (
-      !this.props.game.status.isPlaying
-      && this.props.game.options.timed
+      (
+        !this.props.game.status.isPlaying
+        || !this.props.game.options.timed
+      )
       && this.timer !== undefined
     ) {
       this.stopTimer();
