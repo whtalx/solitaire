@@ -18,6 +18,7 @@
       left: -6px;
       width: 6px;
       height: 29px;
+      border-top-left-radius: 6px;
     }
 
     &:after {
@@ -26,6 +27,7 @@
       right: -6px;
       width: 6px;
       height: 29px;
+      border-top-right-radius: 6px;
     }
   }
 
@@ -61,28 +63,70 @@
     border: 1px solid #fff;
   }
 
-  .window__button_minimize {
-    right: 49px;
-    background: url('../../images/windows/button-minimize.png');
-  }
-
-  .window__button_maximize {
-    right: 26px;
-    background: url('../../images/windows/button-maximize.png');
-  }
-
-  .window__button_restore {
-    background: url('../../images/windows/button-restore.png');
+  .window__button_minimize,
+  .window__button_maximize,
+  .window__button_restore,
+  .window__button_help {
+    background-color: #2175f7;
+    background-image: url('../../images/windows/button-bg-blue.png');
   }
 
   .window__button_close {
     right: 3px;
-    background: url('../../images/windows/button-close.png');
+    background-color: #e74108;
+    background-image: url('../../images/windows/button-bg-red.png');
+
+    &:after {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOSAxOSI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTQsNS41TDUuNSw0TDkuNSw4TDEzLjUsNEwxNSw1LjVMMTEsOS41TDE1LDEzLjVMMTMuNSwxNUw5LjUsMTFMNS41LDE1TDQsMTMuNUw4LDkuNVoiLz48L3N2Zz4=');
+      content: '';
+    }
+  }
+
+  .window__button_minimize {
+    right: 49px;
+
+    &:after {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOSAxOSI+PHJlY3QgZmlsbD0iI2ZmZiIgeD0iNCIgeT0iMTIiIHdpZHRoPSI3IiBoZWlnaHQ9IjMiIC8+PC9zdmc+');
+      content: '';
+    }
+  }
+
+  .window__button_maximize {
+    right: 26px;
+
+    &:after {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOSAxOSI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBmaWxsPSIjZmZmIiBkPSJNNCw0SDE1VjE1SDRWNFpNNSw3SDE0VjE0SDVWNyIgLz48L3N2Zz4=');
+      content: '';
+    }
+  }
+
+  .window__button_restore:after {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOSAxOSI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBmaWxsPSIjZmZmIiBkPSJNNyw0TDE0LDRMMTQsMTFMMTIsMTFMMTIsMTBMMTMsMTBMMTMsNkw3LDYgNyw0Wk00LDdMMTEsN0wxMSwxNEw0LDE0TDQsN1pNNSw5TDEwLDlMMTAsMTNMNSwxM0w1LDlaIiAvPjwvc3ZnPg==');
+    content: '';
   }
 
   .window__button_help {
     right: 26px;
-    background: url('../../images/windows/button-help.png');
+
+    &:after {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOSAxOSI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBmaWxsPSIjZmZmIiBkPSJNOCwxM2gyVjEyYzAtMiw0LTIsNC01YTQsNCwwLDAsMC00LTRIOUE0LDQsMCwwLDAsNSw3SDdBMiwyLDAsMCwxLDksNWgxYTIsMiwwLDAsMSwyLDJjMCwyLTQsMi00LDV2MVptMiwzVjE0Yy0yLDAtMiwwLTIsMmgyWiIgLz48L3N2Zz4=');
+      content: '';
+    }
   }
 
   &.maximized {
@@ -115,16 +159,18 @@
   }
 
   &.active {
-    border-image: url('../../images/windows/border-active.png') 3 stretch stretch;
+    border-image: url('../../images/windows/border-active.png') 3;
 
     & > .window__header {
       background-image: url('../../images/windows/header-active.png');
 
       &:before {
+        background-color: #0031c7;
         background-image: url('../../images/windows/header-left-active.png');
       }
 
       &:after {
+        background-color: #0031c7;
         background-image: url('../../images/windows/header-right-active.png');
       }
     }
@@ -150,10 +196,12 @@
       background-image: url('../../images/windows/header-inactive.png');
 
       &:before {
+        background-color: #5e7dd8;
         background-image: url('../../images/windows/header-left-inactive.png');
       }
 
       &:after {
+        background-color: #5e7dd8;
         background-image: url('../../images/windows/header-right-inactive.png');
       }
     }
@@ -182,12 +230,16 @@
       background-position: -19px 0;
     }
 
-    .window__button_minimize:active,
-    .window__button_maximize:active,
-    .window__button_restore:active,
-    .window__button_close:active,
-    .window__button_help:active {
+    .window__button_minimize:active:hover,
+    .window__button_maximize:active:hover,
+    .window__button_restore:active:hover,
+    .window__button_close:active:hover,
+    .window__button_help:active:hover {
       background-position: -38px 0;
+
+      &:after {
+        opacity: .5;
+      }
     }
   }
 
