@@ -111,6 +111,8 @@ const initialState = {
       top: null,
     },
 
+    foundations: [257, 339, 421, 503],
+
     cursor: null,
     lastStyle: null,
     isBlocked: false,
@@ -435,6 +437,14 @@ export default function window(state = initialState, action) {
         ? newState[window].status.description = newState[window].menu.categories[newState[window].menu.hovered][describe].description
         : newState[window].status.description = '';
 
+      return newState;
+    }
+
+    case 'FOUNDATIONS_MOVED': {
+      const newState = { ...state };
+      action.payload.forEach((item, index) => {
+        Number.isFinite(item) && (newState.solitaire.foundations[index] = item);
+      });
       return newState;
     }
 

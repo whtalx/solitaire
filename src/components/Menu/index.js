@@ -94,6 +94,10 @@ const mapDispatchToProps = (dispatch) => ({
   showMenu: (payload) => dispatch({ type: 'SHOW_MENU', payload }),
   hoverMenu: (payload) => dispatch({ type: 'HOVER_MENU', payload }),
   describeMenu: (payload) => dispatch({ type: 'DESCRIBE_MENU', payload }),
+  stopCelebrating: () => {
+    dispatch({ type: 'STOP_CELEBRATING' });
+    dispatch({ type: 'SHOW_WINDOW', payload: 'restart' });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);

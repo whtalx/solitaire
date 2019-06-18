@@ -1,4 +1,12 @@
 export default function moveAndResize(event) {
+  if (
+    this.props.name === 'solitaire'
+    && this.props.game.status.isCelebrating
+  ) {
+    this.props.stopCelebrating();
+    return;
+  }
+  
   if (this.props.window.activity[this.props.window.activity.length - 1] !== this.props.name) {
     this.props.activate(this.props.name);
   }
@@ -41,7 +49,7 @@ export default function moveAndResize(event) {
     if (!this.props.window[this.props.name].isResizable) { return; }
 
     const shiftHeight = currentWindow.clientHeight;
-    const shiftWidth = currentWindow.clientWidth;  
+    const shiftWidth = currentWindow.clientWidth;
     const resizeBottom = (event) => {
       if (
         event.pageY > document.documentElement.clientHeight

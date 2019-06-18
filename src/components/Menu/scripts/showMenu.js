@@ -1,5 +1,19 @@
 export default function showMenu(event) {
   if (
+    this.props.parent === 'solitaire'
+    && this.props.game.status.isCelebrating
+  ) {
+    event.stopPropagation();
+    
+    this.props.showMenu({
+      window: 'solitaire',
+      show: false,
+    });
+
+    this.props.stopCelebrating();
+    return;
+  }
+  if (
     event.button !== 0
     || !event.target.classList.contains('menu-category')
     || this.props.window[this.props.parent].isBlocked

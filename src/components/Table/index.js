@@ -5,6 +5,7 @@ import Deck from './Deck';
 import Waste from './Waste';
 import Tableau from './Tableau';
 import Foundation from './Foundation';
+import Victory from './Victory';
 import handleMouseDown from './scripts/handleMouseDown';
 import handleDoubleClick from './scripts/handleDoubleClick';
 import worker from './scripts/worker';
@@ -48,17 +49,32 @@ class Table extends PureComponent {
         this.props.startCelebrating();
       }
 
+      const table = document.getElementsByClassName('table-wrapper')[0];
+
       return (
         <div className="table-wrapper">
-          <div
-            className="celebrating"
-            onMouseDown={() => {
-              this.props.game.status.isCelebrating
-                && this.props.stopCelebrating()
-            }}
-          />
+          {
+            this.props.game.status.isCelebrating
+              ? <Victory width={table.clientWidth} height={table.clientHeight} />
+              : ''
+          }
         </div>
       );
+    }
+
+    const table = document.getElementsByClassName('table-wrapper')[0];
+    if (table) {
+      const foundations = [];
+      const gap = table.clientWidth > 585
+        ? (table.clientWidth - 585) / 8
+        : 0;
+  
+      for (let i = 3; i < 7; i++) {
+        foundations.push(Math.round(11 + 82 * i + gap * (i + 1)));
+      }
+  
+      foundations[0] !== this.props.window.solitaire.foundations[0]
+        && this.props.foundationsMoved(foundations);
     }
 
     return (
@@ -93,10 +109,6 @@ const mapDispatchToProps = (dispatch) => ({
   startGame: () => dispatch({ type: 'START_GAME' }),
   tick: (payload) => dispatch({ type: 'TICK', payload }),
   startCelebrating: () => dispatch({ type: 'START_CELEBRATING' }),
-  stopCelebrating: () => {
-    dispatch({ type: 'STOP_CELEBRATING' });
-    dispatch({ type: 'SHOW_WINDOW', payload: 'restart' });
-  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);

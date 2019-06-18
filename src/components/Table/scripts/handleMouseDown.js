@@ -165,7 +165,6 @@ export default function handleMouseDown(event) {
     event.target.classList.contains('closed')
     && event.target.children.length === 0
   ) {
-    console.log(event.target)
     this.props.turn.bind(this)({
       parent: event.target.dataset.parent.match(/\w/g).join('').match(/\D/g).join(''),
       parent_index: parseInt(event.target.dataset.parent.match(/\d/)),

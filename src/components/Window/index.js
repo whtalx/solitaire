@@ -43,6 +43,13 @@ class Window extends Component {
           onMouseDown={
             (event) => {
               if (
+                this.props.name === 'solitaire'
+                && this.props.game.status.isCelebrating
+              ) {
+                event.stopPropagation();
+                this.props.stopCelebrating();
+                return;
+              } else if (
                 this.props.name !== 'restart'
                 && !this.props.window[this.props.name].isBlocked
               ) {
@@ -127,6 +134,7 @@ class Window extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  game: state.game,
   window: state.window,
 });
 
@@ -140,9 +148,14 @@ const mapDispatchToProps = (dispatch) => ({
   activate: (payload) => dispatch({ type: 'ACTIVATE', payload }),
   cursor: (payload) => dispatch({ type: 'CURSOR', payload }),
   cancelAlert: (payload) => dispatch({ type: 'CANCEL_ALERT', payload }),
+  foundationsMoved: (payload) => dispatch({ type: 'FOUNDATIONS_MOVED', payload }),
   close: (payload) => {
     payload === 'solitaire' && dispatch({ type: 'STOP_GAME' });
     dispatch({ type: 'CLOSE', payload });
+  },
+  stopCelebrating: () => {
+    dispatch({ type: 'STOP_CELEBRATING' });
+    dispatch({ type: 'SHOW_WINDOW', payload: 'restart' });
   },
 });
 
