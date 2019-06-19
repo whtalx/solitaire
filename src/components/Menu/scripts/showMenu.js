@@ -51,13 +51,20 @@ export default function showMenu(event) {
         return;
       }
     }
-    
+
     this.props.showMenu({
       window: this.props.parent,
       show: false,
     });
     document.removeEventListener('mousedown', handleMouseDown);
   }
+
+  const item = event.target.firstChild.textContent.toLowerCase();
+  this.props.window[this.props.parent].menu.hovered !== item
+    && this.props.hoverMenu({
+      window: this.props.parent,
+      hover: item,
+    });
 
   this.props.showMenu({
     window: this.props.parent,
