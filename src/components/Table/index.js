@@ -108,6 +108,7 @@ const mapDispatchToProps = (dispatch) => ({
   activate: () => dispatch({ type: 'ACTIVATE', payload: 'solitaire' }),
   startGame: () => dispatch({ type: 'START_GAME' }),
   tick: (payload) => dispatch({ type: 'TICK', payload }),
+  foundationsMoved: (payload) => dispatch({ type: 'FOUNDATIONS_MOVED', payload }),
   startCelebrating: () => dispatch({ type: 'START_CELEBRATING' }),
 });
 

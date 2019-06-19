@@ -15,7 +15,8 @@ export default function getOptions() {
       && localStorage.getItem('game_timed') === 'true',
 
     status: localStorage.getItem('game_statusbar')
-      && localStorage.getItem('game_statusbar') === 'true',
+      ? localStorage.getItem('game_statusbar') === 'true'
+      : true,
 
     outline: localStorage.getItem('cards_outline')
       && localStorage.getItem('cards_outline') === 'true',

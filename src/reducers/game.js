@@ -342,6 +342,12 @@ export default function game(state = initialState, action) {
       return newState;
     }
 
+    case 'SHOOT_CARD': {
+      const newState = { ...state };
+      Number.isFinite(action.payload) && newState.cards.foundation[action.payload].pop();
+      return newState;
+    }
+
     case 'STOP_CELEBRATING': {
       const newState = { ...state };
       newState.status.isCelebrating && (newState.status.isCelebrating = false);

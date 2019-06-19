@@ -148,7 +148,6 @@ const mapDispatchToProps = (dispatch) => ({
   activate: (payload) => dispatch({ type: 'ACTIVATE', payload }),
   cursor: (payload) => dispatch({ type: 'CURSOR', payload }),
   cancelAlert: (payload) => dispatch({ type: 'CANCEL_ALERT', payload }),
-  foundationsMoved: (payload) => dispatch({ type: 'FOUNDATIONS_MOVED', payload }),
   close: (payload) => {
     payload === 'solitaire' && dispatch({ type: 'STOP_GAME' });
     dispatch({ type: 'CLOSE', payload });
