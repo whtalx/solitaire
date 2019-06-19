@@ -6,11 +6,11 @@ import Back from './Back';
 import Help from './Help';
 import Bsod from './Bsod';
 import Table from './Table';
-import About from './About';
 import Window from './Window';
 import Options from './Options';
 import Restart from './Restart';
 import StatusBar from './StatusBar';
+import Statistics from './Statistics';
 
 class App extends Component {
   constructor(props) {
@@ -125,8 +125,8 @@ class App extends Component {
             && <Window name="help" children={<Help />} />
         }
         {
-          this.props.window.about.isShowing
-            && <Window name="about" children={<About />} />
+          this.props.window.statistics.isShowing
+            && <Window name="statistics" children={<Statistics />} />
         }
         {
           this.props.window.restart.isShowing

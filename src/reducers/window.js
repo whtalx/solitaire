@@ -86,12 +86,12 @@ const initialState = {
             type: 'break',
           },
 
-          about: {
+          statistics: {
             id: 4,
             type: 'menu-item',
-            description: 'About Solitaire',
-            function: 'about',
-            text: 'About Solitaire',
+            description: 'Game Statistics',
+            function: 'statistics',
+            text: 'Game Statistics',
           },
         },
       },
@@ -183,9 +183,9 @@ const initialState = {
     isShowing: false,
   },
 
-  about: {
+  statistics: {
     alert: false,
-    caption: 'About Solitaire',
+    caption: 'Statistics',
     buttons: ['close'],
     style: {
       width: 413,

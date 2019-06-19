@@ -14,6 +14,10 @@ export default class Canvas extends Component {
   saveContext(ctx) {
     this.ctx = ctx;
   }
+
+  componentDidMount() {
+    this.ctx.imageSmoothingEnabled = false;
+  }
   
   componentDidUpdate() {
     const { cx, cy, cardWidth, cardHeight, x, y } = this.props.render;

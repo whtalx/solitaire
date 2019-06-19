@@ -90,7 +90,7 @@ const mapDispatchToProps = (dispatch) => ({
   options: () => dispatch({ type: 'SHOW_WINDOW', payload: 'options' }),
   exit: () => dispatch({ type: 'CLOSE', payload: 'solitaire' }),
   help: () => dispatch({ type: 'SHOW_WINDOW', payload: 'help' }),
-  about: () => dispatch({ type: 'SHOW_WINDOW', payload: 'about' }),
+  statistics: () => dispatch({ type: 'SHOW_WINDOW', payload: 'statistics' }),
   showMenu: (payload) => dispatch({ type: 'SHOW_MENU', payload }),
   hoverMenu: (payload) => dispatch({ type: 'HOVER_MENU', payload }),
   describeMenu: (payload) => dispatch({ type: 'DESCRIBE_MENU', payload }),

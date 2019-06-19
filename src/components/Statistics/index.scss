@@ -1,0 +1,101 @@
+.statistics-contents {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font: 11px tahoma;
+
+  & > .logo {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 77px;
+    padding-right: 127px;
+    font: bold 36px tahoma;
+    color: #fff;
+    line-height: 68px;
+    text-align: right;
+    background: radial-gradient(circle closest-corner at 65% 50%,#a5c3f7, #6382e7);
+  
+    &:before {
+      content: '';
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      left: 114px;
+      top: 21.5px;
+      background: url('../../images/windows/icon.png');
+    }
+  
+    &:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 5px;
+      left: 0;
+      bottom: 0;
+      background: linear-gradient(to right, transparent 0, #f79631 50%, transparent 100%);
+      background-size: 200% 100%;
+      animation: orange 2s linear infinite ;
+    }
+  }
+
+  & .statistics-item {
+    padding: 3px 10px;
+
+    & > .list {
+      margin: 0;
+      padding: 0 10px;
+      list-style: none;
+
+      & > * {
+        position: relative;
+        height: 13px;
+        padding-top: 1px;
+
+        & > *:nth-child(1) {
+          float: left;
+          padding-right: 1px;
+          background-color: #efebde;
+        }
+        & > *:nth-child(2) {
+          border-bottom: 1px dotted #000;
+          position: absolute;
+          z-index: -1;
+          left: 0;
+          width: 100%;
+          height: 10px;
+        }
+        & > *:nth-child(3) {
+          float: right;
+          padding-left: 1px;
+          background-color: #efebde;
+        }
+      }
+    }
+
+    & > .list:only-child {
+      padding: 0 10px 0 0;
+    }
+  }
+
+  & > .button_ok {
+    position: absolute;
+    left: 331px;
+    top: 290px;
+  }
+}
+
+@-webkit-keyframes orange {
+  from { background-position: 100% 50%; }
+  to { background-position: -100% 50%; }
+}
+
+@-moz-keyframes orange {
+  from { background-position: 100% 50%; }
+  to { background-position: -100% 50%; }
+}
+
+@keyframes orange {
+  from { background-position: 100% 50%; }
+  to { background-position: -100% 50%; }
+}

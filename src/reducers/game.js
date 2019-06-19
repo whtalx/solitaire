@@ -4,10 +4,13 @@ import getCards from './scripts/getCards';
 import getScore from './scripts/getScore';
 import setScore from './scripts/setScore';
 import saveHistory from './scripts/saveHistory';
+import getStatistics from './scripts/getStatistics';
+import setStatistics from './scripts/setStatistics';
 
 const cards = getCards();
 const options = getOptions();
 const score = getScore(options);
+const statistics = getStatistics();
 
 const initialState = {
   status: {
@@ -24,6 +27,7 @@ const initialState = {
 
   cards,
   options,
+  statistics,
 };
 
 export default function game(state = initialState, action) {
@@ -305,8 +309,11 @@ export default function game(state = initialState, action) {
     }
 
     case 'START_GAME': {
-      const newState = { ...state };
-      !newState.status.isPlaying && (newState.status.isPlaying = true);
+      let newState = { ...state };
+      if (!newState.status.isPlaying) {
+        newState.status.isPlaying = true;
+        newState = setStatistics(newState, 'played');
+      }
       return newState;
     }
 
@@ -326,25 +333,17 @@ export default function game(state = initialState, action) {
     }
 
     case 'START_CELEBRATING': {
-      const newState = { ...state };
+      let newState = { ...state };
       newState.status.isPlaying = false;
       newState.status.isCelebrating = true;
-
-      if (
-        newState.options.timed
-        && newState.options.scoring === 'standard'
-        && newState.status.time > 30
-        ) {
-          newState.status.bonus = Math.floor(700000 / newState.status.time);
-          newState.status.score += newState.status.bonus;
-      }
-
+      newState = setStatistics(newState, 'won', 'score', 'time');
       return newState;
     }
 
     case 'SHOOT_CARD': {
       const newState = { ...state };
-      Number.isFinite(action.payload) && newState.cards.foundation[action.payload].pop();
+      Number.isFinite(action.payload)
+        && newState.cards.foundation[action.payload].pop();
       return newState;
     }
 
