@@ -27,7 +27,7 @@ class Victory extends Component {
         hdirection = !!hdirection ? hdirection : 1;
         let horizontal = Math.round(hdirection * Math.round(Math.random() * 7 + 1));
         let vertical = Math.round(Math.random() * 6 - 6) - 2;
-        let x = this.props.window.solitaire.foundations[this.currentFoundation];
+        let x = this.props.foundations[this.currentFoundation];
         let y = 6;
 
         const throwOne = () => {

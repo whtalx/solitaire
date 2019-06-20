@@ -11,6 +11,12 @@ import handleDoubleClick from './scripts/handleDoubleClick';
 import worker from './scripts/worker';
 
 class Table extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.foundations = [];
+    this.foundationsOffsets = [257, 339, 421, 503];
+  }
+
   startTimer() {
     this.timer = new Worker(worker);
     this.timer.onmessage = (message) => {
@@ -28,6 +34,10 @@ class Table extends PureComponent {
     if (this.props.game.options.timed && this.timer === undefined) {
       this.startTimer();
     }
+  }
+
+  foundationsRef(ref, index) {
+    this.foundations[index] = ref;
   }
 
   render() {
@@ -49,36 +59,34 @@ class Table extends PureComponent {
         this.props.startCelebrating();
       }
 
-      const table = document.getElementsByClassName('table-wrapper')[0];
-
       return (
-        <div className="table-wrapper">
+        <div className="table-wrapper" ref="table">
           {
             this.props.game.status.isCelebrating
-              ? <Victory width={table.clientWidth} height={table.clientHeight} />
+              ? this.refs.table
+                  ? <Victory
+                      width={this.refs.table.clientWidth}
+                      height={this.refs.table.clientHeight}
+                      foundations={this.foundationsOffsets}
+                    />
+                  : ''
               : ''
           }
         </div>
       );
     }
 
-    const table = document.getElementsByClassName('table-wrapper')[0];
-    if (table) {
-      const foundations = [];
-      const gap = table.clientWidth > 585
-        ? (table.clientWidth - 585) / 8
-        : 0;
-  
-      for (let i = 3; i < 7; i++) {
-        foundations.push(Math.round(11 + 82 * i + gap * (i + 1)));
+    this.foundations.forEach((item, index) => {
+      if (
+        item.offsetLeft
+        && this.foundationsOffsets[index] !== item.offsetLeft
+      ) {
+        this.foundationsOffsets[index] = item.offsetLeft;
       }
-  
-      foundations[0] !== this.props.window.solitaire.foundations[0]
-        && this.props.foundationsMoved(foundations);
-    }
+    });
 
     return (
-      <div className="table-wrapper">
+      <div className="table-wrapper" ref="table">
         <div
           className="table"
           onMouseDown={handleMouseDown.bind(this)}
@@ -86,7 +94,7 @@ class Table extends PureComponent {
         >
           <Deck />
           <Waste />
-          <Foundation />
+          <Foundation refs={this.foundationsRef.bind(this)} />
           <Tableau />
         </div>
       </div>
@@ -108,7 +116,6 @@ const mapDispatchToProps = (dispatch) => ({
   activate: () => dispatch({ type: 'ACTIVATE', payload: 'solitaire' }),
   startGame: () => dispatch({ type: 'START_GAME' }),
   tick: (payload) => dispatch({ type: 'TICK', payload }),
-  foundationsMoved: (payload) => dispatch({ type: 'FOUNDATIONS_MOVED', payload }),
   startCelebrating: () => dispatch({ type: 'START_CELEBRATING' }),
 });
 

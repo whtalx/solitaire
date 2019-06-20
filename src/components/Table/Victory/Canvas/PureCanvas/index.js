@@ -12,6 +12,6 @@ export default class PureCanvas extends Component {
           node => node ? this.props.contextRef(node.getContext('2d')) : null
         }
       />
-    )
+    );
   }
 }

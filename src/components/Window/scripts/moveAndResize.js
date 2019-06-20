@@ -40,12 +40,12 @@ export default function moveAndResize(event) {
     document.addEventListener('mouseup', () => {
       document.removeEventListener('mousemove', func);
       this.setState({ freezeCursor: false });
-      this.props.window[this.props.name].cursor !== null
-        && this.props.cursor({ window: this.props.name, cursor: null });
+      this.props.window.cursor !== null
+        && this.props.changeCursor({ window: this.props.name, cursor: null });
     }, { once: true });
   }
 
-  if (this.props.window[this.props.name].cursor) {
+  if (this.props.window.cursor) {
     if (!this.props.window[this.props.name].isResizable) { return; }
 
     const shiftHeight = currentWindow.clientHeight;
@@ -139,7 +139,7 @@ export default function moveAndResize(event) {
       y: currentWindow.offsetTop + currentWindow.clientTop + currentWindow.clientHeight / 2,
     };
 
-    switch (this.props.window[this.props.name].cursor) {
+    switch (this.props.window.cursor) {
       case 'nwse-resize':
         if (event.pageX < centrer.x && event.pageY < centrer.y) {
           setListeners(resizeLeftTop);

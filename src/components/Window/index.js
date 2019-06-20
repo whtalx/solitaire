@@ -18,7 +18,7 @@ class Window extends Component {
             this.props.window[this.props.name].cursor !== null
             && !this.state.freezeCursor
           ) {
-            this.props.cursor({ window: this.props.name, cursor: null });
+            this.props.changeCursor({ window: this.props.name, cursor: null });
           }
         };
   
@@ -146,7 +146,7 @@ const mapDispatchToProps = (dispatch) => ({
   restore: (payload) => dispatch({ type: 'RESTORE', payload }),
   help: () => dispatch({ type: 'SHOW_WINDOW', payload: 'help' }),
   activate: (payload) => dispatch({ type: 'ACTIVATE', payload }),
-  cursor: (payload) => dispatch({ type: 'CURSOR', payload }),
+  changeCursor: (payload) => dispatch({ type: 'CHANGE_CURSOR', payload }),
   cancelAlert: (payload) => dispatch({ type: 'CANCEL_ALERT', payload }),
   close: (payload) => {
     payload === 'solitaire' && dispatch({ type: 'STOP_GAME' });

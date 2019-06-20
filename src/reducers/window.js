@@ -111,9 +111,6 @@ const initialState = {
       top: null,
     },
 
-    foundations: [257, 339, 421, 503],
-
-    cursor: null,
     lastStyle: null,
     isBlocked: false,
     isMaximized: false,
@@ -199,6 +196,7 @@ const initialState = {
   },
 
   activity: ['solitaire'],
+  cursor: null,
 };
 
 export default function window(state = initialState, action) {
@@ -217,15 +215,6 @@ export default function window(state = initialState, action) {
       const newState = { ...state };
       const window = action.payload;
       if (!newState[window]) { return newState; }
-
-      if (window === 'solitaire') {
-        for (let key in newState) {
-          if (key === 'solitaire' || key === 'activity') { continue; }
-          if (newState[key].isShowing && newState[key].isBlocking) {
-            newState[key].isShowing = false;
-          }
-        }
-      }
 
       newState[window].isMaximized && (newState[window].isMaximized = false);
       newState[window].isMinimized = true;
@@ -357,11 +346,8 @@ export default function window(state = initialState, action) {
 
 
       if (window === 'solitaire') {
-        for (let key in newState) {
-          if (newState[key] instanceof Array) { continue; }
-          if (newState[key].isShowing) {
-            newState[key].isShowing = false;
-          }
+        if (newState.help.isShowing) {
+          newState.help.isShowing = false;
         }
         return newState;
       } else if (newState[window].isBlocking) {
@@ -396,11 +382,11 @@ export default function window(state = initialState, action) {
       return newState;
     }
 
-    case 'CURSOR': {
+    case 'CHANGE_CURSOR': {
       const newState = { ...state };
       const { window, cursor } = action.payload;
       if (!newState[window] || !newState[window].isResizable) { return newState; }
-      newState[window].cursor = cursor;
+      newState.cursor = cursor;
       return newState;
     }
 
@@ -437,14 +423,6 @@ export default function window(state = initialState, action) {
         ? newState[window].status.description = newState[window].menu.categories[newState[window].menu.hovered][describe].description
         : newState[window].status.description = '';
 
-      return newState;
-    }
-
-    case 'FOUNDATIONS_MOVED': {
-      const newState = { ...state };
-      action.payload.forEach((item, index) => {
-        Number.isFinite(item) && (newState.solitaire.foundations[index] = item);
-      });
       return newState;
     }
 

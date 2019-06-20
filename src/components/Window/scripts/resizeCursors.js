@@ -10,23 +10,21 @@
 export default function resizeCursors(event) {
   if (
     this.props.window[this.props.name].isBlocked
+    || this.props.window[this.props.name].isMaximized
+    || this.props.window[this.props.name].isMinimized
     || this.state.freezeCursor
   ) {
       return;
     }
 
   let currentWindow = null;
-  if (
-    event.target === document.getElementsByClassName('solitaire')[0]
-  ) {
+  if (event.target.classList.contains('window')) {
     currentWindow = event.target
-  } else if (
-    event.target === document.getElementsByClassName('solitaire')[0].firstElementChild
-  ) {
+  } else if (event.target.classList.contains('window__header')) {
     currentWindow = event.target.offsetParent;
   } else {
-    this.props.window[this.props.name].cursor !== null
-      && this.props.cursor({ window: this.props.name, cursor: null });
+    this.props.window.cursor !== null
+      && this.props.changeCursor({ window: this.props.name, cursor: null });
     return;
   }
 
@@ -156,10 +154,10 @@ export default function resizeCursors(event) {
   const cursor = cursorDirection(event.pageX, event.pageY);
 
   if (cursor !== undefined) {
-    this.props.window[this.props.name].cursor !== cursor
-      && this.props.cursor({ window: this.props.name, cursor });
+    this.props.window.cursor !== cursor
+      && this.props.changeCursor({ window: this.props.name, cursor });
   } else {
-    this.props.window[this.props.name].cursor !== null
-      && this.props.cursor({ window: this.props.name, cursor: null });
+    this.props.window.cursor !== null
+      && this.props.changeCursor({ window: this.props.name, cursor: null });
   }
 }

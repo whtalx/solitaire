@@ -91,10 +91,8 @@ class App extends Component {
 
     let className = 'root';
     if (this.props.window.solitaire.isShowing) {
-      this.props.window.solitaire.cursor
-        ? className += ` ${this.props.window.solitaire.cursor}`
-        : this.props.window.help.cursor
-          && (className += ` ${this.props.window.help.cursor}`);
+      this.props.window.cursor
+        && (className += ` ${this.props.window.cursor}`);
     } else {
       className += ' wait';
     }
