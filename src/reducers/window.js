@@ -151,18 +151,22 @@ const initialState = {
   },
 
   help: {
-    alert: false,
     caption: 'Solitaire',
-    buttons: ['close'],
+    buttons: ['minimize', 'maximize', 'close'],
     style: {
-      width: 280,
-      height: 100,
+      width: 542,
+      height: 416,
       left: null,
       top: null,
     },
 
-    isBlocking: true,
-    isShowing: false,
+    lastStyle: null,
+    isBlocking: false,
+    isMaximized: false,
+    isMinimized: false,
+    isResizing: false,
+    isResizable: true,
+    isShowing: true,
   },
 
   restart: {
@@ -195,8 +199,10 @@ const initialState = {
     isShowing: false,
   },
 
-  activity: ['solitaire'],
+  activity: ['solitaire','help'],
+  minimized: [],
   cursor: null,
+  isCursorFreezed: false,
 };
 
 export default function window(state = initialState, action) {
@@ -219,12 +225,13 @@ export default function window(state = initialState, action) {
       newState[window].isMaximized && (newState[window].isMaximized = false);
       newState[window].isMinimized = true;
       newState[window].buttons = ['restore', 'maximize', 'close'];
+      newState.minimized.push(window);
       newState[window].lastStyle === null
         && (newState[window].lastStyle = { ...newState[window].style });
       newState[window].style = {
         width: 0,
         height: 0,
-        left: 0,
+        left: newState.minimized.indexOf(window) * 151,
         top: document.documentElement.clientHeight,
       };
       return newState;
@@ -234,6 +241,16 @@ export default function window(state = initialState, action) {
       const newState = { ...state };
       const window = action.payload;
       if (!newState[window]) { return newState; }
+
+      if (newState.minimized.includes(window)) {
+        newState.minimized.splice(newState.minimized.indexOf(window), 1);
+
+        if (newState.minimized.length > 0) {
+          newState.minimized.forEach(item => {
+            newState[item].style.left = newState.minimized.indexOf(item) * 151;
+          });
+        }
+      }
 
       newState[window].isMinimized && (newState[window].isMinimized = false);
       newState[window].isMaximized = true;
@@ -254,21 +271,21 @@ export default function window(state = initialState, action) {
       const window = action.payload;
       if (!newState[window]) { return newState; }
 
+      if (newState.minimized.includes(window)) {
+        newState.minimized.splice(newState.minimized.indexOf(window), 1);
+
+        if (newState.minimized.length > 0) {
+          newState.minimized.forEach(item => {
+            newState[item].style.left = newState.minimized.indexOf(item) * 151;
+          });
+        }
+      }
+
       newState[window].style = { ...newState[window].lastStyle };
       newState[window].lastStyle = null;
       newState[window].isMinimized = false;
       newState[window].isMaximized = false;
       newState[window].buttons = ['minimize', 'maximize', 'close'];
-
-      if (window === 'solitaire') {
-        newState.activity.forEach((item) => {
-          if (!newState[item].isShowing && newState[item].isBlocking) {
-            newState[item].isShowing = true;
-          }
-        });
-        newState.activity.splice(newState.activity.indexOf('solitaire'), 1);
-        newState.activity.unshift('solitaire');
-      }
 
       return newState;
     }
@@ -305,7 +322,7 @@ export default function window(state = initialState, action) {
         }
       }
 
-      newState.activity.indexOf('') >= 0 && newState.activity.splice(newState.activity.indexOf(''), 1);
+      newState.activity.includes('') && newState.activity.splice(newState.activity.indexOf(''), 1);
       newState.activity.splice(newState.activity.indexOf(window), 1);
       newState.activity.push(window);
       return newState;
@@ -313,7 +330,13 @@ export default function window(state = initialState, action) {
 
     case 'DEACTIVATE': {
       const newState = { ...state };
-      if (newState.activity.indexOf('') >= 0) { return newState; }
+      if (
+        newState.activity.length === 0
+        || newState.activity.includes('')
+      ) {
+        return newState;
+      }
+
       newState.activity.forEach((item) => {
         if (
           newState[item]
@@ -346,10 +369,12 @@ export default function window(state = initialState, action) {
 
 
       if (window === 'solitaire') {
-        if (newState.help.isShowing) {
-          newState.help.isShowing = false;
+        for (let key in newState) {
+          if (newState[key] && newState[key].isShowing) {
+            newState[key].isShowing = false;
+            newState.activity.splice(newState.activity.indexOf(key), 1);
+          }
         }
-        return newState;
       } else if (newState[window].isBlocking) {
         newState.solitaire.isBlocked = false;
       }
@@ -423,6 +448,12 @@ export default function window(state = initialState, action) {
         ? newState[window].status.description = newState[window].menu.categories[newState[window].menu.hovered][describe].description
         : newState[window].status.description = '';
 
+      return newState;
+    }
+
+    case 'FREEZE_CURSOR': {
+      const newState = { ...state };
+      newState.isCursorFreezed = action.payload;
       return newState;
     }
 

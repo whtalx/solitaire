@@ -37,8 +37,15 @@
     left: 2px;
     width: 16px;
     height: 16px;
-    background: url('../../images/windows/icon.png');
     background-size: 100% 100%;
+  }
+
+  &.solitaire > .window__icon {
+    background-image: url('../../images/windows/icon-solitaire.png');
+  }
+
+  &.help > .window__icon {
+    background-image: url('../../images/windows/icon-help.png');
   }
 
   .window__caption {
@@ -131,7 +138,7 @@
 
   &.maximized {
     width: 100%;
-    height: calc(100% - 29px);
+    height: calc(100% - 26px);
     border: none;
 
     .window__button_restore {

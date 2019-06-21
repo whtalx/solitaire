@@ -29,7 +29,7 @@ export default function moveAndResize(event) {
     return;
   }
 
-  this.setState({ freezeCursor: true });
+  this.props.freezeCursor(true);
 
   const shiftX = event.pageX;
   const shiftY = event.pageY;
@@ -39,7 +39,7 @@ export default function moveAndResize(event) {
     document.addEventListener('mousemove', func);
     document.addEventListener('mouseup', () => {
       document.removeEventListener('mousemove', func);
-      this.setState({ freezeCursor: false });
+      this.props.freezeCursor(false);
       this.props.window.cursor !== null
         && this.props.changeCursor({ window: this.props.name, cursor: null });
     }, { once: true });

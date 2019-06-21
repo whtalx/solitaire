@@ -12,7 +12,7 @@ export default function resizeCursors(event) {
     this.props.window[this.props.name].isBlocked
     || this.props.window[this.props.name].isMaximized
     || this.props.window[this.props.name].isMinimized
-    || this.state.freezeCursor
+    || this.props.window.isCursorFreezed
   ) {
       return;
     }

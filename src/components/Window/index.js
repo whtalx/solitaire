@@ -9,14 +9,12 @@ class Window extends Component {
     super(props);
 
     if (this.props.window[this.props.name].isResizable) {
-      this.state = { freezeCursor: false };
-
       this.handleMouseMove = resizeCursors.bind(this);
 
       this.handleMouseLeave = () => {
           if (
             this.props.window[this.props.name].cursor !== null
-            && !this.state.freezeCursor
+            && !this.props.window.isCursorFreezed
           ) {
             this.props.changeCursor({ window: this.props.name, cursor: null });
           }
@@ -121,7 +119,7 @@ class Window extends Component {
           onDoubleClick={this.handleDoubleClick}
         />
         {
-          this.props.name === 'solitaire'
+          this.props.name === 'solitaire' || this.props.name === 'help'
             ? <div className="window__icon" />
             : ''
         }
@@ -146,6 +144,7 @@ const mapDispatchToProps = (dispatch) => ({
   restore: (payload) => dispatch({ type: 'RESTORE', payload }),
   help: () => dispatch({ type: 'SHOW_WINDOW', payload: 'help' }),
   activate: (payload) => dispatch({ type: 'ACTIVATE', payload }),
+  freezeCursor: (payload) => dispatch({ type: 'FREEZE_CURSOR', payload }),
   changeCursor: (payload) => dispatch({ type: 'CHANGE_CURSOR', payload }),
   cancelAlert: (payload) => dispatch({ type: 'CANCEL_ALERT', payload }),
   close: (payload) => {

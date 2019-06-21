@@ -82,18 +82,14 @@ class App extends Component {
 
   render() {
     if (this.state.bsod) { return <Bsod /> }
-    if (!this.props.window.solitaire.isShowing) {
-      window.history.length > 1 ?
-        window.history.back()
-      :
-        setTimeout(() => { this.setState({ bsod: true })}, 2000);
-    }
 
     let className = 'root';
     if (this.props.window.solitaire.isShowing) {
       this.props.window.cursor
         && (className += ` ${this.props.window.cursor}`);
     } else {
+      !window.history.back()
+        && setTimeout(() => { this.setState({ bsod: true }) }, 2000);
       className += ' wait';
     }
 
