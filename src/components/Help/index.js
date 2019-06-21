@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import './index.scss';
 import hideContents from './scripts/hideContents';
 import moveSeparator from './scripts/moveSeparator';
+import Contents from './Contents';
 
 class Help extends Component {
   constructor() {
@@ -10,9 +11,20 @@ class Help extends Component {
     this.state = {
       isShowingContents: true,
       shift: 0,
+      isContentsOpened: false,
+      selected: 'book',
     };
 
     this.contentsWidth = 267;
+
+    this.select = (item) => {
+      item === 'book'
+        && this.setState(state => {
+          state.isContentsOpened = !state.isContentsOpened;
+        });
+
+      this.setState({ selected: item });
+    }
   }
 
   render() {
@@ -49,9 +61,15 @@ class Help extends Component {
         </div>
         {
           this.state.isShowingContents
-            ? <div className="contents" ref="contents" style={contentsStyle}>
+            ? <div className="contents-container" ref="contents" style={contentsStyle}>
                 <div className="tab">
-                  <div className="list-wrapper"></div>
+                  <div className="contents-wrapper">
+                    <Contents
+                      isOpened={this.state.isContentsOpened}
+                      selected={this.state.selected}
+                      select={this.select}
+                    />
+                  </div>
                 </div>
               </div>
             : ''

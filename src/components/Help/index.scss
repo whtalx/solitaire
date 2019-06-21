@@ -97,7 +97,7 @@
   }
 
   & > .separator,
-  & > .contents {
+  & > .contents-container {
     position: relative;
     box-sizing: border-box;
     height: calc(100% - 41px);
@@ -107,7 +107,7 @@
     outline: 1px solid #aca899;
   }
 
-  & > .contents {
+  & > .contents-container {
     & > .tab {
       position: absolute;
       width: calc(100% - 6px);
@@ -148,7 +148,7 @@
         border-top-right-radius: 3px;
       }
 
-      & > .list-wrapper {
+      & > .contents-wrapper {
         position: absolute;
         width: calc(100% - 11px);
         height: calc(100% - 14px);
@@ -165,6 +165,7 @@
           0 0 0 1px #ffffff,
           0 0 0 2px #7f9db9;
         background-color: #fff;
+        overflow: hidden;
       }
     }
   }

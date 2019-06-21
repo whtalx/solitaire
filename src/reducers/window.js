@@ -166,7 +166,7 @@ const initialState = {
     isMinimized: false,
     isResizing: false,
     isResizable: true,
-    isShowing: true,
+    isShowing: false,
   },
 
   restart: {
@@ -199,7 +199,7 @@ const initialState = {
     isShowing: false,
   },
 
-  activity: ['solitaire','help'],
+  activity: ['solitaire'],
   minimized: [],
   cursor: null,
   isCursorFreezed: false,
@@ -383,6 +383,28 @@ export default function window(state = initialState, action) {
       newState[window].style.left = null;
       newState[window].style.top = null;
       newState.activity.splice(newState.activity.indexOf(window), 1);
+
+      if (
+        newState[window].isMaximized
+        || newState[window].isMinimized
+      ) {
+        newState[window].style = { ...newState[window].lastStyle };
+        newState[window].lastStyle = null;
+        newState[window].isMinimized = false;
+        newState[window].isMaximized = false;
+        newState[window].buttons = ['minimize', 'maximize', 'close'];
+
+        if (newState.minimized.includes(window)) {
+          newState.minimized.splice(newState.minimized.indexOf(window), 1);
+
+          if (newState.minimized.length > 0) {
+            newState.minimized.forEach(item => {
+              newState[item].style.left = newState.minimized.indexOf(item) * 151;
+            });
+          }
+        }
+      }
+
       return newState;
     }
 

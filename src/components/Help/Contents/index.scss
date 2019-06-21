@@ -1,0 +1,69 @@
+@import '../../cursors';
+
+.contents {
+  width: 170px;
+
+  & > .book,
+  & > .topic,
+  & > .category {
+    position: relative;
+    display: inline-block;
+    height: 16px;
+    cursor: url($pointer), pointer;
+
+    &:hover {
+      color: #316ac5;
+      text-decoration: underline;
+    }
+
+    & > .icon {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+    }
+
+    & > .caption {
+      display: inline-block;
+      margin: 0 2px;
+      padding: 0 2px;
+      height: 16px;
+      text-decoration: inherit;
+      vertical-align: bottom;
+    }
+
+    &.selected > .caption {
+      color: #fff;
+      background: #316ac5;
+      outline: 1px dotted #000;
+      box-shadow: 0 0 0 1px #ce953a;
+    }
+  }
+  
+  & > .book {
+    margin-left: 2px;
+
+    &.opened > .icon {
+      background-image: url('../../../images/windows/book-opened.png');
+    }
+
+    &.closed > .icon {
+      background-image: url('../../../images/windows/book-closed.png');
+    }
+  }
+  
+  & > .topic {
+    margin-left: 20px;
+
+    & > .icon {
+      background-image: url('../../../images/windows/topic.png');
+    }
+  }
+
+  & > .category {
+    margin-left: 20px;
+
+    & > .icon {
+      background-image: url('../../../images/windows/category.png');
+    }
+  }
+}
