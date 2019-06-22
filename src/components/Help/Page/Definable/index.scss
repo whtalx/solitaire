@@ -1,0 +1,61 @@
+@import '../../../cursors';
+
+.definable {
+  position: relative;
+  color: #060;
+  text-decoration: underline;
+  cursor: url($pointer), pointer;
+
+  &:hover,
+  &:active {
+    color: #f00;
+  }
+}
+
+.hint {
+  position: fixed;
+  width: 84px;
+  height: 17px;
+  box-sizing: border-box;
+  padding: 1px 5px;
+  border: 1px solid #767676;
+  background-color: #fff;
+  color: #767676;
+  font: 11px tahoma;
+  z-index: 100;
+  opacity: 0;
+  box-shadow: 3px 3px 2px rgba($color: #000, $alpha: .4);
+  animation: show .1s linear .5s 1 forwards, hide .1s linear 5.5s 1 alternate forwards;
+
+  @keyframes show {
+    from { opacity: 0; };
+    to { opacity: 1; }
+  }
+
+  @keyframes hide {
+    from { opacity: 1; };
+    to { opacity: 0; }
+  }
+}
+
+.definition {
+  display: block;
+  position: fixed;
+  z-index: 100;
+  box-sizing: border-box;
+  width: 400px;
+  padding: 3px 10px 9px;
+  border: 1px solid #000;
+  background-color: #ffc;
+  font: 11px tahoma;
+  cursor: url($default), default;
+
+  & > * {
+    margin: 0;
+  }
+
+  & > *:first-child {
+    font-weight: bold;
+    font-size: 13px;
+  }
+}

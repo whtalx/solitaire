@@ -4,6 +4,7 @@ import './index.scss';
 import hideContents from './scripts/hideContents';
 import moveSeparator from './scripts/moveSeparator';
 import Contents from './Contents';
+import Page from './Page';
 
 class Help extends Component {
   constructor() {
@@ -79,7 +80,9 @@ class Help extends Component {
           ? <div className="separator" onMouseDown={moveSeparator.bind(this)} />
           : ''
         }
-        <div className="page" ref="page" style={pageStyle}></div>
+        <div className="page-container" ref="page" style={pageStyle}>
+          <Page selected={this.state.selected} />
+        </div>
       </div>
     );
   }

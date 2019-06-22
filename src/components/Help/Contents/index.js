@@ -11,8 +11,8 @@ export default function Contents(props) {
     },
     {
       type: 'category',
-      caption: 'Solitaire overwiew',
-      id: 'overwiew',
+      caption: 'Solitaire overview',
+      id: 'overview',
     },
     {
       type: 'topic',

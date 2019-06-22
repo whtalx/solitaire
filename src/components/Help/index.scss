@@ -175,7 +175,7 @@
     cursor: url($ew-resize), ew-resize;
   }
 
-  & > .page {
+  & > .page-container {
     position: relative;
     box-sizing: border-box;
     height: calc(100% - 41px);
@@ -185,7 +185,6 @@
     border-left-color: #716f64;
     border-bottom-color: #f1efe2;
     border-right-color: #f1efe2;
-    background-color: #fff;
     outline: 1px solid #aca899;
   }
 }
