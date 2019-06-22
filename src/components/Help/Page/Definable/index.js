@@ -40,7 +40,7 @@ export default function Definable(props) {
 
     document.body.appendChild(hint);
     event.target.addEventListener('mouseleave', () => {
-      document.body.removeChild(hint);
+      document.body.contains(hint) && document.body.removeChild(hint);
     }, { once: true });
   }
 

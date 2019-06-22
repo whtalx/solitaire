@@ -4,7 +4,6 @@
   font-family: console;
   src:
     url('../fonts/console.eot') format('embedded-opentype'),
-    url('../fonts/console.otf') format('opentype'),
     url('../fonts/console.svg') format('svg'),
     url('../fonts/console.ttf') format('truetype'),
     url('../fonts/console.woff') format('woff'),
@@ -15,7 +14,6 @@
   font-family: fixedsys;
   src:
     url('../fonts/fixedsys.eot') format('embedded-opentype'),
-    url('../fonts/fixedsys.otf') format('opentype'),
     url('../fonts/fixedsys.svg') format('svg'),
     url('../fonts/fixedsys.ttf') format('truetype'),
     url('../fonts/fixedsys.woff') format('woff'),
@@ -26,11 +24,20 @@
   font-family: tahoma;
   src:
     url('../fonts/tahoma.eot') format('embedded-opentype'),
-    url('../fonts/tahoma.otf') format('opentype'),
     url('../fonts/tahoma.svg') format('svg'),
     url('../fonts/tahoma.ttf') format('truetype'),
     url('../fonts/tahoma.woff') format('woff'),
     url('../fonts/tahoma.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: ss;
+  src:
+    url('../fonts/ss.eot') format('embedded-opentype'),
+    url('../fonts/ss.svg') format('svg'),
+    url('../fonts/ss.ttf') format('truetype'),
+    url('../fonts/ss.woff') format('woff'),
+    url('../fonts/ss.woff2') format('woff2');
 }
 
 .root {

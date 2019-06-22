@@ -1,0 +1,49 @@
+@import '../../../../cursors';
+
+.scoring-list {
+  & > * {
+    margin-top: 5px;
+
+    & > .title {
+      position: relative;
+      display: inline-block;
+      font-weight: bold;
+      cursor: url($pointer), pointer;
+      padding-left: 16px;
+
+      &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 2px;
+        width: 9px;
+        height: 9px;
+        background: url('../../../../../images/windows/list-marker.png') 0 9px;
+      }
+
+      &:hover {
+        color: #00f;
+
+        &:before {
+          background-position-x: 9px;
+        }
+      }
+    }
+
+    & > *:not(.title) {
+      margin: 5px 0 0 12px;
+    }
+
+    &.selected {
+      & > .title {
+        color: #00f;
+      }
+    }
+
+    &.showing {
+      & > .title:before {
+        background-position-y: 0;
+      }
+    }
+  }
+}

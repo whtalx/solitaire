@@ -78,7 +78,8 @@ class Table extends PureComponent {
 
     this.foundations.forEach((item, index) => {
       if (
-        item.offsetLeft
+        item
+        && item.offsetLeft
         && this.foundationsOffsets[index] !== item.offsetLeft
       ) {
         this.foundationsOffsets[index] = item.offsetLeft;

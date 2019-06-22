@@ -4,6 +4,7 @@
   position: relative;
   color: #060;
   text-decoration: underline;
+  letter-spacing: 1px;
   cursor: url($pointer), pointer;
 
   &:hover,
@@ -14,17 +15,18 @@
 
 .hint {
   position: fixed;
-  width: 84px;
+  // width: 93px;
   height: 17px;
   box-sizing: border-box;
-  padding: 1px 5px;
-  border: 1px solid #767676;
-  background-color: #fff;
-  color: #767676;
-  font: 11px tahoma;
+  padding: 1px 3px;
+  border: 1px solid #000;
+  background-color: #ffffe1;
+  color: #000;
+  font: 12px ss;
+  letter-spacing: .5px;
   z-index: 100;
   opacity: 0;
-  box-shadow: 3px 3px 2px rgba($color: #000, $alpha: .4);
+  box-shadow: 2px 2px 2px rgba($color: #000, $alpha: .4);
   animation: show .1s linear .5s 1 forwards, hide .1s linear 5.5s 1 alternate forwards;
 
   @keyframes show {
@@ -44,10 +46,11 @@
   z-index: 100;
   box-sizing: border-box;
   width: 400px;
-  padding: 3px 10px 9px;
+  padding: 3px 10px 6px;
   border: 1px solid #000;
   background-color: #ffc;
-  font: 11px tahoma;
+  font: 12px ss;
+  letter-spacing: .5px;
   cursor: url($default), default;
 
   & > * {
@@ -56,6 +59,5 @@
 
   & > *:first-child {
     font-weight: bold;
-    font-size: 13px;
   }
 }
