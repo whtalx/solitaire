@@ -72,7 +72,7 @@ const initialState = {
     isMinimized: false,
     isResizing: false,
     isResizable: true,
-    isShowing: false,
+    isShowing: true,
   },
 
   restart: {
@@ -105,7 +105,7 @@ const initialState = {
     isShowing: false,
   },
 
-  activity: ['solitaire'],
+  activity: ['solitaire', 'help'],
   minimized: [],
   cursor: null,
   isCursorFreezed: false,

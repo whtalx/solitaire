@@ -14,9 +14,13 @@ const pages = {
 };
 
 export default function Page(props) {
+  const show = props.history.length > 0
+      ? props.history[props.index]
+      : 'overview';
+
   return (
     <div className="page">
-      {pages[props.selected]}
+      {pages[show]}
     </div>
   );
 }

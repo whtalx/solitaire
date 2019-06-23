@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './index.scss';
+import handleMouseEnter from './scripts/handleMouseEnter';
+import handleMouseDown from './scripts/handleMouseDown';
 
 const scorings = {
   standard: [
@@ -36,8 +38,8 @@ const scorings = {
 }
 
 export default class List extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       selected: null,
       showing: {
@@ -46,38 +48,10 @@ export default class List extends Component {
         none: false,
       },
     };
+  }
 
-    this.handleMouseDown = (event) => {
-      event.stopPropagation();
-      if (!event.target.classList.contains('title')) {
-        return;
-      }
-
-
-      const item = event.target.parentElement.classList[0];
-
-      this.setState((state) => {
-        state.selected = item;
-        state.showing[item] = !state.showing[item];
-        return state;
-      });
-    }
-
-    this.handleMouseEnter = (event) => {
-      const hint = document.createElement('div');
-      hint.className = 'hint';
-      hint.style.left = `${event.pageX}px`;
-      hint.style.top = `${event.pageY + 22}px`;
-      hint.textContent = 'Expand/collapse';
-
-      document.body.appendChild(hint);
-      event.target.addEventListener('mouseleave', () => {
-        document.body.contains(hint) && document.body.removeChild(hint);
-      }, { once: true });
-      document.addEventListener('mousedown', () => {
-        document.body.contains(hint) && document.body.removeChild(hint);
-      }, { once: true });
-    }
+  componentDidUpdate() {
+    this.props.changeScrollHeight && this.props.changeScrollHeight();
   }
 
   render() {
@@ -85,17 +59,19 @@ export default class List extends Component {
       let className = item;
       this.state.showing[item] && (className += ' showing');
       this.state.selected === item && (className += ' selected');
+
       return (
         <div key={item} className={className}>
-          <span className="title" onMouseEnter={this.handleMouseEnter}>
+          <span className="title" onMouseEnter={handleMouseEnter.bind(this)}>
             {item[0].toUpperCase() + item.slice(1)}
           </span>
           {this.state.showing[item] ? scorings[item] : ''}
         </div>
       );
     });
+
     return (
-      <div className="scoring-list" onMouseDown={this.handleMouseDown}>
+      <div className="scoring-list" onMouseDown={handleMouseDown.bind(this)}>
         {list}
       </div>
     );

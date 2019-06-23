@@ -14,17 +14,59 @@ class Help extends Component {
       shift: 0,
       isContentsOpened: false,
       selected: 'book',
+      history: [],
+      historyIndex: null,
     };
 
     this.contentsWidth = 267;
 
     this.select = (item) => {
-      item === 'book'
-        && this.setState(state => {
-          state.isContentsOpened = !state.isContentsOpened;
-        });
+      if (
+        this.state.history[this.state.history.length - 1] === item
+      ) {
+        return;
+      }
 
-      this.setState({ selected: item });
+      this.setState((state) => {
+        state.selected = item;
+        if (item === 'book') {
+          state.isContentsOpened = !state.isContentsOpened;
+        } else {
+          state.historyIndex !== state.history.length - 1
+            && state.history.splice(state.historyIndex + 1);
+          state.history.push(item);
+          state.historyIndex = state.history.length - 1;
+        }
+        return state;
+      });
+    }
+
+    this.back = () => {
+      if (
+        this.state.history.length === 0
+        || this.state.historyIndex === 0
+      ) {
+        return;
+      }
+
+      this.setState((state) => {
+        state.historyIndex -= 1;
+        return state;
+      });
+    }
+
+    this.forward = () => {
+      if (
+        this.state.history.length === 0
+        || this.state.historyIndex === this.state.history.length - 1
+      ) {
+        return;
+      }
+
+      this.setState((state) => {
+        state.historyIndex += 1;
+        return state;
+      });
     }
   }
 
@@ -51,14 +93,54 @@ class Help extends Component {
         : '100%',
     };
 
+    let backClassName = 'back';
+    if (
+      this.state.history.length === 0
+      || this.state.historyIndex === 0
+    ) {
+      backClassName += ' inactive';
+    }
+
+    let forwardClassName = 'forward';
+    if (
+      this.state.history.length === 0
+      || this.state.historyIndex === this.state.history.length - 1
+    ) {
+      forwardClassName += ' inactive';
+    }
+
     return (
       <div className="help-contetns" ref="container">
         <div className="buttons">
           <div className={hideButtonClassName} onMouseDown={hideContents.bind(this)}>
             {hideButtonClassName.charAt(0).toUpperCase() + hideButtonClassName.slice(1)}
           </div>
-          <div className="back inactive">Back</div>
-          <div className="forward inactive">Forward</div>
+          <div
+            className={backClassName}
+            onMouseDown={(event) => {
+              const target = event.target;
+              document.addEventListener('mouseup',(event) => {
+                if (event.target === target) {
+                  this.back();
+                }
+              },{ once: true });
+            }}
+          >
+            Back
+          </div>
+          <div
+            className={forwardClassName}
+            onMouseDown={(event) => {
+              const target = event.target;
+              document.addEventListener('mouseup',(event) => {
+                if (event.target === target) {
+                  this.forward();
+                }
+              },{ once: true });
+            }}
+          >
+            Forward
+          </div>
         </div>
         {
           this.state.isShowingContents
@@ -81,7 +163,15 @@ class Help extends Component {
           : ''
         }
         <div className="page-container" ref="page" style={pageStyle}>
-          <Page selected={this.state.selected} />
+          <Page
+            history={this.state.history}
+            index={this.state.historyIndex}
+            selected={
+              this.state.history.length > 0
+                ? this.state.history[this.state.historyIndex]
+                : 'overview'
+            }
+          />
         </div>
       </div>
     );
