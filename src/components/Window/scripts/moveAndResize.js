@@ -29,19 +29,16 @@ export default function moveAndResize(event) {
     return;
   }
 
-  this.props.freezeCursor(true);
-
   const shiftX = event.pageX;
   const shiftY = event.pageY;
   const shiftLeft = currentWindow.offsetLeft;
   const shiftTop = currentWindow.offsetTop;
   const setListeners = (func) => {
+    !this.props.window.isCursorFreezed && this.props.freezeCursor(true);
     document.addEventListener('mousemove', func);
     document.addEventListener('mouseup', () => {
       document.removeEventListener('mousemove', func);
-      this.props.freezeCursor(false);
-      this.props.window.cursor !== null
-        && this.props.changeCursor({ window: this.props.name, cursor: null });
+      this.props.window.isCursorFreezed && this.props.freezeCursor(false);
     }, { once: true });
   }
 

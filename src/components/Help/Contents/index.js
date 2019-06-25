@@ -1,7 +1,6 @@
 import React from 'react';
 import './index.scss';
 
-
 export default function Contents(props) {
   const items = [
     {

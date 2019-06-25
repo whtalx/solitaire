@@ -16,14 +16,14 @@ class Help extends Component {
       selected: 'book',
       history: [],
       historyIndex: null,
+      isContentsScrollable: false,
+      isPageScrollable: false,
     };
 
     this.contentsWidth = 267;
 
     this.select = (item) => {
-      if (
-        this.state.history[this.state.history.length - 1] === item
-      ) {
+      if (item === this.state.history[this.state.historyIndex]) {
         return;
       }
 
@@ -42,10 +42,7 @@ class Help extends Component {
     }
 
     this.back = () => {
-      if (
-        this.state.history.length === 0
-        || this.state.historyIndex === 0
-      ) {
+      if (this.state.history.length === 0 || this.state.historyIndex === 0) {
         return;
       }
 
@@ -68,6 +65,11 @@ class Help extends Component {
         return state;
       });
     }
+
+    this.isPageScrollable = (bool) => {
+      this.state.isPageScrollable !== bool
+        && this.setState({ isPageScrollable: bool });
+    }
   }
 
   render() {
@@ -89,7 +91,7 @@ class Help extends Component {
 
     const pageStyle = {
       width: this.state.isShowingContents
-        ? `calc(100% - ${this.contentsWidth + 4 + this.state.shift}px)`
+        ? `calc(100% - ${this.contentsWidth + 3 + this.state.shift}px)`
         : '100%',
     };
 
@@ -109,6 +111,17 @@ class Help extends Component {
       forwardClassName += ' inactive';
     }
 
+    let contentsClassName = 'contents-wrapper';
+    if (
+      this.state.isContentsOpened
+      && this.contentsWidth + this.state.shift < 184
+    ) {
+      contentsClassName += ' scrollable';
+    }
+
+    let pageClassName = 'page-container';
+    this.state.isPageScrollable && (pageClassName += ' scrollable');
+
     return (
       <div className="help-contetns" ref="container">
         <div className="buttons">
@@ -118,11 +131,14 @@ class Help extends Component {
           <div
             className={backClassName}
             onMouseDown={(event) => {
+              if (event.button !== 0) { return; }
               const target = event.target;
+              target.classList.add('pressed');
               document.addEventListener('mouseup',(event) => {
                 if (event.target === target) {
                   this.back();
                 }
+                target.classList.remove('pressed');
               },{ once: true });
             }}
           >
@@ -131,11 +147,14 @@ class Help extends Component {
           <div
             className={forwardClassName}
             onMouseDown={(event) => {
+              if (event.button !== 0) { return; }
               const target = event.target;
+              target.classList.add('pressed');
               document.addEventListener('mouseup',(event) => {
                 if (event.target === target) {
                   this.forward();
                 }
+                target.classList.remove('pressed');
               },{ once: true });
             }}
           >
@@ -146,7 +165,7 @@ class Help extends Component {
           this.state.isShowingContents
             ? <div className="contents-container" ref="contents" style={contentsStyle}>
                 <div className="tab">
-                  <div className="contents-wrapper">
+                  <div className={contentsClassName}>
                     <Contents
                       isOpened={this.state.isContentsOpened}
                       selected={this.state.selected}
@@ -155,14 +174,14 @@ class Help extends Component {
                   </div>
                 </div>
               </div>
-            : ''
+            : null
         }
         {
           this.state.isShowingContents
           ? <div className="separator" onMouseDown={moveSeparator.bind(this)} />
-          : ''
+          : null
         }
-        <div className="page-container" ref="page" style={pageStyle}>
+        <div className={pageClassName} ref="page" style={pageStyle}>
           <Page
             history={this.state.history}
             index={this.state.historyIndex}
@@ -171,6 +190,7 @@ class Help extends Component {
                 ? this.state.history[this.state.historyIndex]
                 : 'overview'
             }
+            isPageScrollable={this.isPageScrollable.bind(this)}
           />
         </div>
       </div>

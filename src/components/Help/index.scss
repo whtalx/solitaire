@@ -1,5 +1,20 @@
 @import '../cursors';
 
+$horizontal-decrement-inactive: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNCAxMyI+PHBhdGggZD0iTTMsNy41bDQuNSwtNC41bDEuNSwxLjVsLTMsM2wzLDNsLTEuNSwxLjVsLTQuNSwtNC41WiIgZmlsbD0iI2M5YzljMiIvPjwvc3ZnPg==');
+$horizontal-decrement-active: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNCAxMyI+PHBhdGggZmlsbD0iIzRkNjE4NSIgZD0iTTMsNy41bDQuNSwtNC41bDEuNSwxLjVsLTMsM2wzLDNsLTEuNSwxLjVsLTQuNSwtNC41WiIvPjwvc3ZnPg==');
+$horizontal-increment-inactive: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNCAxMyI+PHBhdGggZmlsbD0iI2M5YzljMiIgZD0iTTExLDcuNWwtNC41LC00LjVsLTEuNSwxLjVsMywzbC0zLDNsMS41LDEuNWw0LjUsLTQuNVoiLz48L3N2Zz4=');
+$horizontal-increment-active: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNCAxMyI+PHBhdGggZmlsbD0iIzRkNjE4NSIgZD0iTTExLDcuNWwtNC41LC00LjVsLTEuNSwxLjVsMywzbC0zLDNsMS41LDEuNWw0LjUsLTQuNVoiLz48L3N2Zz4=');
+$horizontal-thumb: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDEzIj48cGF0aCBmaWxsPSIjZWVmNGZlIiBkPSJNMCw0djVoMXYtNVpNMiw0djVoMXYtNVpNNCw0djVoMXYtNVpNNiw0djVoMXYtNVoiLz48cGF0aCBmaWxsPSIjOGNiMGY4IiBkPSJNMSw1djVoMXYtNVpNMyw1djVoMXYtNVpNNSw1djVoMXYtNVpNNyw1djVoMXYtNVoiLz48L3N2Zz4=') no-repeat center;
+$horizontal-thumb-hover: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDEzIj48cGF0aCBkPSJNMCw0djVoMXYtNVpNMiw0djVoMXYtNVpNNCw0djVoMXYtNVpNNiw0djVoMXYtNVoiIGZpbGw9IiNmY2ZkZmYiLz48cGF0aCBkPSJNMSw1djVoMXYtNVpNMyw1djVoMXYtNVpNNSw1djVoMXYtNVpNNyw1djVoMXYtNVoiIGZpbGw9IiM5Y2M1ZmYiLz48L3N2Zz4=') no-repeat center;
+$horizontal-thumb-active: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDEzIj48cGF0aCBkPSJNMCw0djVoMXYtNVpNMiw0djVoMXYtNVpNNCw0djVoMXYtNVpNNiw0djVoMXYtNVoiIGZpbGw9IiNjZmRkZmQiLz48cGF0aCBkPSJNMSw1djVoMXYtNVpNMyw1djVoMXYtNVpNNSw1djVoMXYtNVpNNyw1djVoMXYtNVoiIGZpbGw9IiM4MzllZDgiLz48L3N2Zz4=') no-repeat center;
+$vertical-decrement-inactive: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMyAxNCI+PHBhdGggZmlsbD0iI2M5YzljMiIgZD0iTTMsOC41bDQuNSwtNC41bDQuNSw0LjVsLTEuNSwxLjVsLTMsLTNsLTMsM1oiLz48L3N2Zz4=');
+$vertical-decrement-active: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMyAxNCI+PHBhdGggZmlsbD0iIzRkNjE4NSIgZD0iTTMsOC41bDQuNSwtNC41bDQuNSw0LjVsLTEuNSwxLjVsLTMsLTNsLTMsM1oiLz48L3N2Zz4=');
+$vertical-increment-inactive: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMyAxNCI+PHBhdGggZD0iTTMsNi41bDEuNSwtMS41bDMsM2wzLC0zbDEuNSwxLjVsLTQuNSw0LjVaIiBmaWxsPSIjYzljOWMyIi8+PC9zdmc+');
+$vertical-increment-active: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMyAxNCI+PHBhdGggZmlsbD0iIzRkNjE4NSIgZD0iTTMsNi41bDEuNSwtMS41bDMsM2wzLC0zbDEuNSwxLjVsLTQuNSw0LjVaIi8+PC9zdmc+');
+$vertical-thumb: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMyA4Ij48cGF0aCBkPSJNMywwaDV2MWgtNVpNMywyaDV2MWgtNVpNMyw0aDV2MWgtNVpNMyw2aDV2MWgtNVoiIGZpbGw9IiNlZWY0ZmUiLz48cGF0aCBkPSJNNCwxaDV2MWgtNVpNNCwzaDV2MWgtNVpNNCw1aDV2MWgtNVpNNCw3aDV2MWgtNVoiIGZpbGw9IiM4Y2IwZjgiLz48L3N2Zz4=') no-repeat center;
+$vertical-thumb-hover: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMyA4Ij48cGF0aCBkPSJNMywwaDV2MWgtNVpNMywyaDV2MWgtNVpNMyw0aDV2MWgtNVpNMyw2aDV2MWgtNVoiIGZpbGw9IiNmY2ZkZmYiLz48cGF0aCBkPSJNNCwxaDV2MWgtNVpNNCwzaDV2MWgtNVpNNCw1aDV2MWgtNVpNNCw3aDV2MWgtNVoiIGZpbGw9IiM5Y2M1ZmYiLz48L3N2Zz4=') no-repeat center;
+$vertical-thumb-active: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMyA4Ij48cGF0aCBmaWxsPSIjY2ZkZGZkIiBkPSJNMywwaDV2MWgtNVpNMywyaDV2MWgtNVpNMyw0aDV2MWgtNVpNMyw2aDV2MWgtNVoiLz48cGF0aCBmaWxsPSIjODM5ZWQ4IiBkPSJNNCwxaDV2MWgtNVpNNCwzaDV2MWgtNVpNNCw1aDV2MWgtNVpNNCw3aDV2MWgtNVoiLz48L3N2Zz4=') no-repeat center;
+
 .help-contetns {
   position: relative;
   width: 100%;
@@ -48,7 +63,7 @@
         background: linear-gradient(to bottom, #fefefd 0%, #f4f4ee 10%, #f4f4ee 90%, #e3e0d5 100%);
       }
 
-      &:not(.inactive):active {
+      &.pressed:not(.inactive):hover {
         color: #fff;
         border: 1px solid #9d9d92;
         background: linear-gradient(to bottom, #dcdad1 0%, #e3e2da 10%, #e3e2da 90%, #ebeae5 100%);
@@ -165,7 +180,125 @@
           0 0 0 1px #ffffff,
           0 0 0 2px #7f9db9;
         background-color: #fff;
-        overflow: hidden;
+        overflow: scroll hidden;
+        scrollbar-width: 16px;
+        scrollbar-color: #b5c9f3 #fefefb;
+
+        &::-webkit-scrollbar {
+          height: 16px;
+          background: #fefefb;
+          border: 1px solid #eeede5;
+        }
+      
+        &.scrollable::-webkit-scrollbar {
+          background: linear-gradient(to bottom, #f3f1ec, #fefefb);
+        }
+      
+        &::-webkit-scrollbar-button {
+          width: 15px;
+          box-sizing: border-box;
+          border: 1px solid #fff;
+          border-radius: 3px;
+          box-shadow: 
+            inset 0 0 2px #e7e7de,
+            1px 1px 1px #ccccba;
+      
+          &:decrement {
+            background-image:
+              $horizontal-decrement-inactive,
+              linear-gradient(to right bottom, #f7f7f3, #e6e6dd);
+          }
+      
+          &:increment {
+            background-image:
+              $horizontal-increment-inactive,
+              linear-gradient(to right bottom, #f7f7f3, #e6e6dd);
+          }
+        }
+      
+        &.scrollable::-webkit-scrollbar-button {
+          box-shadow: 
+            inset 0 0 2px #c4d2f7,
+            1px 1px 1px #7c9fd3;
+      
+          &:hover {
+            box-shadow:
+              inset 0 0 2px #98b1e4,
+              1px 1px 1px #648fd1;
+          }
+      
+          &:hover:active {
+            box-shadow:
+              inset 0 0 2px #8592d9,
+              1px 1px 1px #7c9fd3;
+          }
+      
+          &:decrement {
+            background-image:
+              $horizontal-decrement-active,
+              linear-gradient(to right bottom, #e1eafe, #aec8f7);
+          }
+      
+          &:hover:decrement {
+            background-image:
+              $horizontal-decrement-active,
+              linear-gradient(to right bottom, #fdffff 15%, #e2f3fd 40%, #b9dafb);
+          }
+      
+          &:hover:decrement:active {
+            background-image:
+              $horizontal-decrement-active,
+              linear-gradient(to right bottom, #6e8ef1, #a6b7f2 60%, #becfed);
+          }
+      
+          &:increment {
+            background-image:
+              $horizontal-increment-active,
+              linear-gradient(to right bottom, #e1eafe, #aec8f7);
+          }
+      
+          &:hover:increment {
+            background-image:
+              $horizontal-increment-active,
+              linear-gradient(to right bottom, #fdffff 15%, #e2f3fd 40%, #b9dafb);
+          }
+      
+          &:hover:increment:active {
+            background-image:
+              $horizontal-increment-active,
+              linear-gradient(to right bottom, #6e8ef1, #a6b7f2 60%, #becfed);
+          }
+        }
+      
+        &.scrollable::-webkit-scrollbar-thumb {
+          box-sizing: border-box;
+          border: 1px solid #fff;
+          border-radius: 3px;
+          background:
+            $horizontal-thumb,
+            linear-gradient(to bottom, #c8d6fb, #b5c9f3);
+          box-shadow: 
+            inset 0 0 2px #b7caf5,
+            1px 1px 1px #9fb5d2;
+      
+          &:hover {
+            background:
+              $horizontal-thumb-hover,
+              linear-gradient(to bottom, #dae9ff, #cce1ff);
+            box-shadow: 
+              inset 0 0 1px 1px #acceff,
+              1px 1px 1px #9fb5d2;
+          }
+      
+          &:active {
+            background:
+              $horizontal-thumb-active,
+              linear-gradient(to bottom, #a5befc, #92b2f6);
+            box-shadow: 
+              inset 0 0 2px 1px #829ad5,
+              1px 1px 1px #9fb5d2;
+          }
+        }
       }
     }
   }
@@ -186,5 +319,125 @@
     border-bottom-color: #f1efe2;
     border-right-color: #f1efe2;
     outline: 1px solid #aca899;
+    overflow: hidden scroll;
+    scrollbar-width: 16px;
+    scrollbar-color: #b5c9f3 #fefefb;
+
+    &::-webkit-scrollbar {
+      width: 16px;
+      height: 100%;
+      background: #fefefb;
+      border: 1px solid #eeede5;
+    }
+
+    &.scrollable::-webkit-scrollbar {
+      background: linear-gradient(to right, #f3f1ec, #fefefb);
+    }
+
+    &::-webkit-scrollbar-button {
+      height: 15px;
+      box-sizing: border-box;
+      border: 1px solid #fff;
+      border-radius: 3px;
+      box-shadow: 
+        inset 0 0 2px #e7e7de,
+        1px 1px 1px #ccccba;
+
+      &:decrement {
+        background-image:
+          $vertical-decrement-inactive,
+          linear-gradient(to right bottom, #f7f7f3, #e6e6dd);
+      }
+
+      &:increment {
+        background-image:
+          $vertical-increment-inactive,
+          linear-gradient(to right bottom, #f7f7f3, #e6e6dd);
+      }
+    }
+
+    &.scrollable::-webkit-scrollbar-button {
+      box-shadow: 
+        inset 0 0 2px #c4d2f7,
+        1px 1px 1px #7c9fd3;
+
+      &:hover {
+        box-shadow:
+          inset 0 0 2px #98b1e4,
+          1px 1px 1px #648fd1;
+      }
+
+      &:hover:active {
+        box-shadow:
+          inset 0 0 2px #8592d9,
+          1px 1px 1px #7c9fd3;
+      }
+
+      &:decrement {
+        background-image:
+          $vertical-decrement-active,
+          linear-gradient(to right bottom, #e1eafe, #aec8f7);
+      }
+
+      &:hover:decrement {
+        background-image:
+          $vertical-decrement-active,
+          linear-gradient(to right bottom, #fdffff 15%, #e2f3fd 40%, #b9dafb);
+      }
+
+      &:hover:decrement:active {
+        background-image:
+          $vertical-decrement-active,
+          linear-gradient(to right bottom, #6e8ef1, #a6b7f2 60%, #becfed);
+      }
+
+      &:increment {
+        background-image:
+          $vertical-increment-active,
+          linear-gradient(to right bottom, #e1eafe, #aec8f7);
+      }
+
+      &:hover:increment {
+        background-image:
+          $vertical-increment-active,
+          linear-gradient(to right bottom, #fdffff 15%, #e2f3fd 40%, #b9dafb);
+      }
+
+      &:hover:increment:active {
+        background-image:
+          $vertical-increment-active,
+          linear-gradient(to right bottom, #6e8ef1, #a6b7f2 60%, #becfed);
+      }
+    }
+
+    &.scrollable::-webkit-scrollbar-thumb {
+      box-sizing: border-box;
+      border: 1px solid #fff;
+      border-radius: 3px;
+      background:
+        $vertical-thumb,
+        linear-gradient(to right, #c8d6fb, #b5c9f3);
+      box-shadow: 
+        inset 0 0 2px #b7caf5,
+        1px 1px 1px #9fb5d2;
+
+      &:hover {
+        background:
+          $vertical-thumb-hover,
+          linear-gradient(to right, #dae9ff, #cce1ff);
+        box-shadow: 
+          inset 0 0 1px 1px #acceff,
+          1px 1px 1px #9fb5d2;
+      }
+
+      &:active {
+        background:
+          $vertical-thumb-active,
+          linear-gradient(to right, #a5befc, #92b2f6);
+        box-shadow: 
+          inset 0 0 2px 1px #829ad5,
+          1px 1px 1px #9fb5d2;
+      }
+    }
   }
 }

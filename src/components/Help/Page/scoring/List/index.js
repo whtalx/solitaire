@@ -51,7 +51,7 @@ export default class List extends Component {
   }
 
   componentDidUpdate() {
-    this.props.changeScrollHeight && this.props.changeScrollHeight();
+    this.props.isPageScrollable && this.props.isPageScrollable();
   }
 
   render() {

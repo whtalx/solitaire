@@ -1,12 +1,12 @@
 import React from 'react';
 import List from './List';
 
-const scoring = [
+const scoring = (isPageScrollable) => [
   <h1 key="heading" className="heading">To choose a scoring system</h1>,
   <ol key="ordered" className="ordered">
     <li>On the <strong>Game</strong> menu, click <strong>Options</strong>.</li>
     <li>Under Scoring, click one of the following options:
-      <List />
+      <List isPageScrollable={isPageScrollable} />
     </li>
   </ol>,
   <p key="note" className="note">Note</p>,

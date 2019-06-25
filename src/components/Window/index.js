@@ -23,10 +23,13 @@ class Window extends Component {
       this.handleDoubleClick = () => {
         if (this.props.window[this.props.name].isBlocked) { return; }
         if (this.props.window[this.props.name].isMaximized) {
-          this.props.restore.bind(this)(this.props.name)
+          this.props.restore.bind(this)(this.props.name);
         } else if (!this.props.window[this.props.name].isMinimized) {
           this.props.maximize.bind(this)(this.props.name);
         }
+
+        this.props.window.cursor !== null
+          && this.props.changeCursor({ window: this.props.name, cursor: null });
       }
     }
   }

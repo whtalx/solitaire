@@ -1,7 +1,8 @@
 @import '../../cursors';
 
 .contents {
-  width: 170px;
+  width: max-content;
+  display: grid;
 
   & > .book,
   & > .topic,
