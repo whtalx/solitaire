@@ -1,5 +1,8 @@
 export default function handleMouseDown(event) {
-  if (!event.target.classList.contains('title')) {
+  if (
+    event.button !== 0
+    || !event.target.classList.contains('title')
+  ) {
     return;
   }
 

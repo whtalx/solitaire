@@ -7,14 +7,13 @@ import saveHistory from './scripts/saveHistory';
 import getStatistics from './scripts/getStatistics';
 import setStatistics from './scripts/setStatistics';
 
-const cards = getCards();
 const options = getOptions();
-const score = getScore(options);
-const statistics = getStatistics();
-
 const initialState = {
+  cards: getCards(),
+  options,
+  statistics: getStatistics(),
   status: {
-    score,
+    score: getScore(options),
     time: 0,
     bonus: 0,
     rollsCount: 0,
@@ -22,31 +21,34 @@ const initialState = {
     history: {},
     cardsInFoundation: 0,
     isCelebrating: false,
+    isGameStarted: false,
     isPlaying: false,
+    isDeckFetching: false,
+    shouldFetchDeck: true,
   },
-
-  cards,
-  options,
-  statistics,
 };
 
 export default function game(state = initialState, action) {
   switch (action.type) {
     case 'DEAL': {
-      const newState = { ...state };
-      newState.cards = getCards();
-      newState.status = {
-        score: getScore(newState.options),
-        time: 0,
-        bonus: 0,
-        rollsCount: 0,
-        rollThrough: !(newState.options.scoring === 'vegas' && newState.options.draw === 'one'),
-        history: {},
-        cardsInFoundation: 0,
-        isCelebrating: false,
-        isPlaying: false,
+      return {
+        ...state,
+        cards: getCards(),
+        status: {
+          score: getScore(options),
+          time: 0,
+          bonus: 0,
+          rollsCount: 0,
+          rollThrough: !(options.scoring === 'vegas' && options.draw === 'one'),
+          history: {},
+          cardsInFoundation: 0,
+          isCelebrating: false,
+          isGameStarted: false,
+          isPlaying: false,
+          isDeckFetching: false,
+          shouldFetchDeck: true,
+        },
       };
-      return newState;
     }
 
     case 'DRAW': {
@@ -350,6 +352,56 @@ export default function game(state = initialState, action) {
     case 'STOP_CELEBRATING': {
       const newState = { ...state };
       newState.status.isCelebrating && (newState.status.isCelebrating = false);
+      return newState;
+    }
+
+    case 'SHUFFLING_DECK': {
+      const newState = { ...state };
+      newState.status.shouldFetchDeck = false;
+      newState.status.isDeckFetching = true;
+      return newState;
+    }
+
+    case 'LAY_DECK': {
+      const newState = { ...state };
+      newState.cards.deck = action.payload.map((item) => {
+        return {
+          code: item.code,
+          value: item.value.toLowerCase(),
+          suit: item.suit.toLowerCase(),
+          status: 'downturned',
+        };
+      });
+      newState.status.isDeckFetching = false;
+      return newState;
+    }
+
+    case 'LAY_TABLEAU': {
+      const newState = { ...state };
+      let i = 1;
+
+      while (i <= newState.cards.tableau.length) {
+        if (newState.cards.tableau[i - 1].length < i) {
+          for (let j = 1; j <= i; j++) {
+            newState.cards.tableau[i - 1].push({
+              ...newState.cards.deck.pop(),
+              status: j === i ? 'upturned' : 'downturned',
+            });
+          }
+
+          break;
+        }
+
+        i += 1;
+      }
+
+      i === 7 && (newState.status.isGameStarted = true);
+      return newState;
+    }
+
+    case 'THROW_ERROR': {
+      const newState = { ...state };
+      newState.status.isGameStarted = true;
       return newState;
     }
 

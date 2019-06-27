@@ -7,18 +7,20 @@ function Deck(props) {
   return (
     <div className="deck">
       {
-        props.game.cards.deck.length
-          ? props.game.cards.deck.map((item, index) => {
-              return makeCard({
-                ...item,
-                parent: 'deck',
-                index: index,
-                back: props.game.options.back,
-              });
-            })
-          : props.game.status.rollThrough
-              ? makeCard({ status: 'ok' })
-              : makeCard({ status: 'notok' })
+        !props.game.status.isDeckFetching
+          ? props.game.cards.deck.length
+            ? props.game.cards.deck.map((item, index) => {
+                return makeCard({
+                  ...item,
+                  parent: 'deck',
+                  index: index,
+                  back: props.game.options.back,
+                });
+              })
+            : props.game.status.rollThrough
+                ? makeCard({ status: 'ok' })
+                : makeCard({ status: 'notok' })
+          : ''
       }
     </div>
   );

@@ -9,6 +9,8 @@ export default function handleMouseDown(event) {
     this.props.activate();
   }
 
+  if (!this.props.game.status.isGameStarted) { return; }
+
   if (event.button !== 0) {
     event.button === 2 && this.props.fundAll();
     return;

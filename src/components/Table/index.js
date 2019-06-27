@@ -40,6 +40,34 @@ class Table extends PureComponent {
     this.foundations[index] = ref;
   }
 
+  componentDidMount() {
+    if (
+      this.props.game.status.shouldFetchDeck
+      && !this.props.game.status.isDeckFetching
+    ) {
+      this.props.fetchDeck();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.game.status.shouldFetchDeck
+      && !nextProps.game.status.isDeckFetching
+    ) {
+      this.props.fetchDeck();
+    }
+  }
+
+  componentDidUpdate() {
+    if (
+      !this.props.game.status.shouldFetchDeck
+      && !this.props.game.status.isDeckFetching
+      && !this.props.game.status.isGameStarted
+    ) {
+      requestAnimationFrame(this.props.layTableau);
+    }
+  }
+
   render() {
     if (
       (
@@ -118,6 +146,32 @@ const mapDispatchToProps = (dispatch) => ({
   startGame: () => dispatch({ type: 'START_GAME' }),
   tick: (payload) => dispatch({ type: 'TICK', payload }),
   startCelebrating: () => dispatch({ type: 'START_CELEBRATING' }),
+  fetchDeck: () => {
+    dispatch({ type: 'SHUFFLING_DECK' });
+    const deckID = localStorage.getItem('deckID');
+    if (deckID) {
+      fetch(`https://deckofcardsapi.com/api/deck/${deckID}/shuffle/`)
+        .then(() => fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=52`))
+        .then(response => response.json())
+        .then(json => dispatch({ type: 'LAY_DECK', payload: json.cards }))
+        .catch(error => {
+          dispatch({ type: 'THROW_ERROR', payload: `Cannot shuffle deck because of ${error.message}` });
+          dispatch({ type: 'SHOW_WINDOW', payload: 'error' });
+        });
+    } else {
+      fetch('https://deckofcardsapi.com/api/deck/new/draw/?count=52')
+        .then(response => response.json())
+        .then((json) => {
+          localStorage.setItem('deckID', json.deck_id);
+          dispatch({ type: 'LAY_DECK', payload: json.cards })
+        })
+        .catch(error => {
+          dispatch({ type: 'THROW_ERROR', payload: `Cannot shuffle deck because of ${error.message}` });
+          dispatch({ type: 'SHOW_WINDOW', payload: 'error' });
+        });
+    }
+  },
+  layTableau: () => dispatch({ type: 'LAY_TABLEAU' }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);

@@ -72,7 +72,7 @@ const initialState = {
     isMinimized: false,
     isResizing: false,
     isResizable: true,
-    isShowing: true,
+    isShowing: false,
   },
 
   restart: {
@@ -105,7 +105,23 @@ const initialState = {
     isShowing: false,
   },
 
-  activity: ['solitaire', 'help'],
+  error: {
+    alert: false,
+    caption: 'Solitaire',
+    buttons: ['close'],
+    message: 'unknown error',
+    style: {
+      width: 500,
+      height: 100,
+      left: null,
+      top: null,
+    },
+
+    isBlocking: true,
+    isShowing: false,
+  },
+
+  activity: ['solitaire'],
   minimized: [],
   cursor: null,
   isCursorFreezed: false,
@@ -382,6 +398,12 @@ export default function window(state = initialState, action) {
     case 'FREEZE_CURSOR': {
       const newState = { ...state };
       newState.isCursorFreezed = action.payload;
+      return newState;
+    }
+
+    case 'THROW_ERROR': {
+      const newState = { ...state };
+      newState.error.message = action.payload;
       return newState;
     }
 

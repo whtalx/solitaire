@@ -6,4 +6,16 @@
   & > *:nth-child(n+21) {
     margin: 2px 0 0 4px;
   }
+
+  & > *:nth-child(n+31) {
+    margin: 3px 0 0 6px;
+  }
+
+  & > *:nth-child(n+41) {
+    margin: 4px 0 0 8px;
+  }
+
+  & > *:nth-child(n+51) {
+    margin: 5px 0 0 10px;
+  }
 }

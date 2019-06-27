@@ -6,78 +6,79 @@ import Back from './Back';
 import Help from './Help';
 import Bsod from './Bsod';
 import Table from './Table';
+import Error from './Error';
 import Window from './Window';
 import Options from './Options';
 import Restart from './Restart';
 import StatusBar from './StatusBar';
 import Statistics from './Statistics';
 
-class App extends Component {
+class Sol extends Component {
   constructor(props) {
     super(props);
     this.state = {
       key: null,
       bsod: false,
     };
-  }
 
-  handleKeyDown(event) {
-    if (
-      event.which === this.state.key
-      || !this.props.window.solitaire.isShowing
-      || this.props.window.activity[this.props.window.activity.length - 1] !== 'solitaire'
-      || this.props.window.solitaire.isMinimized
-      || (
-        event.which !== 112     //F1
-        && event.which !== 113  //F2
-        && event.which !== 17   //ctrl
-        && event.which !== 65   //A
-        )
-    ) {
-      return;
+    this.handleKeyDown = (event) => {
+      if (
+        event.which === this.state.key
+        || !this.props.window.solitaire.isShowing
+        || this.props.window.activity[this.props.window.activity.length - 1] !== 'solitaire'
+        || this.props.window.solitaire.isMinimized
+        || (
+          event.which !== 112     //F1
+          && event.which !== 113  //F2
+          && event.which !== 17   //ctrl
+          && event.which !== 65   //A
+          )
+      ) {
+        return;
+      }
+
+      if (event.which === 112) {
+        this.props.help();
+      } else if (event.which === 113) {
+        this.props.deal();
+      } else if (event.which === 17) {
+      } else if (
+        event.which === 65
+        && this.state.key === 17
+      ) {
+        this.props.fundAll();
+      }
+
+      this.setState({ key: event.which });
     }
 
-    if (event.which === 112) {
-      this.props.help();
-    } else if (event.which === 113) {
-      this.props.deal();
-    } else if (event.which === 17) {
-    } else if (
-      event.which === 65
-      && this.state.key === 17
-    ) {
-      this.props.fundAll();
+    this.handleKeyUp = (event) => {
+      event.which === this.state.key && this.setState({ key: null });
     }
 
-    this.setState({ key: event.which });
-  }
+    this.handleRightMouseButton = (event) => {
+      event.preventDefault();
+    }
 
-  handleKeyUp(event) {
-    event.which === this.state.key && this.setState({ key: null });
-  }
-
-  handleRightMouseButton(event) {
-    event.preventDefault();
-  }
-
-  handleMouseDown(event) {
-    if (event.target.classList.contains('root')) {
-      this.props.deactivate();
+    this.handleMouseDown = (event) => {
+      if (event.target.classList.contains('root')) {
+        this.props.deactivate();
+      }
     }
   }
 
   componentDidMount() {
-    document.addEventListener('keydown', this.handleKeyDown.bind(this));
-    document.addEventListener('keyup', this.handleKeyUp.bind(this));
+    document.addEventListener('keydown', this.handleKeyDown);
+    document.addEventListener('keyup', this.handleKeyUp);
     document.addEventListener('contextmenu', this.handleRightMouseButton);
-    document.addEventListener('mousedown', this.handleMouseDown.bind(this));
+    document.addEventListener('mousedown', this.handleMouseDown);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleKeyDown.bind(this));
-    document.removeEventListener('keyup', this.handleKeyUp.bind(this));
+    document.removeEventListener('keydown', this.handleKeyDown);
+    document.removeEventListener('keyup', this.handleKeyUp);
     document.removeEventListener('contextmenu', this.handleRightMouseButton);
-    document.removeEventListener('mousedown', this.handleMouseDown.bind(this));
+    document.removeEventListener('mousedown', this.handleMouseDown);
   }
 
   render() {
@@ -85,6 +86,8 @@ class App extends Component {
 
     let className = 'root';
     if (this.props.window.solitaire.isShowing) {
+      !this.props.game.status.isGameStarted
+        && (className += ' progress');
       this.props.window.cursor
         && (className += ` ${this.props.window.cursor}`);
     } else {
@@ -126,6 +129,10 @@ class App extends Component {
           this.props.window.restart.isShowing
             && <Window name="restart" children={<Restart />} />
         }
+        {
+          this.props.window.error.isShowing
+            && <Window name="error" children={<Error />} />
+        }
       </div>
     );
   }
@@ -143,4 +150,4 @@ const mapDispatchToProps = (dispatch) => ({
   fundAll: () => dispatch({ type: 'FUND_ALL' }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(Sol);

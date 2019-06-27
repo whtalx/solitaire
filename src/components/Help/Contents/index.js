@@ -43,7 +43,11 @@ export default function Contents(props) {
           }
           props.selected === item.id && (className += ' selected');
           return (
-            <div key={item.id} className={className} onMouseDown={() => props.select(item.id)}>
+            <div
+              key={item.id}
+              className={className}
+              onMouseDown={event => event.button === 0 && props.select(item.id)}
+            >
               <div className="icon" />
               <span className="caption">{item.caption}</span>
             </div>

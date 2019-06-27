@@ -49,8 +49,8 @@
   overflow: hidden;
   cursor: url($default), default;
 
-  &.wait {
-    cursor: url($wait), wait;
+  &.progress {
+    cursor: url($progress), progress;
   }
 
   &.ew-resize {
@@ -67,5 +67,9 @@
 
   &.nwse-resize {
     cursor: url($nwse-resize), nwse-resize;
+  }
+
+  &.wait {
+    cursor: url($wait), wait;
   }
 }
