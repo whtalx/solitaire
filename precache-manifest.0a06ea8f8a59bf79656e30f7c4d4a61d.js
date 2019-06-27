@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "62bf0ecc1c0214785febe075b0e2c9ee",
+    "revision": "c336f46928792330b702a03f59e7ece3",
     "url": "/solitaire/index.html"
   },
   {
-    "revision": "dd93f865d1720f902f7c",
-    "url": "/solitaire/static/css/main.fd9c8a83.chunk.css"
+    "revision": "f3309f92827f2665ff66",
+    "url": "/solitaire/static/css/main.240c608d.chunk.css"
   },
   {
-    "revision": "374eab051207dfab933c",
-    "url": "/solitaire/static/js/2.10509446.chunk.js"
+    "revision": "abcde1f025078ba6d5dc",
+    "url": "/solitaire/static/js/2.f0697821.chunk.js"
   },
   {
-    "revision": "dd93f865d1720f902f7c",
-    "url": "/solitaire/static/js/main.0ae61c6f.chunk.js"
+    "revision": "f3309f92827f2665ff66",
+    "url": "/solitaire/static/js/main.25614eef.chunk.js"
   },
   {
     "revision": "3d4cc52b58bd19065a8a",
@@ -108,7 +108,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/solitaire/static/media/tahoma.dc236407.woff2"
   },
   {
-    "revision": "7eaefa385ddcba4574ea603e204f051b",
-    "url": "/solitaire/static/media/wallpaper.7eaefa38.png"
+    "revision": "6b25d72c2c9b150e9358126008e3d56a",
+    "url": "/solitaire/static/media/wallpaper.6b25d72c.png"
   }
 ]);
