@@ -11,6 +11,9 @@ const testObj = {
   children: <div id="testElement" />,
   parent: 'testParent',
   index: 'testIndex',
+  left: 'testLeft',
+  top: 'testTop',
+  draw: 'testDraw',
 };
 
 test('Card is matching', () => {
@@ -24,6 +27,9 @@ test('Card is matching', () => {
       children={testObj.children}
       parent={testObj.parent}
       index={testObj.index}
+      left={testObj.left}
+      top={testObj.top}
+      draw={testObj.draw}
     />
   );
 });
