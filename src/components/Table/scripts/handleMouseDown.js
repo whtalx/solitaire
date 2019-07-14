@@ -61,9 +61,13 @@ export default function handleMouseDown(event) {
       card.style.transform = `translate(${event.pageX - shiftX}px,${event.pageY - shiftY}px)`;
 
       const getTarget = (horizontal, vertical) => {
-        const elements = document.elementsFromPoint(horizontal, vertical);
-        if (elements.includes(card)) {
-          return elements[elements.indexOf(card) + 1];
+        const getElementsFromPoint = (x, y) => document.msElementsFromPoint
+            ? document.msElementsFromPoint(x, y)
+            : document.elementsFromPoint(x, y);
+
+        const elements = getElementsFromPoint(horizontal, vertical);
+        if (Array.from(elements).includes(card)) {
+          return elements[Array.from(elements).indexOf(card) + 1];
         }
 
         return elements[0];
