@@ -154,7 +154,7 @@ const mapDispatchToProps = (dispatch) => ({
         .then(() => fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=52`))
         .then(response => response.json())
         .then(json => dispatch({ type: 'LAY_DECK', payload: json.cards }))
-        .catch(error => {
+        .catch((error) => {
           dispatch({ type: 'THROW_ERROR', payload: `Cannot shuffle deck because of ${error.message}` });
           dispatch({ type: 'SHOW_WINDOW', payload: 'error' });
         });
@@ -165,7 +165,7 @@ const mapDispatchToProps = (dispatch) => ({
           localStorage.setItem('deckID', json.deck_id);
           dispatch({ type: 'LAY_DECK', payload: json.cards })
         })
-        .catch(error => {
+        .catch((error) => {
           dispatch({ type: 'THROW_ERROR', payload: `Cannot shuffle deck because of ${error.message}` });
           dispatch({ type: 'SHOW_WINDOW', payload: 'error' });
         });

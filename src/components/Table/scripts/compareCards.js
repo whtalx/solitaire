@@ -2,94 +2,78 @@ import suitsComparison from '../../../data/suitsComparison.json';
 import valuesComparison from '../../../data/valuesComparison.json';
 
 export default function compareCards(firstCard, secondCard) {
-  if (firstCard.classList.value.match(/card opened/)) {
-    const first = {
-      value: firstCard.classList[2],
-      suit: firstCard.classList[3],
-      parent: firstCard.dataset.parent,
-      index: parseInt(firstCard.dataset.index),
+  if (!firstCard.className.match(/card opened/)) { return false; }
+
+  const first = {
+    value: firstCard.classList[2],
+    suit: firstCard.classList[3],
+    parent: firstCard.dataset.parent.match(/\w/g).join('').match(/\D/g).join(''),
+    parent_index: parseInt(firstCard.dataset.parent.match(/\d/)),
+    index: parseInt(firstCard.dataset.index),
+  };
+
+  if (secondCard.className.match(/card opened/)) {
+    const second = {
+      value: secondCard.classList[2],
+      suit: secondCard.classList[3],
+      parent: secondCard.dataset.parent.match(/\w/g).join('').match(/\D/g).join(''),
+      parent_index: parseInt(secondCard.dataset.parent.match(/\d/)),
+      index: parseInt(secondCard.dataset.index),
     };
 
-    if (secondCard.classList.value.match(/card opened/)) {
-      const second = {
-        value: secondCard.classList[2],
-        suit: secondCard.classList[3],
-        parent: secondCard.dataset.parent,
-        index: parseInt(secondCard.dataset.index),
-      };
+    const moveToFoundation =
+      second.parent.match(/foundation/)
+      && first.suit === second.suit
+      && valuesComparison[first.value] === valuesComparison[second.value] + 1;
 
-      if (
-        valuesComparison[first.value] === valuesComparison[second.value] + 1
-        && second.parent.match(/foundation/)
-        && first.suit === second.suit
-      ) {
-        return {
-          from: {
-            parent: first.parent.match(/\w/g).join('').match(/\D/g).join(''),
-            parent_index: parseInt(first.parent.match(/\d/)),
-            index: first.index,
-          },
-          to: {
-            parent: second.parent.match(/\w/g).join('').match(/\D/g).join(''),
-            parent_index: parseInt(second.parent.match(/\d/)),
-            index: second.index,
-          },
-        };
-      } else if (
-        valuesComparison[first.value] + 1 === valuesComparison[second.value]
-        && second.parent.match(/tableau/)
-        && suitsComparison[first.suit] !== second.suit
-        && first.suit !== second.suit
-        && secondCard.children.length === 0
-      ) {
-        return {
-          from: {
-            parent: first.parent.match(/\w/g).join('').match(/\D/g).join(''),
-            parent_index: parseInt(first.parent.match(/\d/)),
-            index: first.index,
-          },
-          to: {
-            parent: second.parent.match(/\w/g).join('').match(/\D/g).join(''),
-            parent_index: parseInt(second.parent.match(/\d/)),
-            index: second.index,
-          },
-        };
-      }
-    } else if (secondCard.classList.value.match(/foundation/)) {
-      if (first.value === 'ace') {
-        return {
-          from: {
-            parent: first.parent.match(/\w/g).join('').match(/\D/g).join(''),
-            parent_index: parseInt(first.parent.match(/\d/)),
-            index: first.index,
-          },
-          to: {
-            parent: secondCard.classList[0],
-            parent_index: parseInt(secondCard.classList[1].match(/\d/)),
-            index: NaN,
-          },
-        };
-      } else {
-        return false;
-      }
-    } else if (secondCard.classList.value.match(/tableau/)) {
-      if (first.value === 'king') {
-        return {
-          from: {
-            parent: first.parent.match(/\w/g).join('').match(/\D/g).join(''),
-            parent_index: parseInt(first.parent.match(/\d/)),
-            index: first.index,
-          },
-          to: {
-            parent: secondCard.classList[0],
-            parent_index: parseInt(secondCard.classList[1].match(/\d/)),
-            index: NaN,
-          },
-        };
-      } else {
-        return false;
-      }
+    const moveToTableau =
+      second.parent.match(/tableau/)
+      && secondCard.children.length === 0
+      && first.suit !== second.suit
+      && suitsComparison[first.suit] !== second.suit
+      && valuesComparison[first.value] + 1 === valuesComparison[second.value];
+
+    if (moveToFoundation || moveToTableau) {
+      return {
+        from: {
+          parent: first.parent,
+          parent_index: first.parent_index,
+          index: first.index,
+        },
+
+        to: {
+          parent: second.parent,
+          parent_index: second.parent_index,
+          index: second.index,
+        },
+      };
+    } else {
+      return false;
     }
+  }
+
+  const moveToEmptyFoundation =
+    secondCard.classList.value.match(/foundation/)
+    && first.value === 'ace';
+
+  const moveToEmptyTableau =
+    secondCard.className.match(/tableau/)
+    && first.value === 'king';
+
+  if (moveToEmptyFoundation || moveToEmptyTableau) {
+    return {
+      from: {
+        parent: first.parent,
+        parent_index: first.parent_index,
+        index: first.index,
+      },
+
+      to: {
+        parent: secondCard.classList[0],
+        parent_index: parseInt(secondCard.classList[1].match(/\d/)),
+        index: NaN,
+      },
+    };
   }
 
   return false;

@@ -44,7 +44,7 @@ class Sol extends Component {
       } else if (event.which === 17) {
       } else if (
         event.which === 65
-        && this.state.key === 17
+        && event.ctrlKey
       ) {
         this.props.fundAll();
       }
