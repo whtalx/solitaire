@@ -93,7 +93,6 @@ class Options extends Component {
         />
         <Button
           type="ok"
-          selected 
           click={() => {
             if (
               this.props.game.options.scoring !== this.state.scoring

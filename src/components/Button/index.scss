@@ -4,20 +4,37 @@
   height: 21px;
   box-sizing: border-box;
   font: 11px tahoma;
+  cursor: inherit;
+  outline: none;
   border: 1px solid #003c73;
   border-radius: 2px;
-  background: linear-gradient(to bottom, #fff 0%, #d6d3c6 100%);
+  background: linear-gradient(to bottom, #cee7ff 0%, #6b82ef 100%);
   box-shadow:
     -1px -1px 0 0 #d6d3bd,
     1px 1px 0 0 #fff;
 
   &:after {
     position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background: linear-gradient(to bottom, #faf9f8 0%, #dbd9cd 100%);
+    line-height: 17px;
+  }
+
+  &:hover:after,
+  &:focus:after {
     top: 2px;
     left: 2px;
     width: calc(100% - 4px);
     height: calc(100% - 4px);
-    text-align: center;
+    line-height: 13px;
+  }
+
+  &:focus:after {
+    outline: 1px dotted #000;
   }
 
   &.button_ok:after {
@@ -28,26 +45,22 @@
     content: 'Cancel';
   }
 
-  &.button_selected {
-    background: linear-gradient(to bottom, #cee7ff 0%, #6b82ef 100%);
-  }
-
-  &:hover:after,
-  &.button_selected:after {
-    background: linear-gradient(to bottom, #fff 0%, #efebe7 100%);
-  }
-
   &:hover,
-  &.button_selected:hover {
+  &:focus:hover {
     background: linear-gradient(to bottom, #fff3ce 0%, #e79600 100%);
   }
 
   &:active:hover,
-  &.button_selected:active:hover {
+  &:focus:active:hover {
     background: linear-gradient(to bottom, #d6cfc6 0%, #f7f3ef 100%);
   }
+
   &:active:hover:after,
-  &.button_selected:active:hover:after {
+  &:focus:hover:active:after {
     background: none;
+  }
+
+  &::-moz-focus-inner {
+    border:0;
   }
 }
