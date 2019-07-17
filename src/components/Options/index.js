@@ -13,91 +13,101 @@ class Options extends Component {
   render() {
     return (
       <div className="options-contents">
-        <div className="section-1">
-          <div className="fieldset">
-            <div className="legend">Draw</div>
-            <Input
-              type="radio"
-              checked={this.state.draw === 'one'}
-              label="Draw One"
-              click={() => { this.setState({ draw: 'one' }) }}
-            />
-            <Input
-              type="radio"
-              checked={this.state.draw === 'three'}
-              label="Draw Three"
-              click={() => { this.setState({ draw: 'three' }) }}
-            />
-          </div>
+        <div className="fieldset">
+          <div className="legend">Draw</div>
           <Input
-            type="checkbox"
-            checked={this.state.timed}
-            label="Timed game"
-            click={() => { this.setState({ timed: !this.state.timed }) }}
+            type="radio"
+            id="one"
+            name="draw"
+            label="Draw One"
+            checked={this.state.draw === 'one'}
+            change={() => { this.setState({ draw: 'one' }) }}
           />
           <Input
-            type="checkbox"
-            checked={this.state.status}
-            label="Status bar"
-            click={() => { this.setState({ status: !this.state.status }) }}
-          />
-          <Input
-            type="checkbox"
-            checked={this.state.outline}
-            label="Outline dragging"
-            click={() => { this.setState({ outline: !this.state.outline }) }}
+            type="radio"
+            id="three"
+            name="draw"
+            label="Draw Three"
+            checked={this.state.draw === 'three'}
+            change={() => { this.setState({ draw: 'three' }) }}
           />
         </div>
-        <div className="section-2">
-          <div className="fieldset">
-            <div className="legend">Scoring</div>
-            <Input
-              type="radio"
-              label="Standart"
-              checked={this.state.scoring === 'standard'}
-              click={() => { this.setState({ scoring: 'standard' }) }}
-            />
-            <Input
-              type="radio"
-              label="Vegas"
-              checked={this.state.scoring === 'vegas'}
-              click={() => { this.setState({ scoring: 'vegas' }) }}
-            />
-            <Input
-              type="radio"
-              label="None"
-              checked={this.state.scoring === 'none'}
-              click={() => { this.setState({ scoring: 'none' }) }}
-            />
-          </div>
+        <div className="fieldset">
+          <div className="legend">Scoring</div>
           <Input
-            type="checkbox"
-            checked={this.state.cumulative}
-            disabled={!(this.state.scoring === 'vegas')}
-            click={() => {
-              this.state.scoring === 'vegas'
-                && this.setState({ cumulative: !this.state.cumulative });
-            }}
-            label="Cumulative Score"
+            type="radio"
+            id="standard"
+            name="scoring"
+            label="Standart"
+            checked={this.state.scoring === 'standard'}
+            change={() => { this.setState({ scoring: 'standard' }) }}
           />
-          <Button
-            type="ok"
-            selected 
-            click={() => {
-              if (
-                this.props.game.options.scoring !== this.state.scoring
-                || this.props.game.options.draw !== this.state.draw
-                || this.props.game.options.timed !== this.state.timed
-              ) {
-                this.props.setAndDeal(this.state);
-              } else {
-                this.props.set(this.state);
-              }
-              this.props.close();
-            }}
+          <Input
+            type="radio"
+            id="vegas"
+            name="scoring"
+            label="Vegas"
+            checked={this.state.scoring === 'vegas'}
+            change={() => { this.setState({ scoring: 'vegas' }) }}
           />
-          <Button type="cancel" click={() => { this.props.close() }} />
+          <Input
+            type="radio"
+            id="none"
+            name="scoring"
+            label="None"
+            checked={this.state.scoring === 'none'}
+            change={() => { this.setState({ scoring: 'none' }) }}
+          />
         </div>
+        <Input
+          type="checkbox"
+          id="timed"
+          label="Timed game"
+          checked={this.state.timed}
+          change={() => { this.setState({ timed: !this.state.timed }) }}
+        />
+        <Input
+          type="checkbox"
+          id="status"
+          label="Status bar"
+          checked={this.state.status}
+          change={() => { this.setState({ status: !this.state.status }) }}
+        />
+        <Input
+          type="checkbox"
+          id="outline"
+          label="Outline dragging"
+          checked={this.state.outline}
+          change={() => { this.setState({ outline: !this.state.outline }) }}
+        />
+        <Input
+          type="checkbox"
+          id="cumulative"
+          label="Cumulative Score"
+          checked={this.state.cumulative}
+          disabled={this.state.scoring !== 'vegas'}
+          change={() => {
+            this.state.scoring === 'vegas'
+              && this.setState({ cumulative: !this.state.cumulative });
+          }}
+        />
+        <Button
+          type="ok"
+          selected 
+          click={() => {
+            if (
+              this.props.game.options.scoring !== this.state.scoring
+              || this.props.game.options.draw !== this.state.draw
+              || this.props.game.options.timed !== this.state.timed
+            ) {
+              this.props.setAndDeal(this.state);
+            } else {
+              this.props.set(this.state);
+            }
+            this.props.close();
+          }}
+        />
+        <Button type="cancel" click={() => { this.props.close() }} />
       </div>
     );
   }

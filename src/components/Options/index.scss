@@ -4,116 +4,105 @@
   height: 100%;
   font: 11px tahoma;
 
-  .section-1,
-  .section-2 {
-    position: absolute;
-    width: 50%;
-    height: 100%;
-  }
-
   .fieldset {
     position: absolute;
     border: 1px solid #d6d3bd;
     border-radius: 3px;
     padding: 0;
+
+    .legend {
+      position: absolute;
+      color: #0045d6;
+      background-color: #efebde;
+      text-align: center;
+    }
   }
 
-  .legend {
+  .input {
     position: absolute;
-    color: #0045d6;
-    background-color: #efebde;
-    text-align: center;
   }
 
-  .input-container {
-    position: absolute;
+  .fieldset:first-child {
+    left: 11px;
+    top: 19px;
+    width: 144px;
+    height: 77px;
+
+    & > .input {
+      left: 16px;
+      top: 18px;
+    }
+
+    & > .input:last-child {
+      top: 47px;
+    }
+
+    .legend {
+      left: 8px;
+      top: -8px;
+      width: 35px;
+      height: 12px;
+    }
+  }
+
+  .fieldset:nth-child(2) {
+    left: 174px;
+    top: 19px;
+    width: 148px;
+    height: 77px;
+
+    & > .input {
+      left: 17px;
+      top: 12px;
+    }
+
+    & > .input:nth-child(3) {
+      top: 33px;
+    }
+
+    & > .input:nth-child(4) {
+      top: 54px;
+    }
+
+    .legend {
+      left: 8px;
+      top: -8px;
+      width: 35px;
+      height: 12px;
+    }
+  }
+
+  & > .input:nth-child(3) {
+    left: 12px;
+    top: 108px;
+  }
+
+  & > .input:nth-child(4) {
+    left: 12px;
+    top: 129px;
+  }
+
+  & > .input:nth-child(5) {
+    left: 12px;
+    top: 151px;
+  }
+
+  & > .input:nth-child(6) {
+    left: 192px;
+    top: 129px;
   }
 
   .button {
     width: 66px;
   }
 
-  .section-1 {
-    .fieldset {
-      left: 11px;
-      top: 19px;
-      width: 144px;
-      height: 77px;
-
-      & > .input-container {
-        left: 16px;
-        top: 18px;
-      }
-
-      & > .input-container:last-child {
-        top: 47px;
-      }
-
-      .legend {
-        left: 8px;
-        top: -8px;
-        width: 35px;
-        height: 12px;
-      }
-    }
-
-    & > .input-container {
-      left: 12px;
-      top: 108px;
-    }
-
-    & > .input-container:nth-child(3) {
-      top: 129px;
-    }
-
-    & > .input-container:nth-child(4) {
-      top: 151px;
-    }
+  .button_ok {
+    left: 184px;
+    top: 157px;
   }
-  
-  .section-2 {
-    left: 50%;
 
-    .fieldset {
-      left: 6px;
-      top: 19px;
-      width: 148px;
-      height: 77px;
-
-      & > .input-container {
-        left: 17px;
-        top: 12px;
-      }
-  
-      & > .input-container:nth-child(3) {
-        top: 33px;
-      }
-  
-      & > .input-container:nth-child(4) {
-        top: 54px;
-      }
-
-      .legend {
-        left: 8px;
-        top: -8px;
-        width: 35px;
-        height: 12px;
-      }
-    }
-
-    & > .input-container {
-      left: 24px;
-      top: 129px;
-    }
-
-    .button_ok {
-      left: 16px;
-      top: 157px;
-    }
-
-    .button_cancel {
-      left: 90px;
-      top: 157px;
-    }
+  .button_cancel {
+    left: 258px;
+    top: 157px;
   }
 }
